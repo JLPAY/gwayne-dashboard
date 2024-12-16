@@ -1,23 +1,15 @@
 # Frontend
 
 项目通过 [Angular CLI](https://github.com/angular/angular-cli) 6.1.5 创建。
-
-portal 和 admin 分别代表前后台目录。
+使用node v12.22.12 编译通过
 
 ## Development server
-
-> GO 开发者请直接查看 [wayne-dev-develop-flow](https://github.com/Qihoo360/wayne/wiki/Wayne-dev-develop-flow)
-
-  **1. 克隆子项目** 
+  **1. 克隆项目** 
   ``` bash
-  git submodule update --init --recursive 
+  git pull https://github.com/JLPAY/gwayne-dashboard.git
   ```
 
-  **2.使用 Docker 来启动 API 和数据库服务**
-
-  请查看 [文档](../../README-CN.md)
-
-  **3.安装依赖**
+  **2.安装依赖**
   ```
   npm install
   ```
