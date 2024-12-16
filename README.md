@@ -6,11 +6,17 @@
 ## Development server
   **1. 克隆项目** 
   ``` bash
-  git pull https://github.com/JLPAY/gwayne-dashboard.git
+  git clone https://github.com/JLPAY/gwayne-dashboard.git
   ```
 
   **2.安装依赖**
   ```
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+  
+  nvm install 12
+  
+  nvm use 12
+  
   npm install
   ```
 
