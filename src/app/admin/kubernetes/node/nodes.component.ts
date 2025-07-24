@@ -66,18 +66,48 @@ export class NodesComponent implements OnInit, OnDestroy {
       if (message &&
         message.state === ConfirmationState.CONFIRMED &&
         message.source === ConfirmationTargets.NODE) {
-        const name = message.data;
-        this.nodeClient
-          .deleteByName(name, this.cluster)
-          .subscribe(
-            response => {
-              this.messageHandlerService.showSuccess('节点删除成功！');
-              this.retrieve();
-            },
-            error => {
-              this.messageHandlerService.handleError(error);
-            }
-          );
+        const data = message.data;
+        
+        // 根据数据中的 action 字段判断操作类型
+        if (data && data.action === 'isolate') {
+          this.nodeClient
+            .cordonByName(data.name, this.cluster)
+            .subscribe(
+              response => {
+                this.messageHandlerService.showSuccess('节点隔离成功！');
+                this.retrieve();
+              },
+              error => {
+                this.messageHandlerService.handleError(error);
+              }
+            );
+        } else if (data && data.action === 'unisolate') {
+          this.nodeClient
+            .uncordonByName(data.name, this.cluster)
+            .subscribe(
+              response => {
+                this.messageHandlerService.showSuccess('节点解除隔离成功！');
+                this.retrieve();
+              },
+              error => {
+                this.messageHandlerService.handleError(error);
+              }
+            );
+        } else {
+          // 默认删除操作
+          const name = data;
+          this.nodeClient
+            .deleteByName(name, this.cluster)
+            .subscribe(
+              response => {
+                this.messageHandlerService.showSuccess('节点删除成功！');
+                this.retrieve();
+              },
+              error => {
+                this.messageHandlerService.handleError(error);
+              }
+            );
+        }
       }
     });
   }
@@ -211,6 +241,28 @@ export class NodesComponent implements OnInit, OnDestroy {
       ConfirmationButtons.DELETE_CANCEL
     );
     this.deletionDialogService.openComfirmDialog(deletionMessage);
+  }
+
+  isolateNode(node: Node) {
+    const isolationMessage = new ConfirmationMessage(
+      '节点隔离确认',
+      '你确认隔离节点 ' + node.name + ' ？隔离后该节点将不再接收新的 Pod。',
+      { name: node.name, action: 'isolate' },
+      ConfirmationTargets.NODE,
+      ConfirmationButtons.CONFIRM_CANCEL
+    );
+    this.deletionDialogService.openComfirmDialog(isolationMessage);
+  }
+
+  unisolateNode(node: Node) {
+    const unisolationMessage = new ConfirmationMessage(
+      '解除隔离确认',
+      '你确认解除节点 ' + node.name + ' 的隔离状态？解除后该节点将重新接收新的 Pod。',
+      { name: node.name, action: 'unisolate' },
+      ConfirmationTargets.NODE,
+      ConfirmationButtons.CONFIRM_CANCEL
+    );
+    this.deletionDialogService.openComfirmDialog(unisolationMessage);
   }
 
   jumpToHref(cluster: string) {

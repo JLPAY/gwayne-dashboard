@@ -44,7 +44,7 @@ export class ArraySortPipe implements PipeTransform {
     }
 
     // if there is no key we assume item is of string type
-    return _.orderBy(array, (item: {} | string) => item.hasOwnProperty(key) ? item[key] : item, direction.toLowerCase());
+    return _.orderBy(array, [key], [direction.toLowerCase() as 'asc' | 'desc']);
   }
 }
 

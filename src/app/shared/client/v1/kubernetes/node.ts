@@ -33,6 +33,18 @@ export class NodeClient {
       .catch(error => throwError(error));
   }
 
+  cordonByName(name: string, cluster: string): Observable<any> {
+    return this.http
+      .put(`/api/v1/kubernetes/nodes/${name}/clusters/${cluster}/cordon`, {})
+      .catch(error => throwError(error));
+  }
+
+  uncordonByName(name: string, cluster: string): Observable<any> {
+    return this.http
+      .put(`/api/v1/kubernetes/nodes/${name}/clusters/${cluster}/uncordon`, {})
+      .catch(error => throwError(error));
+  }
+
   getByName(name: string, cluster: string): Observable<any> {
     return this.http.get(`/api/v1/kubernetes/nodes/${name}/clusters/${cluster}`)
       .catch(error => throwError(error));

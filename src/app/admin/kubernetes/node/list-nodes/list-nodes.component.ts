@@ -20,7 +20,8 @@ import { CreateEditTaintComponent } from '../create-edit-taint/create-edit-taint
 
 @Component({
   selector: 'list-nodes',
-  templateUrl: 'list-nodes.component.html'
+  templateUrl: 'list-nodes.component.html',
+  styleUrls: ['list-nodes.component.scss']
 })
 
 export class ListNodesComponent implements OnInit {
@@ -49,6 +50,8 @@ export class ListNodesComponent implements OnInit {
   @Output() delete = new EventEmitter<Node>();
   @Output() edit = new EventEmitter<Node>();
   @Output() refresh = new EventEmitter<boolean>();
+  @Output() isolate = new EventEmitter<Node>();
+  @Output() unisolate = new EventEmitter<Node>();
   pageSizes: number[] = new Array(10, 20, 50);
 
   constructor(private storage: StorageService) {
@@ -90,6 +93,14 @@ export class ListNodesComponent implements OnInit {
 
   deleteNode(node: Node) {
     this.delete.emit(node);
+  }
+
+  isolateNode(node: Node) {
+    this.isolate.emit(node);
+  }
+
+  unisolateNode(node: Node) {
+    this.unisolate.emit(node);
   }
 
 }

@@ -74,6 +74,8 @@
       <button class="action-item" (click)="editNode(node)">{{'BUTTON.EDIT' | translate}}</button>
       <button class="action-item" (click)="editLabel(node)">{{'编辑 label' | translate}}</button>
       <button class="action-item" (click)="editTaint(node)">{{'编辑 taint' | translate}}</button>
+      <button class="action-item" (click)="isolateNode(node)" *ngIf="!node.spec.unschedulable">节点隔离</button>
+      <button class="action-item" (click)="unisolateNode(node)" *ngIf="node.spec.unschedulable">解除隔离</button>
       <button class="action-item" (click)="deleteNode(node)">{{'BUTTON.DELETE' | translate}}</button>
     </clr-dg-action-overflow>
     <clr-dg-cell class="copy">{{node.name}}</clr-dg-cell>
@@ -92,7 +94,18 @@
       </div>
     </clr-dg-cell>
     <clr-dg-cell>{{node.spec.ready}}</clr-dg-cell>
-    <clr-dg-cell>{{node.spec.unschedulable ? '否' : '是'}}</clr-dg-cell>
+    <clr-dg-cell>
+      <span *ngIf="!node.spec.unschedulable" 
+            class="status-badge status-schedulable" 
+            title="节点可调度">
+        是
+      </span>
+      <span *ngIf="node.spec.unschedulable" 
+            class="status-badge status-unschedulable" 
+            title="节点不可调度">
+        否
+      </span>
+    </clr-dg-cell>
     <clr-dg-cell>{{node.status.capacity.cpu}}</clr-dg-cell>
     <clr-dg-cell>{{node.status.capacity.memory}}</clr-dg-cell>
     <clr-dg-cell>{{node.status.nodeInfo.kubeletVersion}}</clr-dg-cell>
