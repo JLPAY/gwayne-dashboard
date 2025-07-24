@@ -869,13 +869,25 @@
         "CREATE_CUSTOM": "创建自定义 CRD",
         "LIST": {
           "NAME": "名称",
-          "NAMESPACE": "名称",
+          "NAMESPACE": "命名空间",
           "LABEL": "标签",
           "AGE": "启动时间",
           "GROUP": "资源组",
           "VERSION": "版本",
           "KIND": "类型",
           "SCOPE": "作用域"
+        }
+      },
+      "EVENT": {
+        "LIST": {
+          "NAME": "名称",
+          "NAMESPACE": "命名空间",
+          "LABEL": "标签",
+          "TYPE": "类型",
+          "REASON": "原因",
+          "SOURCE": "来源",
+          "MESSAGE": "消息",
+          "AGE": "时间"
         }
       }
     }

@@ -68,6 +68,7 @@ import { KubeServiceaccountModule } from './kubernetes/serviceaccount/kube-servi
 import { KubeClusterroleModule } from './kubernetes/clusterrole/kube-clusterrole.module';
 import { KubeClusterrolebindingModule } from './kubernetes/clusterrolebinding/kube-clusterrolebinding.module';
 import { KubeCrdModule } from './kubernetes/crd/kube-crd.module';
+import { KubeEventModule } from './kubernetes/event/kube-event.module';
 import { RoadMapModule } from './roadmap/roadmap.module';
 import { CustomlinkModule } from './customlink/customlink.module';
 
@@ -133,6 +134,7 @@ import { CustomlinkModule } from './customlink/customlink.module';
     KubeClusterrolebindingModule,
     KubeNamespaceModule,
     KubeCrdModule,
+    KubeEventModule,
     RoadMapModule,
     CustomlinkModule
   ],
