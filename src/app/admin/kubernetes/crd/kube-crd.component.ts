@@ -14,6 +14,7 @@ const showState = {
   'name': {hidden: false},
   'label': {hidden: true},
   'age': {hidden: false},
+  'scope': {hidden: false},
 };
 
 @Component({

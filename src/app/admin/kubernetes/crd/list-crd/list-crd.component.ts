@@ -4,7 +4,8 @@ import { TplDetailService } from '../../../../shared/tpl-detail/tpl-detail.servi
 
 @Component({
   selector: 'wayne-list-crd',
-  templateUrl: './list-crd.component.html'
+  templateUrl: './list-crd.component.html',
+  styleUrls: ['./list-crd.component.scss']
 })
 
 export class ListCrdComponent extends KubernetesListResource {

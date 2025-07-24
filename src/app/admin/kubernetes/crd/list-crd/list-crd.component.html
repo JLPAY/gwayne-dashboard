@@ -20,6 +20,11 @@
     </ng-container>
   </clr-dg-column>
   <clr-dg-column>
+    <ng-container *clrDgHideableColumn="showState['scope']">
+      {{'ADMIN.KUBERNETES.CRD.LIST.SCOPE' | translate}}
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
     <ng-container *clrDgHideableColumn="showState['version']">
       {{'ADMIN.KUBERNETES.CRD.LIST.VERSION' | translate}}
     </ng-container>
@@ -43,7 +48,30 @@
     </clr-dg-cell>
     <clr-dg-cell> {{ obj.spec.names.kind }} </clr-dg-cell>
     <clr-dg-cell> {{ obj.spec.group }} </clr-dg-cell>
-    <clr-dg-cell> {{ obj.spec.version }} </clr-dg-cell>
+    <clr-dg-cell>
+      <span *ngIf="obj.spec.scope === 'Cluster'" 
+            class="scope-badge scope-cluster" 
+            title="集群作用域">
+        集群
+      </span>
+      <span *ngIf="obj.spec.scope === 'Namespaced'" 
+            class="scope-badge scope-namespaced" 
+            title="命名空间作用域">
+        命名空间
+      </span>
+      <span *ngIf="obj.spec.scope !== 'Cluster' && obj.spec.scope !== 'Namespaced'" 
+            class="scope-badge scope-unknown" 
+            title="未知作用域">
+        {{ obj.spec.scope }}
+      </span>
+    </clr-dg-cell>
+    <clr-dg-cell> 
+      <span *ngFor="let version of obj.spec.versions; let i = index">
+        <span *ngIf="version.storage" class="version-badge version-storage" title="存储版本">
+          {{ version.name }}
+        </span>
+      </span>
+    </clr-dg-cell>
     <clr-dg-cell> {{ obj.metadata.creationTimestamp | relativeTime}} </clr-dg-cell>
     <crd-detail *clrIfExpanded [obj]="obj" [cluster]="cluster" ngProjectAs="clr-dg-row-detail">
     </crd-detail>
