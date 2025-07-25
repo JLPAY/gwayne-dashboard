@@ -67,4 +67,42 @@ export class KubeDeploymentComponent extends KubernetesNamespacedResource implem
     this.router.navigate(['../replicaset'], {relativeTo: this.route, queryParams: { uid: obj.metadata.uid }});
   }
 
+  restart(obj: any) {
+    const msg = `是否确认重启 Deployment ${obj.metadata.name}？`;
+    const title = `重启确认`;
+    this.deletionDialogComponent.open(title, msg, {obj: obj, action: 'restart'});
+  }
+
+  confirmRestartEvent(event: any) {
+    this.kubernetesClient
+      .restart(this.cluster, this.kubeResource, event.obj.metadata.name, event.obj.metadata.namespace)
+      .subscribe(
+        response => {
+          this.retrieveResource();
+          this.messageHandlerService.showSuccess('重启成功！');
+        },
+        error => {
+          this.messageHandlerService.handleError(error);
+        }
+      );
+  }
+
+  confirmDeleteEvent(event: any) {
+    if (event.action === 'restart') {
+      this.confirmRestartEvent(event);
+    } else {
+      this.kubernetesClient
+        .delete(this.cluster, this.kubeResource, event.force, event.obj.metadata.name, event.obj.metadata.namespace)
+        .subscribe(
+          response => {
+            this.retrieveResource();
+            this.messageHandlerService.showSuccess('ADMIN.KUBERNETES.MESSAGE.DELETE');
+          },
+          error => {
+            this.messageHandlerService.handleError(error);
+          }
+        );
+    }
+  }
+
 }

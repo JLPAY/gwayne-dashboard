@@ -107,4 +107,20 @@ export class KubernetesClient {
       .catch(error => throwError(error));
   }
 
+  // restart kubernetes resource by patching the template with a timestamp
+  restart(cluster: string, kind: KubeResourcesName, name: string, namespace?: string, appId?: string): Observable<any> {
+    if ((typeof (appId) === 'undefined') || (!appId)) {
+      appId = '0';
+    }
+
+    let link = `/api/v1/apps/${appId}/_proxy/clusters/${cluster}/${kind}/${name}/restart`;
+    if (namespace) {
+      link = `/api/v1/apps/${appId}/_proxy/clusters/${cluster}/namespaces/${namespace}/${kind}/${name}/restart`;
+    }
+
+    return this.http
+      .put(link, {})
+      .catch(error => throwError(error));
+  }
+
 }

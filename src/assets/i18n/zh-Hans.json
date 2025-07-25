@@ -622,7 +622,8 @@
         "FORCEDELETE": "强制删除",
         "REFRESH": "刷新",
         "ENTER_CONTAINER": "进入容器",
-        "LOG": "查看日志"
+        "LOG": "查看日志",
+        "RESTART": "重启"
       },
       "NAMESPACE_ALL": "全部",
       "LABEL": {

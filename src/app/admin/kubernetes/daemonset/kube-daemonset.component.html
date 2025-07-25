@@ -37,6 +37,7 @@
       [showState]="showState"
       (delete)="onDeleteResourceEvent($event)"
       (edit)="onEditResourceEvent($event)"
+      (restart)="restart($event)"
       [page]="pageState.page"
       [cluster]="cluster"
       (migration)="migration($event)"
