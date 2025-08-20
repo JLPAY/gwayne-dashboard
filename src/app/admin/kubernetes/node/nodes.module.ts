@@ -7,6 +7,7 @@ import { ListNodesComponent } from './list-nodes/list-nodes.component';
 import { NodeResourceComponent } from './node-resource/node-resource.component';
 import { CreateEditLabelComponent } from './create-edit-label/create-edit-label.component';
 import { CreateEditTaintComponent } from './create-edit-taint/create-edit-taint.component';
+import { CreateEditDrainComponent } from './create-edit-drain/create-edit-drain.component';
 @NgModule({
   imports: [
     SharedModule,
@@ -24,7 +25,8 @@ import { CreateEditTaintComponent } from './create-edit-taint/create-edit-taint.
     ListNodesComponent,
     NodeResourceComponent,
     CreateEditLabelComponent,
-    CreateEditTaintComponent
+    CreateEditTaintComponent,
+    CreateEditDrainComponent
   ]
 })
 

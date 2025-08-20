@@ -50,6 +50,9 @@ importers:
       '@ngx-translate/http-loader':
         specifier: ^4.0.0
         version: 4.0.0(@angular/common@8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(@ngx-translate/core@11.0.1(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(rxjs@6.6.7)
+      '@types/lodash':
+        specifier: ^4.14.168
+        version: 4.17.20
       '@webcomponents/custom-elements':
         specifier: ^1.2.1
         version: 1.6.0
@@ -74,6 +77,9 @@ importers:
       d3-scale-chromatic:
         specifier: ^1.3.0
         version: 1.5.0
+      d3-time:
+        specifier: ^3.1.0
+        version: 3.1.0
       diff:
         specifier: ^3.5.0
         version: 3.5.0
@@ -92,6 +98,9 @@ importers:
       js-yaml:
         specifier: ^3.13.1
         version: 3.14.1
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       moment:
         specifier: ^2.22.2
         version: 2.30.1
@@ -427,6 +436,9 @@ packages:
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
+
+  '@types/lodash@4.17.20':
+    resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
 
   '@types/marked@0.7.4':
     resolution: {integrity: sha512-fdg0NO4qpuHWtZk6dASgsrBggY+8N4dWthl1bAQG9ceKUNKFjqpHaDKCAhRUI6y8vavG7hLSJ4YBwJtZyZEXqw==}
@@ -1329,6 +1341,10 @@ packages:
   d3-array@1.2.4:
     resolution: {integrity: sha512-KHW6M86R+FUPYGb3R5XiYjXPq7VzwxZ22buHhAEVG5ztoEcZZMLov530mmccaqA1GghZArjQV46fuc8kUqhhHw==}
 
+  d3-array@3.2.4:
+    resolution: {integrity: sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==}
+    engines: {node: '>=12'}
+
   d3-collection@1.0.7:
     resolution: {integrity: sha512-ii0/r5f4sjKNTfh84Di+DpztYwqKhEyUlKoPrzUFfeSkWxjW49xU2QzO9qrPrNkpdI0XJkfzvmTu8V2Zylln6A==}
 
@@ -1352,6 +1368,10 @@ packages:
 
   d3-time@1.1.0:
     resolution: {integrity: sha512-Xh0isrZ5rPYYdqhAVk8VLnMEidhz5aP7htAADH6MfzgmmicPkTo8LhkLxci61/lCB7n7UmE3bN0leRt+qvkLxA==}
+
+  d3-time@3.1.0:
+    resolution: {integrity: sha512-VqKjzBLejbSMT4IgbmVgDjpkYrNWUYJnbCGo874u7MMKIWsILRX+OpX/gTk8MqjpT1A/c6HY2dCA77ZN0lkQ2Q==}
+    engines: {node: '>=12'}
 
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
@@ -2239,6 +2259,10 @@ packages:
   internal-slot@1.1.0:
     resolution: {integrity: sha512-4gd7VpWNQNB4UKKCFFVcp1AVv+FMOgs9NKzjHKusc8jTMhd5eL1NqQqOpE0KzMds804/yHlglp3uxgluOqAPLw==}
     engines: {node: '>= 0.4'}
+
+  internmap@2.0.3:
+    resolution: {integrity: sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==}
+    engines: {node: '>=12'}
 
   invariant@2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
@@ -4583,7 +4607,7 @@ snapshots:
     dependencies:
       '@angular-devkit/architect': 0.801.3
       '@angular-devkit/build-optimizer': 0.801.3
-      '@angular-devkit/build-webpack': 0.801.3(webpack-dev-server@3.7.2(webpack@4.35.2))(webpack@4.35.2)
+      '@angular-devkit/build-webpack': 0.801.3(webpack-dev-server@3.7.2(webpack@4.47.0))(webpack@4.35.2)
       '@angular-devkit/core': 8.1.3
       '@angular/compiler-cli': 8.2.14(@angular/compiler@8.2.14)(typescript@3.4.5)
       '@ngtools/webpack': 8.1.3(@angular/compiler-cli@8.2.14(@angular/compiler@8.2.14)(typescript@3.4.5))(typescript@3.4.5)(webpack@4.35.2)
@@ -4643,7 +4667,7 @@ snapshots:
       typescript: 3.4.5
       webpack-sources: 1.3.0
 
-  '@angular-devkit/build-webpack@0.801.3(webpack-dev-server@3.7.2(webpack@4.35.2))(webpack@4.35.2)':
+  '@angular-devkit/build-webpack@0.801.3(webpack-dev-server@3.7.2(webpack@4.47.0))(webpack@4.35.2)':
     dependencies:
       '@angular-devkit/architect': 0.801.3
       '@angular-devkit/core': 8.1.3
@@ -4872,6 +4896,8 @@ snapshots:
   '@types/keyv@3.1.4':
     dependencies:
       '@types/node': 8.9.5
+
+  '@types/lodash@4.17.20': {}
 
   '@types/marked@0.7.4': {}
 
@@ -6029,6 +6055,10 @@ snapshots:
 
   d3-array@1.2.4: {}
 
+  d3-array@3.2.4:
+    dependencies:
+      internmap: 2.0.3
+
   d3-collection@1.0.7: {}
 
   d3-color@1.4.1: {}
@@ -6058,6 +6088,10 @@ snapshots:
       d3-time: 1.1.0
 
   d3-time@1.1.0: {}
+
+  d3-time@3.1.0:
+    dependencies:
+      d3-array: 3.2.4
 
   damerau-levenshtein@1.0.8: {}
 
@@ -7195,6 +7229,8 @@ snapshots:
       es-errors: 1.3.0
       hasown: 2.0.2
       side-channel: 1.1.0
+
+  internmap@2.0.3: {}
 
   invariant@2.2.4:
     dependencies:

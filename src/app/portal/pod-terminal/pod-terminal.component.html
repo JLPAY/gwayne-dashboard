@@ -16,32 +16,46 @@
           {{selectedPod?.metadata?.name}}
           <clr-icon shape="caret down"></clr-icon>
         </button>
-        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right" style="max-width:30rem;direction: rtl;">
-          <h4 class="dropdown-header">Pod</h4>
-          <a *ngFor="let pod of pods" href="javascript:void(0)"
-             clrDropdownItem (click)="selectedPod=pod;podChange();">
-            {{pod.metadata.name}}
-          </a>
-        </clr-dropdown-menu>
+        <ng-container *ngIf="pods">
+          <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right" style="max-width:30rem;direction: rtl;">
+            <h4 class="dropdown-header">Pod</h4>
+            <a *ngFor="let pod of pods" href="javascript:void(0)"
+               clrDropdownItem (click)="selectedPod=pod;podChange();">
+              {{pod.metadata.name}}
+            </a>
+          </clr-dropdown-menu>
+        </ng-container>
       </clr-dropdown>
       <clr-dropdown>
         <button class="nav-text" clrDropdownTrigger>
           {{selectedContainer}}
           <clr-icon shape="caret down"></clr-icon>
         </button>
-        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-          <h4 class="dropdown-header">{{'TITLE.CONTAINER' | translate}}</h4>
-          <a *ngFor="let c of containers" href="javascript:void(0)"
-             clrDropdownItem (click)="selectedContainer=c.name;containerChange();">
-            {{c.name}}
-          </a>
-        </clr-dropdown-menu>
+        <ng-container *ngIf="containers">
+          <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+            <h4 class="dropdown-header">{{'TITLE.CONTAINER' | translate}}</h4>
+            <a *ngFor="let c of containers" href="javascript:void(0)"
+               clrDropdownItem (click)="selectedContainer=c.name;containerChange();">
+              {{c.name}}
+            </a>
+          </clr-dropdown-menu>
+        </ng-container>
       </clr-dropdown>
     </div>
   </header>
 
   <div style="height:100%;width: 100%;">
-    <div class="terminal-parent">
+    <!-- 加载状态显示 -->
+    <div *ngIf="isLoading" class="loading-overlay">
+      <div class="loading-content">
+        <clr-icon shape="hourglass" class="is-solid loading-icon"></clr-icon>
+        <div class="loading-text">{{loadingMessage}}</div>
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+    
+    <!-- 终端容器 -->
+    <div class="terminal-parent" [ngClass]="{'terminal-ready': !isLoading}">
       <div #terminal></div>
     </div>
   </div>

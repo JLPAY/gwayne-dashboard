@@ -8,6 +8,7 @@ import { MessageHandlerService } from '../../../shared/message-handler/message-h
 import { ClusterService } from '../../../shared/client/v1/cluster.service';
 import { AuthService } from '../../../shared/auth/auth.service';
 import { ListNodesComponent } from './list-nodes/list-nodes.component';
+import { CreateEditDrainComponent } from './create-edit-drain/create-edit-drain.component';
 import { Node } from '../../../shared/model/v1/kubernetes/node-list';
 import { NodeClient } from '../../../shared/client/v1/kubernetes/node';
 import { Inventory } from './list-nodes/inventory';
@@ -42,6 +43,9 @@ export class NodesComponent implements OnInit, OnDestroy {
 
   @ViewChild(AceEditorComponent, { static: false })
   editNodeModal: AceEditorComponent;
+
+  @ViewChild(CreateEditDrainComponent, { static: false })
+  drainModal: CreateEditDrainComponent;
 
 
   showState: object = showState;
@@ -263,6 +267,10 @@ export class NodesComponent implements OnInit, OnDestroy {
       ConfirmationButtons.CONFIRM_CANCEL
     );
     this.deletionDialogService.openComfirmDialog(unisolationMessage);
+  }
+
+  drainNode(node: Node) {
+    this.drainModal.openModal(node, this.cluster);
   }
 
   jumpToHref(cluster: string) {

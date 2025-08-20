@@ -34,11 +34,13 @@
       (edit)="editNode($event)"
       (isolate)="isolateNode($event)"
       (unisolate)="unisolateNode($event)"
+      (drain)="drainNode($event)"
       [showState]="showState">
     </list-nodes>
   </div>
 </div>
 <wayne-ace-editor (outputObj)="saveNode($event)"></wayne-ace-editor>
+<create-edit-drain (refresh)="retrieve()"></create-edit-drain>
 <wayne-float-window value="{{cluster}}">
   <wayne-float-window-item *ngFor="let cluster of clusters" [value]="cluster"
                            (click)="jumpToHref(cluster)"></wayne-float-window-item>

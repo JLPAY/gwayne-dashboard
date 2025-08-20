@@ -52,6 +52,7 @@ export class ListNodesComponent implements OnInit {
   @Output() refresh = new EventEmitter<boolean>();
   @Output() isolate = new EventEmitter<Node>();
   @Output() unisolate = new EventEmitter<Node>();
+  @Output() drain = new EventEmitter<Node>();
   pageSizes: number[] = new Array(10, 20, 50);
 
   constructor(private storage: StorageService) {
@@ -101,6 +102,10 @@ export class ListNodesComponent implements OnInit {
 
   unisolateNode(node: Node) {
     this.unisolate.emit(node);
+  }
+
+  drainNode(node: Node) {
+    this.drain.emit(node);
   }
 
 }

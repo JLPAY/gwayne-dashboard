@@ -123,4 +123,10 @@ export class ClusterService {
       .catch(error => throwError(error));
   }
 
+  drainNode(name: string, cluster: string, options: any) {
+    return this.http
+      .post(`/api/v1/kubernetes/nodes/${name}/clusters/${cluster}/drain`, options, this.options)
+      .catch(error => throwError(error));
+  }
+
 }

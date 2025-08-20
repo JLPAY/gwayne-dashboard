@@ -76,6 +76,7 @@
       <button class="action-item" (click)="editTaint(node)">{{'编辑 taint' | translate}}</button>
       <button class="action-item" (click)="isolateNode(node)" *ngIf="!node.spec.unschedulable">节点隔离</button>
       <button class="action-item" (click)="unisolateNode(node)" *ngIf="node.spec.unschedulable">解除隔离</button>
+      <button class="action-item" (click)="drainNode(node)">节点驱逐</button>
       <button class="action-item" (click)="deleteNode(node)">{{'BUTTON.DELETE' | translate}}</button>
     </clr-dg-action-overflow>
     <clr-dg-cell class="copy">{{node.name}}</clr-dg-cell>
