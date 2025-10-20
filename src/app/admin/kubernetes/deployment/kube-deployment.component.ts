@@ -10,6 +10,7 @@ import { KubernetesNamespacedResource } from '../../../shared/base/kubernetes-na
 import { DeletionDialogComponent } from '../../../shared/deletion-dialog/deletion-dialog.component';
 import { MigrationComponent } from './migration/migration.component';
 import { ListDeploymentComponent } from './list-deployment/list-deployment.component';
+import { ScaleDialogComponent } from './scale-dialog/scale-dialog.component';
 
 const showState = {
   'name': {hidden: false},
@@ -37,6 +38,9 @@ export class KubeDeploymentComponent extends KubernetesNamespacedResource implem
 
   @ViewChild(MigrationComponent, { static: false })
   migrationComponent: MigrationComponent;
+
+  @ViewChild(ScaleDialogComponent, { static: false })
+  scaleDialogComponent: ScaleDialogComponent;
 
   constructor(public kubernetesClient: KubernetesClient,
               public route: ActivatedRoute,
@@ -73,6 +77,12 @@ export class KubeDeploymentComponent extends KubernetesNamespacedResource implem
     this.deletionDialogComponent.open(title, msg, {obj: obj, action: 'restart'});
   }
 
+  scale(obj: any) {
+    this.scaleDialogComponent.obj = obj;
+    this.scaleDialogComponent.cluster = this.cluster;
+    this.scaleDialogComponent.open();
+  }
+
   confirmRestartEvent(event: any) {
     this.kubernetesClient
       .restart(this.cluster, this.kubeResource, event.obj.metadata.name, event.obj.metadata.namespace)
@@ -80,6 +90,36 @@ export class KubeDeploymentComponent extends KubernetesNamespacedResource implem
         response => {
           this.retrieveResource();
           this.messageHandlerService.showSuccess('重启成功！');
+        },
+        error => {
+          this.messageHandlerService.handleError(error);
+        }
+      );
+  }
+
+  onScaleConfirmed(event: any) {
+    // 创建完整的 Kubernetes 资源对象
+    const updateData = {
+      apiVersion: event.obj.apiVersion,
+      kind: event.obj.kind,
+      metadata: {
+        name: event.obj.metadata.name,
+        namespace: event.obj.metadata.namespace,
+        resourceVersion: event.obj.metadata.resourceVersion,
+        uid: event.obj.metadata.uid
+      },
+      spec: {
+        ...event.obj.spec,
+        replicas: event.replicas
+      }
+    };
+
+    this.kubernetesClient
+      .update(updateData, this.cluster, this.kubeResource, event.obj.metadata.name, event.obj.metadata.namespace)
+      .subscribe(
+        response => {
+          this.retrieveResource();
+          this.messageHandlerService.showSuccess('副本数量调整成功！');
         },
         error => {
           this.messageHandlerService.handleError(error);

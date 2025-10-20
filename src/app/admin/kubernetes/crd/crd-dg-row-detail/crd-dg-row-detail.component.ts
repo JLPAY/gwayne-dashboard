@@ -55,6 +55,25 @@ export class CRDDgRowDetailComponent implements OnInit {
 
   }
 
+  // 获取CRD的存储版本
+  private getStorageVersion(): string {
+    if (this.obj && this.obj.spec && this.obj.spec.versions) {
+      const storageVersion = this.obj.spec.versions.find(version => version.storage === true);
+      if (storageVersion) {
+        return storageVersion.name;
+      }
+      // 如果没有找到storage版本，返回第一个版本
+      if (this.obj.spec.versions.length > 0) {
+        return this.obj.spec.versions[0].name;
+      }
+    }
+    // 兼容旧版本CRD（使用spec.version）
+    if (this.obj && this.obj.spec && this.obj.spec.version) {
+      return this.obj.spec.version;
+    }
+    return 'v1'; // 默认版本
+  }
+
   pageSizeChange(pageSize: number) {
     this.state.page.to = pageSize - 1;
     this.state.page.size = pageSize;
@@ -69,8 +88,10 @@ export class CRDDgRowDetailComponent implements OnInit {
       });
     }
     if (this.cluster) {
+      // 获取存储版本（storage: true的版本）
+      const storageVersion = this.getStorageVersion();
       this.customCRDClient.listPage(this.pageState,
-        this.cluster, this.obj.spec.group, this.obj.spec.version, this.obj.spec.names.plural, this.namespace).subscribe(
+        this.cluster, this.obj.spec.group, storageVersion, this.obj.spec.names.plural, this.namespace).subscribe(
         response => {
           const data = response.data;
           this.resources = data.list;
@@ -83,7 +104,8 @@ export class CRDDgRowDetailComponent implements OnInit {
   }
 
   onEditEvent(obj: any) {
-    this.customCRDClient.get(this.cluster, this.obj.spec.group, this.obj.spec.version, this.obj.spec.names.plural,
+    const storageVersion = this.getStorageVersion();
+    this.customCRDClient.get(this.cluster, this.obj.spec.group, storageVersion, this.obj.spec.names.plural,
       obj.metadata.namespace, obj.metadata.name)
       .subscribe(
         response => {
@@ -100,7 +122,8 @@ export class CRDDgRowDetailComponent implements OnInit {
 
   onCreateEvent(obj: any) {
     if (obj && obj.metadata) {
-      this.customCRDClient.create(obj, this.cluster, this.obj.spec.group, this.obj.spec.version, this.obj.spec.names.plural,
+      const storageVersion = this.getStorageVersion();
+      this.customCRDClient.create(obj, this.cluster, this.obj.spec.group, storageVersion, this.obj.spec.names.plural,
         obj.metadata.namespace).subscribe(
         resp2 => {
           this.messageHandlerService.showSuccess('ADMIN.KUBERNETES.MESSAGE.CREATE');
@@ -116,7 +139,8 @@ export class CRDDgRowDetailComponent implements OnInit {
   }
 
   onSaveEvent(obj: any) {
-    this.customCRDClient.update(obj, this.cluster, this.obj.spec.group, this.obj.spec.version, this.obj.spec.names.plural,
+    const storageVersion = this.getStorageVersion();
+    this.customCRDClient.update(obj, this.cluster, this.obj.spec.group, storageVersion, this.obj.spec.names.plural,
       obj.metadata.namespace, obj.metadata.name).subscribe(
       resp2 => {
         this.messageHandlerService.showSuccess('ADMIN.KUBERNETES.MESSAGE.UPDATE');
@@ -136,8 +160,9 @@ export class CRDDgRowDetailComponent implements OnInit {
   }
 
   confirmDeleteEvent(event: DeleteEvent) {
+    const storageVersion = this.getStorageVersion();
     this.customCRDClient
-      .delete(this.cluster, this.obj.spec.group, this.obj.spec.version, this.obj.spec.names.plural,
+      .delete(this.cluster, this.obj.spec.group, storageVersion, this.obj.spec.names.plural,
         event.obj.metadata.namespace, event.obj.metadata.name)
       .subscribe(
         response => {

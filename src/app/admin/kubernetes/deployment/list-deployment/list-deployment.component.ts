@@ -14,6 +14,7 @@ export class ListDeploymentComponent extends KubernetesListResource {
   @Output() migration = new EventEmitter<any>();
   @Output() jump = new EventEmitter<any>();
   @Output() restart = new EventEmitter<any>();
+  @Output() scale = new EventEmitter<any>();
 
   constructor(public tplDetailService: TplDetailService) {
     super(tplDetailService);
@@ -29,5 +30,9 @@ export class ListDeploymentComponent extends KubernetesListResource {
 
   restartResource(obj: any) {
     this.restart.emit(obj);
+  }
+
+  onScaleEvent(obj: any) {
+    this.scale.emit(obj);
   }
 }

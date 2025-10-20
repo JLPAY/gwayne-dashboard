@@ -67,7 +67,18 @@
       </div>
     </clr-dg-cell>
 
-    <clr-dg-cell> {{ getPodStatus(obj) }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="label label-light-blue"
+            [class.label-success]="getPodStatus(obj) === 'Running'"
+            [class.label-warning]="getPodStatus(obj) === 'Pending'"
+            [class.label-info]="getPodStatus(obj) === 'Succeeded'"
+            [class.label-danger]="getPodStatus(obj) === 'Failed'"
+            [class.label-danger]="getPodStatus(obj) === 'Unknown'"
+            [class.label-danger]="getPodStatus(obj) === 'Terminating'"
+            [class.label-danger]="getPodStatus(obj) !== 'Running' && getPodStatus(obj) !== 'Pending' && getPodStatus(obj) !== 'Succeeded' && getPodStatus(obj) !== 'Terminating'">
+        {{ getPodStatus(obj) }}
+      </span>
+    </clr-dg-cell>
     <clr-dg-cell> {{ obj.status.podIP }} </clr-dg-cell>
     <clr-dg-cell> {{ obj.spec.nodeName }} </clr-dg-cell>
     <clr-dg-cell>

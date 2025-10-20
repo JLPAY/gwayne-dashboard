@@ -38,6 +38,7 @@
       (delete)="onDeleteResourceEvent($event)"
       (edit)="onEditResourceEvent($event)"
       (restart)="restart($event)"
+      (scale)="scale($event)"
       [page]="pageState.page"
       [cluster]="cluster"
       (migration)="migration($event)"
@@ -48,6 +49,7 @@
 </div>
 <kube-migration></kube-migration>
 <deletion-dialog (outputObj)="confirmDeleteEvent($event)"></deletion-dialog>
+<wayne-scale-dialog (scaleConfirmed)="onScaleConfirmed($event)"></wayne-scale-dialog>
 <wayne-ace-editor (createOutputObj)="onCreateResourceEvent($event)" (outputObj)="onSaveResourceEvent($event)"></wayne-ace-editor>
 <wayne-float-window value="{{ cluster }}">
   <wayne-float-window-item *ngFor="let cluster of clusters" [value]="cluster"

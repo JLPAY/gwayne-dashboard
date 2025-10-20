@@ -21,6 +21,7 @@
     "MONITOR": "监控",
     "REFRESH": "刷新",
     "REPLACE": "替代",
+    "SCALE": "副本伸缩容",
     "UNFOLD": "展开"
   },
   "BUTTON": {
@@ -623,7 +624,8 @@
         "REFRESH": "刷新",
         "ENTER_CONTAINER": "进入容器",
         "LOG": "查看日志",
-        "RESTART": "重启"
+        "RESTART": "重启",
+        "SCALE": "副本伸缩容"
       },
       "NAMESPACE_ALL": "全部",
       "LABEL": {
@@ -705,6 +707,10 @@
       },
       "DEPLOYMENT": {
         "CREATE": "创建 Deployment",
+        "SCALE": {
+          "TITLE": "调整副本数量",
+          "REPLICAS": "副本"
+        },
         "LIST": {
           "NAME": "名称",
           "NAMESPACE": "命名空间",

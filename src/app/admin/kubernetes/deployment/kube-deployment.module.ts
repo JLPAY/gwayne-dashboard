@@ -6,6 +6,7 @@ import { KubernetesClient } from '../../../shared/client/v1/kubernetes/kubernete
 import { DeletionDialogModule } from '../../../shared/deletion-dialog/deletion-dialog.module';
 import { MigrationComponent } from './migration/migration.component';
 import { ListDeploymentComponent } from './list-deployment/list-deployment.component';
+import { ScaleDialogComponent } from './scale-dialog/scale-dialog.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { ListDeploymentComponent } from './list-deployment/list-deployment.compo
   declarations: [
     KubeDeploymentComponent,
     ListDeploymentComponent,
-    MigrationComponent
+    MigrationComponent,
+    ScaleDialogComponent
   ]
 })
 
