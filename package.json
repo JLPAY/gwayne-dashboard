@@ -12,6 +12,7 @@
     "e2e": "node --openssl-legacy-provider ./node_modules/@angular/cli/bin/ng e2e"
   },
   "private": true,
+  "_comment": "注意：@types/lodash 版本已锁定为 4.14.108，与 TypeScript 3.4.5 兼容。请勿随意升级，避免类型定义不兼容问题。",
   "dependencies": {
     "@angular/animations": "^8.1.0",
     "@angular/common": "^8.1.0",
@@ -27,7 +28,6 @@
     "@clr/ui": "^2.0.3",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
-    "@types/lodash": "^4.14.108",
     "@webcomponents/custom-elements": "^1.2.1",
     "ace": "^1.3.0",
     "bootstrap": "^4.3.1",
@@ -43,7 +43,7 @@
     "jquery": "^3.4.1",
     "js-base64": "^2.5.0",
     "js-yaml": "^3.13.1",
-    "lodash": "^4.17.21",
+    "lodash": "4.17.21",
     "moment": "^2.22.2",
     "mutationobserver-shim": "^0.3.2",
     "ngx-markdown": "^8.1.0",
@@ -72,6 +72,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/js-base64": "^2.3.1",
     "@types/js-yaml": "^3.11.2",
+    "@types/lodash": "4.14.108",
     "@types/node": "~8.9.4",
     "codelyzer": "~5.1.0",
     "jasmine-core": "~2.99.1",

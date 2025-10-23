@@ -50,9 +50,6 @@ importers:
       '@ngx-translate/http-loader':
         specifier: ^4.0.0
         version: 4.0.0(@angular/common@8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(@ngx-translate/core@11.0.1(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(rxjs@6.6.7)
-      '@types/lodash':
-        specifier: ^4.14.119
-        version: 4.17.20
       '@webcomponents/custom-elements':
         specifier: ^1.2.1
         version: 1.6.0
@@ -99,7 +96,7 @@ importers:
         specifier: ^3.13.1
         version: 3.14.1
       lodash:
-        specifier: ^4.17.21
+        specifier: 4.17.21
         version: 4.17.21
       moment:
         specifier: ^2.22.2
@@ -180,6 +177,9 @@ importers:
       '@types/js-yaml':
         specifier: ^3.11.2
         version: 3.12.10
+      '@types/lodash':
+        specifier: 4.14.108
+        version: 4.14.108
       '@types/node':
         specifier: ~8.9.4
         version: 8.9.5
@@ -437,8 +437,8 @@ packages:
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
 
-  '@types/lodash@4.17.20':
-    resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
+  '@types/lodash@4.14.108':
+    resolution: {integrity: sha512-WD2vUOKfBBVHxWUV9iMR9RMfpuf8HquxWeAq2yqGVL7Nc4JW2+sQama0pREMqzNI3Tutj0PyxYUJwuoxxvX+xA==}
 
   '@types/marked@0.7.4':
     resolution: {integrity: sha512-fdg0NO4qpuHWtZk6dASgsrBggY+8N4dWthl1bAQG9ceKUNKFjqpHaDKCAhRUI6y8vavG7hLSJ4YBwJtZyZEXqw==}
@@ -4897,7 +4897,7 @@ snapshots:
     dependencies:
       '@types/node': 8.9.5
 
-  '@types/lodash@4.17.20': {}
+  '@types/lodash@4.14.108': {}
 
   '@types/marked@0.7.4': {}
 
