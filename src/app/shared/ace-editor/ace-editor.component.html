@@ -16,7 +16,71 @@
         </div>
       </div>
     </div>
-    <wayne-ace-editor-box (modalChange)="modalInfo($event)"></wayne-ace-editor-box>
+
+    <!-- View mode toggle button for namespace -->
+    <div *ngIf="isNamespaceResource && isCreate" style="margin-bottom: 15px; text-align: right;">
+      <button type="button" class="btn btn-sm btn-outline" (click)="toggleViewMode()">
+        <clr-icon *ngIf="showFormView" shape="file"></clr-icon>
+        <clr-icon *ngIf="!showFormView" shape="edit"></clr-icon>
+        {{showFormView ? '切换到 YAML 编辑' : '切换到表单填写'}}
+      </button>
+    </div>
+
+    <!-- Form view for namespace -->
+    <div *ngIf="showFormView && isNamespaceResource && isCreate" class="namespace-form-view">
+      <form clrForm clrLayout="horizontal">
+        <clr-input-container>
+          <label class="required">名称</label>
+          <input clrInput type="text" [(ngModel)]="namespaceName" name="namespaceName" 
+                 pattern="[a-z]([-a-z0-9]*[a-z0-9])?" maxlength="63" required>
+          <clr-control-error>命名空间名称不符合规范，验证规则[a-z]([-a-z0-9]*[a-z0-9])?</clr-control-error>
+        </clr-input-container>
+
+        <div class="clr-form-control clr-row" style="margin-top: 20px;">
+          <label class="clr-control-label">标签 (Labels)</label>
+          <div class="clr-control-container clr-col-md-10 clr-col-12">
+            <button type="button" class="btn btn-sm btn-primary" (click)="addLabel()" style="margin-bottom: 10px;">
+              <clr-icon shape="add"></clr-icon>
+              添加标签
+            </button>
+            <div *ngFor="let label of namespaceLabels; let i = index" class="form-group" style="margin-bottom: 10px;">
+              <input type="text" class="clr-input" [(ngModel)]="label.key" 
+                     placeholder="键" name="label_key_{{i}}" style="width: 200px; display: inline-block;">
+              <input type="text" class="clr-input" [(ngModel)]="label.value" 
+                     placeholder="值" name="label_value_{{i}}" style="width: 200px; display: inline-block; margin-left: 10px;">
+              <button type="button" class="btn btn-sm btn-link" (click)="removeLabel(i)" style="margin-left: 10px;">
+                <clr-icon shape="trash" class="is-solid"></clr-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="clr-form-control clr-row" style="margin-top: 20px;">
+          <label class="clr-control-label">注解 (Annotations)</label>
+          <div class="clr-control-container clr-col-md-10 clr-col-12">
+            <button type="button" class="btn btn-sm btn-primary" (click)="addAnnotation()" style="margin-bottom: 10px;">
+              <clr-icon shape="add"></clr-icon>
+              添加注解
+            </button>
+            <div *ngFor="let annotation of namespaceAnnotations; let i = index" class="form-group" style="margin-bottom: 10px;">
+              <input type="text" class="clr-input" [(ngModel)]="annotation.key" 
+                     placeholder="键" name="annotation_key_{{i}}" style="width: 200px; display: inline-block;">
+              <input type="text" class="clr-input" [(ngModel)]="annotation.value" 
+                     placeholder="值" name="annotation_value_{{i}}" style="width: 200px; display: inline-block; margin-left: 10px;">
+              <button type="button" class="btn btn-sm btn-link" (click)="removeAnnotation(i)" style="margin-left: 10px;">
+                <clr-icon shape="trash" class="is-solid"></clr-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- YAML/JSON editor view -->
+    <!-- Always render editor but hide it when in form view for namespace -->
+    <div [style.display]="showFormView && isNamespaceResource && isCreate ? 'none' : 'block'">
+      <wayne-ace-editor-box (modalChange)="modalInfo($event)"></wayne-ace-editor-box>
+    </div>
   </div>
   <div [hidden]="hiddenFooter" class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="onCancel()">{{'BUTTON.CANCEL' | translate}}</button>
