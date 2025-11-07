@@ -23,9 +23,6 @@ importers:
       '@angular/forms':
         specifier: ^8.1.0
         version: 8.2.14(@angular/common@8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(@angular/platform-browser@8.2.14(@angular/common@8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1)))(rxjs@6.6.7)
-      '@angular/http':
-        specifier: ^7.2.2
-        version: 7.2.16(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(@angular/platform-browser@8.2.14(@angular/common@8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1)))(rxjs@6.6.7)
       '@angular/platform-browser':
         specifier: ^8.1.0
         version: 8.2.14(@angular/common@8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))
@@ -299,14 +296,6 @@ packages:
       '@angular/core': 8.2.14
       '@angular/platform-browser': 8.2.14
       rxjs: ^6.4.0
-
-  '@angular/http@7.2.16':
-    resolution: {integrity: sha512-yvjbNyzFSmmz4UTjCdy5M8mk0cZqf9TvSf8yN5UVIwtw4joyuUdlgJCuin0qSbQOKIf/JjHoofpO2JkPCGSNww==}
-    deprecated: Package no longer supported. Use @angular/common instead, see https://angular.io/guide/deprecations#angularhttp
-    peerDependencies:
-      '@angular/core': 7.2.16
-      '@angular/platform-browser': 7.2.16
-      rxjs: ^6.0.0
 
   '@angular/language-service@8.2.14':
     resolution: {integrity: sha512-7EhN9JJbAJcH2xCa+rIOmekjiEuB0qwPdHuD5qn/wwMfRzMZo+Db4hHbR9KHrLH6H82PTwYKye/LLpDaZqoHOA==}
@@ -4753,13 +4742,6 @@ snapshots:
   '@angular/forms@8.2.14(@angular/common@8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(@angular/platform-browser@8.2.14(@angular/common@8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1)))(rxjs@6.6.7)':
     dependencies:
       '@angular/common': 8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7)
-      '@angular/core': 8.2.14(rxjs@6.6.7)(zone.js@0.9.1)
-      '@angular/platform-browser': 8.2.14(@angular/common@8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))
-      rxjs: 6.6.7
-      tslib: 1.14.1
-
-  '@angular/http@7.2.16(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(@angular/platform-browser@8.2.14(@angular/common@8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1)))(rxjs@6.6.7)':
-    dependencies:
       '@angular/core': 8.2.14(rxjs@6.6.7)(zone.js@0.9.1)
       '@angular/platform-browser': 8.2.14(@angular/common@8.2.14(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))(rxjs@6.6.7))(@angular/core@8.2.14(rxjs@6.6.7)(zone.js@0.9.1))
       rxjs: 6.6.7

@@ -6,10 +6,7 @@
 ## 环境要求
 
 ### Node.js 版本兼容性
-
-- **推荐版本**: Node.js 16.x (LTS)
-- **最低版本**: Node.js 12.x
-- **最高版本**: Node.js 18.x (需要特殊配置)
+- **最高版本**: Node.js 18.20.5 
 
 ### Node.js 18+ 兼容性解决方案
 
@@ -17,46 +14,16 @@
 
 #### 方案 1: 使用修改后的脚本（推荐）
 ```bash
-npm run start  # 已自动添加 --openssl-legacy-provider 标志
+pnpm install @types/lodash@4.14.108 @clr/angular@2.0.3 @clr/icons@2.0.3 @clr/ui@2.0.3 --save-dev
+
+pnpm run start 
 ```
-
-#### 方案 2: 设置环境变量
-```bash
-# Windows
-set NODE_OPTIONS=--openssl-legacy-provider
-npm start
-
-# Linux/Mac
-export NODE_OPTIONS=--openssl-legacy-provider
-npm start
-```
-
-#### 方案 3: 使用 nvm 切换到兼容版本
-```bash
-nvm use 16.20.0
-npm start
-```
-
-## Development server
-  **1. 克隆项目** 
-  ``` bash
-  git pull https://github.com/JLPAY/gwayne-dashboard.git
-  ```
-
-  **2.安装依赖**
-  ```
-  npm install
-  ```
-
-  **3.启动开发环境**
-   ```
-  npm run start
-  ```
   **4.访问 http://localhost:4200**
 
 ## Build
 
-执行 `npm run build` 去打包项目，打包结果会保存在 `dist/` 目录下。
+执行 `pnpm run build` 去打包项目，打包结果会保存在 `dist/` 目录下。  
+
 
 ## 常见问题
 
