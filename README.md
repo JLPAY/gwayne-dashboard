@@ -1,7 +1,7 @@
 # Frontend
 
-项目通过 [Angular CLI](https://github.com/angular/angular-cli) 6.1.5 创建。
-使用node v12.22.12 编译通过
+项目通过 [Angular CLI](https://github.com/angular/angular-cli) 8 创建。
+使用node v18.20.5 编译通过
 
 ## 环境要求
 

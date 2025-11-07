@@ -19,7 +19,7 @@
       {{'ADMIN.KUBERNETES.POD.LIST.IMAGES' | translate}}
     </ng-container>
   </clr-dg-column>
-  <clr-dg-column>
+  <clr-dg-column [clrDgField]="'statusPhase'">
     <ng-container *clrDgHideableColumn="showState['status']">
       {{'ADMIN.KUBERNETES.POD.LIST.STATUS' | translate}}
     </ng-container>
@@ -46,7 +46,7 @@
   </clr-dg-column>
 
 
-  <clr-dg-row *ngFor="let obj of resources" [clrDgItem]="obj">
+  <clr-dg-row *ngFor="let obj of processedResources" [clrDgItem]="obj">
     <clr-dg-action-overflow>
       <button class="action-item" (click)="onEditEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.EDIT' | translate}}</button>
       <button class="action-item" (click)="onDeleteEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.DELETE' | translate}}</button>
