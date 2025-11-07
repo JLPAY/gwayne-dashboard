@@ -38,6 +38,20 @@ import { CreateEditIngressTplComponent } from './ingress/create-edit-ingresstpl/
 import { PORTALROUTES } from '../../../lib/portal/library-routing-portal';
 import { AutoscaleComponent } from './autoscale/autoscale.component';
 import { CreateEditAutoscaletplComponent } from './autoscale/create-edit-autoscaletpl/create-edit-autoscaletpl.component';
+import { PortalKubePodComponent } from './kubernetes/pod/kube-pod.component';
+import { PortalKubeDeploymentComponent } from './kubernetes/deployment/kube-deployment.component';
+import { PortalKubeIngressComponent } from './kubernetes/ingress/kube-ingress.component';
+import { PortalKubeConfigmapComponent } from './kubernetes/configmap/kube-configmap.component';
+import { PortalKubeJobComponent } from './kubernetes/job/kube-job.component';
+import { PortalKubeCronjobComponent } from './kubernetes/cronjob/kube-cronjob.component';
+import { PortalKubeServiceComponent } from './kubernetes/service/kube-service.component';
+import { PortalKubeHpaComponent } from './kubernetes/hpa/kube-hpa.component';
+import { PortalKubeSecretComponent } from './kubernetes/secret/kube-secret.component';
+import { PortalKubeStatefulsetComponent } from './kubernetes/statefulset/kube-statefulset.component';
+import { PortalKubeDaemonsetComponent } from './kubernetes/daemonset/kube-daemonset.component';
+import { PortalKubeNamespaceComponent } from './kubernetes/namespace/kube-namespace.component';
+import { PortalNodesComponent } from './kubernetes/node/nodes.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -111,6 +125,281 @@ const routes: Routes = [
   {
     path: 'portal/logging/namespace/:nid/app/:id/:resourceType/:resourceName/pod/:podName/container/:container/:cluster/:namespace',
     component: PodLoggingComponent
+  },
+  {
+    path: 'portal/dashboard',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: DashboardComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/pod',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubePodComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/pod/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubePodComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/deployment',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeDeploymentComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/deployment/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeDeploymentComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/ingress',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeIngressComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/ingress/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeIngressComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/configmap',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeConfigmapComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/configmap/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeConfigmapComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/job',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeJobComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/job/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeJobComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/cronjob',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeCronjobComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/cronjob/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeCronjobComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/service',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeServiceComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/service/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeServiceComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/hpa',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeHpaComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/hpa/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeHpaComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/secret',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeSecretComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/secret/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeSecretComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/statefulset',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeStatefulsetComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/statefulset/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeStatefulsetComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/daemonset',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeDaemonsetComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/daemonset/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeDaemonsetComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/namespace',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeNamespaceComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/namespace/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalKubeNamespaceComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/node',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalNodesComponent
+      }
+    ]
+  },
+  {
+    path: 'portal/kubernetes/node/:cluster',
+    component: PortalComponent,
+    children: [
+      {
+        path: '',
+        component: PortalNodesComponent
+      }
+    ]
+  },
+  {
+    path: 'portal',
+    redirectTo: 'portal/dashboard',
+    pathMatch: 'full'
   }
 ];
 

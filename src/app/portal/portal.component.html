@@ -2,6 +2,17 @@
   <global-message></global-message>
   <diff></diff>
   <wayne-nav></wayne-nav>
-  <router-outlet></router-outlet>
+  <div class="content-container">
+    <div class="content-area">
+      <wayne-breadcrumb></wayne-breadcrumb>
+      <router-outlet></router-outlet>
+    </div>
+    <ng-container [ngSwitch]="getSidenavType()">
+      <wayne-dashboard-sidenav *ngSwitchCase="'dashboard'" style="display: flex; order: -1"></wayne-dashboard-sidenav>
+      <wayne-sidenav-namespace *ngSwitchCase="'namespace'" style="display: flex; order: -1"></wayne-sidenav-namespace>
+      <wayne-sidenav *ngSwitchCase="'app'" style="display: flex; order: -1"></wayne-sidenav>
+    </ng-container>
+  </div>
 </clr-main-container>
 <confiramtion-dialog style="display: flex"></confiramtion-dialog>
+<wayne-ace-editor></wayne-ace-editor>

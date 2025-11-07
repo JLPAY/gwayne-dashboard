@@ -46,14 +46,19 @@ export class NavComponent implements OnInit, OnDestroy {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.currentLang = event.lang;
     });
-    this.namespace = this.cacheService.currentNamespace;
+    // Use namespace property directly instead of getter to avoid error messages
+    this.namespace = this.cacheService.namespace;
     const nid = this.route.snapshot.params['nid'];
-    if (this.cacheService.currentNamespace && parseInt(nid, 10) !== this.cacheService.namespaceId) {
-      this.hackNavigateReload(`/portal/namespace/${this.cacheService.namespaceId}/app`);
-    } else {
-      this.authService.setNamespacePermissionById(nid);
+    // Only set namespace permission if nid is valid and not undefined
+    if (nid && !isNaN(parseInt(nid, 10))) {
+      const currentNamespaceId = this.cacheService.namespace ? this.cacheService.namespace.id : null;
+      if (this.cacheService.namespace && parseInt(nid, 10) !== currentNamespaceId) {
+        this.hackNavigateReload(`/portal/namespace/${currentNamespaceId}/app`);
+      } else {
+        this.authService.setNamespacePermissionById(parseInt(nid, 10));
+      }
     }
-    this.pullNotification();
+    // Removed pullNotification() call to avoid API request
   }
 
   getTitle() {
@@ -99,18 +104,19 @@ export class NavComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/sign-in');
   }
 
-  pullNotification() {
-    this.notificationService.subscribe(this.pageState).subscribe(
-      response => {
-        this.notificationLogs = response.data;
-        this.mind = false;
-        for (const n of this.notificationLogs) {
-          this.mind = this.mind || !n.is_readed;
-        }
-      },
-      error => this.messageHandlerService.handleError(error)
-    );
-  }
+  // Removed pullNotification() method to avoid API request to /api/v1/notifications/subscribe
+  // pullNotification() {
+  //   this.notificationService.subscribe(this.pageState).subscribe(
+  //     response => {
+  //       this.notificationLogs = response.data;
+  //       this.mind = false;
+  //       for (const n of this.notificationLogs) {
+  //         this.mind = this.mind || !n.is_readed;
+  //       }
+  //     },
+  //     error => this.messageHandlerService.handleError(error)
+  //   );
+  // }
 
   showNotification(notificationlog: NotificationLog) {
     this.notification = notificationlog.notification;
@@ -124,7 +130,7 @@ export class NavComponent implements OnInit, OnDestroy {
 
   closeNotification() {
     this.notificationModal = false;
-    this.pullNotification();
+    // Removed pullNotification() call to avoid API request
   }
 
 }

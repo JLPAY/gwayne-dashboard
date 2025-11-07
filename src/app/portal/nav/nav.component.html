@@ -1,6 +1,6 @@
 <header style="background-color: #1D2143" class="header">
   <div class="branding" style="min-width: auto">
-    <a routerLink="/portal/namespace/{{cacheService.currentNamespace?.id}}/app" class="nav-link">
+    <a [routerLink]="cacheService.namespace ? '/portal/namespace/' + cacheService.namespace.id + '/app' : '/portal/dashboard'" class="nav-link">
       <img src="assets/images/wayne-logo.svg" width="60px" alt="">
       <span class="title">{{getTitle()}}</span>
     </a>
@@ -32,9 +32,9 @@
         </ng-container>
       </wayne-dropdown-item>
     </wayne-dropdown>
-    <wayne-dropdown [size]="authService.currentUser?.namespaces.length > 10 ? 'middle' : 'small'">
+    <wayne-dropdown [size]="authService.currentUser?.namespaces && authService.currentUser.namespaces.length > 10 ? 'middle' : 'small'" *ngIf="authService.currentUser?.namespaces && authService.currentUser.namespaces.length > 0">
       <clr-icon shape="organization" style="margin-right: 5px"></clr-icon>
-      {{cacheService.currentNamespace?.name}}
+      {{cacheService.namespace?.name || '请选择命名空间'}}
       <clr-icon shape="caret down" size="12" style="margin-left: 5px;"></clr-icon>
       <wayne-dropdown-item [title]="authService.currentUser?.namespaces.length > 10 ? '部门' : ''">
         <span style="white-space: nowrap;" *ngFor="let n of authService.currentUser?.namespaces"

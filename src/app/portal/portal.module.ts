@@ -32,6 +32,22 @@ import { TplDetailModule } from '../shared/tpl-detail/tpl-detail.module';
 import { MarkdownModule } from 'ngx-markdown';
 import { LibraryPortalModule } from '../../../lib/portal/library-portal.module';
 import { AutoscaleModule } from './autoscale/autoscale.module';
+import { PortalKubePodModule } from './kubernetes/pod/kube-pod.module';
+import { PortalKubeDeploymentModule } from './kubernetes/deployment/kube-deployment.module';
+import { PortalKubeIngressModule } from './kubernetes/ingress/kube-ingress.module';
+import { PortalKubeConfigmapModule } from './kubernetes/configmap/kube-configmap.module';
+import { PortalKubeJobModule } from './kubernetes/job/kube-job.module';
+import { PortalKubeCronjobModule } from './kubernetes/cronjob/kube-cronjob.module';
+import { PortalKubeServiceModule } from './kubernetes/service/kube-service.module';
+import { PortalKubeHpaModule } from './kubernetes/hpa/kube-hpa.module';
+import { PortalKubeSecretModule } from './kubernetes/secret/kube-secret.module';
+import { PortalKubeStatefulsetModule } from './kubernetes/statefulset/kube-statefulset.module';
+import { PortalKubeDaemonsetModule } from './kubernetes/daemonset/kube-daemonset.module';
+import { PortalKubeNamespaceModule } from './kubernetes/namespace/kube-namespace.module';
+import { PortalNodesModule } from './kubernetes/node/nodes.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { SidenavModule } from './sidenav/sidenav.module';
+import { SidenavNamespaceModule } from './sidenav-namespace/sidenav-namespace.module';
 
 @NgModule({
   imports: [
@@ -59,6 +75,22 @@ import { AutoscaleModule } from './autoscale/autoscale.module';
     LibraryPortalModule,
     IngressModule,
     AutoscaleModule,
+    PortalKubePodModule,
+    PortalKubeDeploymentModule,
+    PortalKubeIngressModule,
+    PortalKubeConfigmapModule,
+    PortalKubeJobModule,
+    PortalKubeCronjobModule,
+    PortalKubeServiceModule,
+    PortalKubeHpaModule,
+    PortalKubeSecretModule,
+    PortalKubeStatefulsetModule,
+    PortalKubeDaemonsetModule,
+    PortalKubeNamespaceModule,
+    PortalNodesModule,
+    DashboardModule,
+    SidenavModule,
+    SidenavNamespaceModule,
     MarkdownModule.forRoot(),
   ],
   providers: [

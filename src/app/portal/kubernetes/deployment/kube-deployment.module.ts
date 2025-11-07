@@ -1,0 +1,31 @@
+import { NgModule } from '@angular/core';
+import { SharedModule } from '../../../shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { PortalKubeDeploymentComponent } from './kube-deployment.component';
+import { KubernetesClient } from '../../../shared/client/v1/kubernetes/kubernetes';
+import { DeletionDialogModule } from '../../../shared/deletion-dialog/deletion-dialog.module';
+import { MigrationComponent } from './migration/migration.component';
+import { ListDeploymentComponent } from './list-deployment/list-deployment.component';
+import { ScaleDialogComponent } from './scale-dialog/scale-dialog.component';
+
+@NgModule({
+  imports: [
+    SharedModule,
+    ReactiveFormsModule,
+    DeletionDialogModule
+  ],
+  providers: [
+    KubernetesClient
+  ],
+  exports: [],
+  declarations: [
+    PortalKubeDeploymentComponent,
+    ListDeploymentComponent,
+    MigrationComponent,
+    ScaleDialogComponent
+  ]
+})
+
+export class PortalKubeDeploymentModule {
+}
+

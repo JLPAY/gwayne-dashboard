@@ -56,6 +56,7 @@ import { SearchSectionComponent } from './tabs/search-section/search-section.com
 import { CollapseModule } from './collapse/collapse.module';
 import { ModalComponent } from './modal/modal.component';
 import { ModalService } from './modal/modal.service';
+import { FooterModule } from './footer/footer.module';
 
 @NgModule({
   imports: [
@@ -68,7 +69,8 @@ import { ModalService } from './modal/modal.service';
     HttpClientModule,
     EchartsModule,
     ClarityModule,
-    CollapseModule
+    CollapseModule,
+    FooterModule
   ],
   declarations: [
     PageNotFoundComponent,
@@ -110,6 +112,7 @@ import { ModalService } from './modal/modal.service';
     FormsModule,
     EchartsModule,
     ClarityModule,
+    RouterModule,
     UnauthorizedComponent,
     PageNotFoundComponent,
     MessageComponent,
@@ -143,7 +146,8 @@ import { ModalService } from './modal/modal.service';
     ListPodComponent,
     ListEventComponent,
     SearchSectionComponent,
-    CollapseModule
+    CollapseModule,
+    FooterModule
   ],
   providers: [
     SideNavService,

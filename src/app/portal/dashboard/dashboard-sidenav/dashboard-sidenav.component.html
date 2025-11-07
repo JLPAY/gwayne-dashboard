@@ -1,0 +1,161 @@
+<clr-vertical-nav [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapsed">
+  <a
+    clrVerticalNavLink
+    title="首页"
+    routerLink="/portal/dashboard"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="home"></clr-icon>
+    首页
+  </a>
+  <a
+    clrVerticalNavLink
+    title="Node"
+    routerLink="/portal/kubernetes/node"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="host"></clr-icon>
+    节点
+  </a>
+  <a
+    clrVerticalNavLink
+    title="Namespace"
+    routerLink="/portal/kubernetes/namespace"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="folder"></clr-icon>
+    命名空间
+  </a>
+  <div class="nav-divider"></div>
+  <a
+    clrVerticalNavLink
+    title="Deployment"
+    routerLink="/portal/kubernetes/deployment"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="event"></clr-icon>
+    Deployment
+  </a>
+  <a
+    clrVerticalNavLink
+    title="StatefulSet"
+    routerLink="/portal/kubernetes/statefulset"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="layers"></clr-icon>
+    StatefulSet
+  </a>
+  <a
+    clrVerticalNavLink
+    title="DaemonSet"
+    routerLink="/portal/kubernetes/daemonset"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="host"></clr-icon>
+    DaemonSet
+  </a>
+  <div class="nav-divider"></div>
+  
+  <a
+    clrVerticalNavLink
+    title="Pod"
+    routerLink="/portal/kubernetes/pod"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="container"></clr-icon>
+    Pod
+  </a>
+  <a
+    clrVerticalNavLink
+    title="Job"
+    routerLink="/portal/kubernetes/job"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="tasks"></clr-icon>
+    Job
+  </a>
+  <a
+    clrVerticalNavLink
+    title="CronJob"
+    routerLink="/portal/kubernetes/cronjob"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="clock"></clr-icon>
+    CronJob
+  </a>
+  <div class="nav-divider"></div>
+  <a
+    clrVerticalNavLink
+    title="ConfigMap"
+    routerLink="/portal/kubernetes/configmap"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="file-settings"></clr-icon>
+    ConfigMap
+  </a>
+  <a
+    clrVerticalNavLink
+    title="Secret"
+    routerLink="/portal/kubernetes/secret"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="lock"></clr-icon>
+    Secret
+  </a>
+  <a
+    clrVerticalNavLink
+    title="Service"
+    routerLink="/portal/kubernetes/service"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="network-globe"></clr-icon>
+    Service
+  </a>
+  
+  <a
+    clrVerticalNavLink
+    title="Ingress"
+    routerLink="/portal/kubernetes/ingress"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="network-switch"></clr-icon>
+    Ingress
+  </a>
+  <a
+    clrVerticalNavLink
+    title="HPA"
+    routerLink="/portal/kubernetes/hpa"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="bar-chart"></clr-icon>
+    HPA
+  </a>
+  
+  
+  <div class="nav-divider" *ngIf="hasNamespace"></div>
+  <a
+    clrVerticalNavLink
+    [title]="'MENU.DEPARTMENT' | translate"
+    [routerLink]="getNamespaceRoute('/overview')"
+    routerLinkActive="active"
+    *ngIf="hasNamespace">
+    <clr-icon clrVerticalNavIcon shape="help-info"></clr-icon>
+    {{'MENU.DEPARTMENT' | translate}}
+  </a>
+  <a
+    clrVerticalNavLink
+    title="APIKeys"
+    [routerLink]="getNamespaceRoute('/apikey')"
+    routerLinkActive="active"
+    *ngIf="hasNamespace && (this.authService.config && this.authService.config['enableApiKeys'] && (authService.currentNamespacePermission && authService.currentNamespacePermission.apiKey && authService.currentNamespacePermission.apiKey.read) || authService.currentUser && authService.currentUser.admin)">
+    <clr-icon clrVerticalNavIcon shape="key"></clr-icon>
+    APIKeys
+  </a>
+  <a
+    clrVerticalNavLink
+    title="Webhooks"
+    [routerLink]="getNamespaceRoute('/webhook')"
+    routerLinkActive="active"
+    *ngIf="hasNamespace && (authService.currentNamespacePermission && authService.currentNamespacePermission.webHook && authService.currentNamespacePermission.webHook.read || authService.currentUser && authService.currentUser.admin)">
+    <clr-icon clrVerticalNavIcon shape="pin"></clr-icon>
+    Webhooks
+  </a>
+  <a
+    clrVerticalNavLink
+    [title]="'MENU.MEMBER' | translate"
+    [routerLink]="getNamespaceRoute('/users')"
+    routerLinkActive="active"
+    *ngIf="hasNamespace && (authService.currentNamespacePermission && authService.currentNamespacePermission.namespaceUser && authService.currentNamespacePermission.namespaceUser.read || authService.currentUser && authService.currentUser.admin)">
+    <clr-icon clrVerticalNavIcon shape="user"></clr-icon>
+    {{'MENU.MEMBER' | translate}}
+  </a>
+  <a href="javascript:;" style="flex: 1;"></a>
+  <wayne-footer></wayne-footer>
+</clr-vertical-nav>
+

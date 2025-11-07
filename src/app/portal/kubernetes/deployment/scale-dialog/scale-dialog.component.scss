@@ -1,0 +1,43 @@
+.modal-body {
+  padding: 1rem;
+  min-width: 260px;
+}
+
+.modal-title {
+  white-space: nowrap;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+clr-input-container {
+  margin-bottom: 0;
+}
+
+clr-input-container label {
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+input[type="number"] {
+  width: 120px;
+  min-width: 120px;
+  font-size: 1.1rem;
+  padding: 0.5rem;
+}
+
+.modal-footer {
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.modal-footer .btn {
+  white-space: nowrap;
+  min-width: 80px;
+}
+

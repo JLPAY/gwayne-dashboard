@@ -1,0 +1,36 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { KubernetesListResource } from '../../../../shared/base/kubernetes-namespaced/kubernetes-list-resource';
+import { TplDetailService } from '../../../../shared/tpl-detail/tpl-detail.service';
+import { AuthService } from '../../../../shared/auth/auth.service';
+
+@Component({
+  selector: 'wayne-portal-list-job',
+  templateUrl: './list-job.component.html'
+})
+
+export class ListJobComponent extends KubernetesListResource {
+  @Input() resources: any[];
+  @Input() showState: object;
+
+  @Output() view = new EventEmitter<any>();
+
+  constructor(public tplDetailService: TplDetailService,
+              public authService: AuthService) {
+    super(tplDetailService);
+  }
+
+  isReady(obj: any): boolean {
+    const readyNumber = obj.status.succeeded ? obj.status.succeeded : 0;
+    const desiredNumber = obj.spec.completions;
+    if (!desiredNumber && readyNumber > 0) {
+      return true;
+    }
+    return readyNumber === desiredNumber;
+  }
+
+  onViewEvent(obj: any) {
+    this.view.emit(obj);
+  }
+
+}
+

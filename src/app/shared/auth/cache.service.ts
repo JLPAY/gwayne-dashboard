@@ -31,7 +31,8 @@ export class CacheService {
     if (this.namespace) {
       return this.namespace;
     } else {
-      this.messageHandlerService.error('当前用户无任何命名空间权限，请联系管理员添加！');
+      // Return null instead of showing error, as dashboard page may not have namespace
+      return null;
     }
   }
 
@@ -39,12 +40,16 @@ export class CacheService {
     if (this.namespace) {
       return this.namespace.id;
     } else {
-      this.messageHandlerService.error('当前用户无任何命名空间权限，请联系管理员添加！');
+      // Return null instead of showing error, as dashboard page may not have namespace
+      return null;
     }
   }
 
   get kubeNamespace(): string {
-    return this.namespace.kubeNamespace;
+    if (this.namespace) {
+      return this.namespace.kubeNamespace;
+    }
+    return null;
   }
 
   alertError(err: string) {

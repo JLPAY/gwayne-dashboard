@@ -45,9 +45,19 @@ export class AuthService {
   }
 
   setNamespacePermissionById(id: number) {
+    // Skip API call if id is invalid
+    if (!id || isNaN(id)) {
+      return Promise.resolve();
+    }
     return this.http.get(`/api/v1/namespaces/${id}/users/permissions/${id}`).toPromise().then((response: any) => {
       this.currentNamespacePermission = response.data;
-    }).catch(error => this.handleError(error));
+    }).catch(error => {
+      // Silently handle 404 errors for dashboard page
+      if (error.status !== 404) {
+        this.handleError(error);
+      }
+      return Promise.resolve();
+    });
   }
 
   setAppPermissionById(id: number) {
