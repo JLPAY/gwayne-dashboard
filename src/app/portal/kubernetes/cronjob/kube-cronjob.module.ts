@@ -27,3 +27,4 @@ import { ListCronjobComponent } from './list-cronjob/list-cronjob.component';
 export class PortalKubeCronjobModule {
 }
 
+

@@ -27,3 +27,4 @@ import { ListDaemonsetComponent } from './list-daemonset/list-daemonset.componen
 export class PortalKubeDaemonsetModule {
 }
 
+

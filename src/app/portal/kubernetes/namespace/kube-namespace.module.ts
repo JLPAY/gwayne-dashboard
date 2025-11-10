@@ -25,3 +25,4 @@ import { ListNamespaceComponent } from './list-namespace/list-namespace.componen
 export class PortalKubeNamespaceModule {
 }
 
+

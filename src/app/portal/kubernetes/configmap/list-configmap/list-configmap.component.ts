@@ -30,3 +30,4 @@ export class ListConfigmapComponent extends KubernetesListResource {
   }
 }
 
+

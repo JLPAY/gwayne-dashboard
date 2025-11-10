@@ -27,3 +27,4 @@ import { ListHpaComponent } from './list-hpa/list-hpa.component';
 export class PortalKubeHpaModule {
 }
 
+

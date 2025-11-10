@@ -39,3 +39,4 @@ export class ListDaemonsetComponent extends KubernetesListResource {
   }
 }
 
+

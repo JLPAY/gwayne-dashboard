@@ -25,3 +25,4 @@ import { ListJobComponent } from './list-job/list-job.component';
 export class PortalKubeJobModule {
 }
 
+

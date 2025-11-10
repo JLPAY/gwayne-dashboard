@@ -27,3 +27,4 @@ import { ListSecretComponent } from './list-secret/list-secret.component';
 export class PortalKubeSecretModule {
 }
 
+

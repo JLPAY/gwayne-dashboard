@@ -66,3 +66,4 @@ export class PortalKubeNamespaceComponent extends KubernetesUnNamespacedResource
 
 }
 
+

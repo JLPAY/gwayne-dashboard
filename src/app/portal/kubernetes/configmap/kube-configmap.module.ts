@@ -27,3 +27,4 @@ import { ListConfigmapComponent } from './list-configmap/list-configmap.componen
 export class PortalKubeConfigmapModule {
 }
 
+

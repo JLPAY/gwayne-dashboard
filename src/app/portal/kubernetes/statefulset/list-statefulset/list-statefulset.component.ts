@@ -39,3 +39,4 @@ export class ListStatefulsetComponent extends KubernetesListResource {
   }
 }
 
+

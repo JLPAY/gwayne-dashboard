@@ -75,3 +75,4 @@ export class PortalKubeConfigmapComponent extends KubernetesNamespacedResource i
 
 }
 
+

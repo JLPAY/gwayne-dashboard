@@ -80,3 +80,4 @@ export class PortalKubeHpaComponent extends KubernetesNamespacedResource impleme
 
 }
 
+

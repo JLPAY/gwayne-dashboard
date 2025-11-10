@@ -24,3 +24,4 @@ export class ListNamespaceComponent extends KubernetesListResource {
   }
 }
 
+

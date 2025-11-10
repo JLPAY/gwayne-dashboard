@@ -27,3 +27,4 @@ import { ListStatefulsetComponent } from './list-statefulset/list-statefulset.co
 export class PortalKubeStatefulsetModule {
 }
 
+
