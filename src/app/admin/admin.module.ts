@@ -71,6 +71,7 @@ import { KubeCrdModule } from './kubernetes/crd/kube-crd.module';
 import { KubeEventModule } from './kubernetes/event/kube-event.module';
 import { RoadMapModule } from './roadmap/roadmap.module';
 import { CustomlinkModule } from './customlink/customlink.module';
+import { K8sGPTModule } from './k8sgpt/k8sgpt.module';
 
 @NgModule({
   imports: [
@@ -136,7 +137,8 @@ import { CustomlinkModule } from './customlink/customlink.module';
     KubeCrdModule,
     KubeEventModule,
     RoadMapModule,
-    CustomlinkModule
+    CustomlinkModule,
+    K8sGPTModule
   ],
   providers: [
     AdminAuthCheckGuard,

@@ -26,6 +26,7 @@
       [pageState]="pageState"
       (delete)="onDeleteResourceEvent($event)"
       (edit)="onEditResourceEvent($event)"
+      (diagnose)="diagnoseEvent($event)"
       [page]="pageState.page"
       [cluster]="cluster"
       (paginate)="retrieveResource($event)">
@@ -34,6 +35,27 @@
 </div>
 <deletion-dialog (outputObj)="confirmDeleteEvent($event)"></deletion-dialog>
 <wayne-ace-editor (createOutputObj)="onCreateResourceEvent($event)" (outputObj)="onSaveResourceEvent($event)"></wayne-ace-editor>
+
+<!-- K8sGPT 诊断结果模态框 -->
+<clr-modal [(clrModalOpen)]="diagnoseModalOpened" [clrModalSize]="'lg'">
+  <h3 class="modal-title">AI 诊断结果 - 事件</h3>
+  <div class="modal-body">
+    <div *ngIf="currentDiagnoseEvent" class="event-info" style="margin-bottom: 1rem; padding: 0.75rem; background: #f5f5f5; border-radius: 4px;">
+      <div><strong>事件名称:</strong> {{currentDiagnoseEvent.metadata.name}}</div>
+      <div><strong>事件类型:</strong> {{currentDiagnoseEvent.type}}</div>
+      <div><strong>原因:</strong> {{currentDiagnoseEvent.reason || '-'}}</div>
+      <div><strong>消息:</strong> {{currentDiagnoseEvent.message || '-'}}</div>
+    </div>
+    <wayne-k8sgpt-diagnose-result 
+      [diagnoseResponse]="diagnoseResponse" 
+      [loading]="diagnosing"
+      [cluster]="cluster">
+    </wayne-k8sgpt-diagnose-result>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="closeDiagnoseModal()">关闭</button>
+  </div>
+</clr-modal>
 <wayne-float-window value="{{ cluster }}">
   <wayne-float-window-item *ngFor="let cluster of clusters" [value]="cluster"
                            (click)="jumpToHref(cluster)"></wayne-float-window-item>

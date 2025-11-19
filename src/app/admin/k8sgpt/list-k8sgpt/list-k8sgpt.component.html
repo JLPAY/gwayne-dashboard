@@ -1,0 +1,47 @@
+<clr-datagrid class="wayne-clr-datagrid" [clrDgLoading]="loading">
+  <clr-dg-column [clrDgField]="'name'">
+    <ng-container *clrDgHideableColumn="{hidden: false}">名称</ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">模型</ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">API URL</ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">温度参数</ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">状态</ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">默认引擎</ng-container>
+  </clr-dg-column>
+
+  <clr-dg-row *ngFor="let provider of providers" [clrDgItem]="provider">
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="editProvider(provider)">编辑</button>
+      <button class="action-item" (click)="setDefaultProvider(provider)" *ngIf="!provider.isDefault">设为默认</button>
+      <button class="action-item" (click)="deleteProvider(provider)">删除</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{provider.name}}</clr-dg-cell>
+    <clr-dg-cell>{{provider.model || '-'}}</clr-dg-cell>
+    <clr-dg-cell>{{provider.baseurl || '-'}}</clr-dg-cell>
+    <clr-dg-cell>{{provider.temperature !== undefined ? provider.temperature : '-'}}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="badge badge-success" *ngIf="provider.enabled !== false">启用</span>
+      <span class="badge badge-danger" *ngIf="provider.enabled === false">禁用</span>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <clr-icon shape="check" class="is-success" *ngIf="provider.isDefault"></clr-icon>
+      <span *ngIf="!provider.isDefault">-</span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer *ngIf="providers.length === 0 && !loading">
+    <div class="empty-state">
+      <p>暂无 AI 引擎配置</p>
+    </div>
+  </clr-dg-footer>
+</clr-datagrid>
+

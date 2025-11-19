@@ -1,0 +1,23 @@
+<div class="clr-row">
+  <div class="clr-col-lg-12 clr-col-md-12 clr-col-sm-12 clr-col-xs-12">
+    <div class="table-search">
+      <div class="table-search-left">
+        <button class="wayne-button normal" (click)="retrieve()">
+          刷新
+        </button>
+        <button class="wayne-button normal" (click)="createAIProvider()" *ngIf="authService.currentUser && authService.currentUser.admin">
+          添加 AI 引擎
+        </button>
+      </div>
+    </div>
+
+    <list-k8sgpt
+      (refresh)="retrieve()"
+      (edit)="editAIProvider($event)"
+      (delete)="deleteAIProvider($event)"
+      (setDefault)="setDefaultAIProvider($event)">
+    </list-k8sgpt>
+  </div>
+</div>
+<create-edit-k8sgpt (refresh)="retrieve()"></create-edit-k8sgpt>
+

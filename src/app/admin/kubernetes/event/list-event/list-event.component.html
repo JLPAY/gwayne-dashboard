@@ -42,6 +42,7 @@
 
   <clr-dg-row *ngFor="let obj of resources" [clrDgItem]="obj">
     <clr-dg-action-overflow>
+      <button class="action-item" (click)="diagnoseEvent(obj)" *ngIf="isWarningOrAbove(obj)">AI 诊断</button>
       <button class="action-item" (click)="onEditEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.EDIT' | translate}}</button>
       <button class="action-item" (click)="onDeleteEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.DELETE' | translate}}</button>
     </clr-dg-action-overflow>

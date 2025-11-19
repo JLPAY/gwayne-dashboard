@@ -53,6 +53,7 @@ export class ListNodesComponent implements OnInit {
   @Output() isolate = new EventEmitter<Node>();
   @Output() unisolate = new EventEmitter<Node>();
   @Output() drain = new EventEmitter<Node>();
+  @Output() diagnose = new EventEmitter<Node>();
   pageSizes: number[] = new Array(10, 20, 50);
 
   constructor(private storage: StorageService) {
@@ -106,6 +107,10 @@ export class ListNodesComponent implements OnInit {
 
   drainNode(node: Node) {
     this.drain.emit(node);
+  }
+
+  diagnoseNode(node: Node) {
+    this.diagnose.emit(node);
   }
 
 }

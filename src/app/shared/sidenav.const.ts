@@ -60,6 +60,7 @@ const adminSideNav: any[] = [
   {
     type: SideNavType.GroupLink, icon: { title: 'MENU.CONFIGURATION', shape: 'cog' }, text: 'MENU.CONFIGURATION', child: [
       { a: { link: 'config/system', text: 'MENU.SYSTEM_CONFIGURATION', options: { exact: true } } },
+      { a: { link: 'k8sgpt', text: 'AI 引擎管理', options: { exact: true }, icon: { shape: 'cpu', solid: false } } },
     ]
   },
   {

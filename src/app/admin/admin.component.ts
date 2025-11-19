@@ -211,6 +211,9 @@ export class AdminComponent implements OnInit {
     '/admin/kubernetes/deployment': {
       i18nKey: 'MENU.DEPLOYMENT',
     },
+    '/admin/k8sgpt': {
+      i18nKey: 'AI 引擎管理',
+    },
   };
 
   constructor(

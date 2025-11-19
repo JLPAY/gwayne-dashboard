@@ -14,6 +14,8 @@ import { NodeClient } from '../../../shared/client/v1/kubernetes/node';
 import { Inventory } from './list-nodes/inventory';
 import { KubeNode, NodeSummary } from '../../../shared/model/v1/kubernetes/node';
 import { AceEditorComponent } from '../../../shared/ace-editor/ace-editor.component';
+import { K8sGPTService } from '../../../shared/client/v1/k8sgpt.service';
+import { DiagnoseRequest, DiagnoseResponse } from '../../../shared/model/v1/k8sgpt';
 const showState = {
   'name': {hidden: false},
   'label': {hidden: false},
@@ -58,6 +60,10 @@ export class NodesComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
+  diagnoseResponse: DiagnoseResponse;
+  diagnoseModalOpened: boolean = false;
+  diagnosing: boolean = false;
+
   constructor(private nodeClient: NodeClient,
               private route: ActivatedRoute,
               private inventory: Inventory,
@@ -65,7 +71,8 @@ export class NodesComponent implements OnInit, OnDestroy {
               private clusterService: ClusterService,
               private authService: AuthService,
               private messageHandlerService: MessageHandlerService,
-              private deletionDialogService: ConfirmationDialogService) {
+              private deletionDialogService: ConfirmationDialogService,
+              private k8sgptService: K8sGPTService) {
     this.subscription = deletionDialogService.confirmationConfirm$.subscribe(message => {
       if (message &&
         message.state === ConfirmationState.CONFIRMED &&
@@ -271,6 +278,98 @@ export class NodesComponent implements OnInit, OnDestroy {
 
   drainNode(node: Node) {
     this.drainModal.openModal(node, this.cluster);
+  }
+
+  diagnoseAllNodes() {
+    // 检查集群信息
+    if (!this.cluster) {
+      this.messageHandlerService.showError('请先选择集群');
+      return;
+    }
+
+    this.diagnoseModalOpened = true;
+    this.diagnosing = true;
+    this.diagnoseResponse = null;
+
+    console.log('开始诊断所有节点:', { cluster: this.cluster });
+
+    // 使用通用诊断接口，诊断所有节点（不指定节点名称）
+    const diagnoseRequest: DiagnoseRequest = {
+      cluster: this.cluster,
+      resourceType: 'Node',
+      filters: ['Node'],
+      explain: true,
+      language: '中文'
+    };
+
+    this.k8sgptService.diagnose(diagnoseRequest).subscribe(
+      response => {
+        console.log('诊断响应:', response);
+        // 兼容不同的响应格式
+        if (response && response.data) {
+          this.diagnoseResponse = response.data;
+        } else if (response) {
+          this.diagnoseResponse = response;
+        } else {
+          this.diagnoseResponse = null;
+          this.messageHandlerService.showError('诊断响应格式错误');
+        }
+        this.diagnosing = false;
+      },
+      error => {
+        console.error('诊断节点失败:', error);
+        console.error('错误详情:', {
+          status: error && error.status,
+          statusText: error && error.statusText,
+          error: error && error.error,
+          message: error && error.message,
+          cluster: this.cluster
+        });
+        
+        // 解析错误信息
+        let errorMessage = '诊断失败';
+        if (error && error.error) {
+          if (typeof error.error === 'string') {
+            errorMessage = error.error;
+          } else if (error.error.message) {
+            errorMessage = error.error.message;
+          } else if (error.error.error) {
+            errorMessage = error.error.error;
+          }
+        } else if (error && error.message) {
+          errorMessage = error.message;
+        }
+
+        // 针对特定的后端配置错误提供友好提示
+        const lowerErrorMessage = errorMessage.toLowerCase();
+        if (lowerErrorMessage.includes('no configuration has been provided') || 
+            lowerErrorMessage.includes('kubernetes_master') ||
+            lowerErrorMessage.includes('invalid configuration')) {
+          errorMessage = `K8sGPT 服务未正确配置 Kubernetes 客户端。\n` +
+                        `集群: ${this.cluster}\n` +
+                        `请检查后端 K8sGPT 服务是否正确配置了集群 "${this.cluster}" 的 Kubernetes 连接信息。`;
+        } else if (lowerErrorMessage.includes('failed to create analysis') || 
+                   lowerErrorMessage.includes('initialising kubernetes client') ||
+                   lowerErrorMessage.includes('failed to build k8sgpt client')) {
+          errorMessage = `无法初始化 Kubernetes 客户端。\n` +
+                        `集群: ${this.cluster}\n` +
+                        `请检查后端 K8sGPT 配置，确保集群 "${this.cluster}" 的 Kubernetes 配置正确。`;
+        } else if (error && error.status === 500) {
+          errorMessage = `服务器内部错误 (500)。\n` +
+                        `集群: ${this.cluster}\n` +
+                        `错误: ${errorMessage}`;
+        }
+
+        this.messageHandlerService.showError(errorMessage);
+        this.diagnoseResponse = null;
+        this.diagnosing = false;
+      }
+    );
+  }
+
+  closeDiagnoseModal() {
+    this.diagnoseModalOpened = false;
+    this.diagnoseResponse = null;
   }
 
   jumpToHref(cluster: string) {

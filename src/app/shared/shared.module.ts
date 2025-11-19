@@ -48,6 +48,9 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { DiffComponent } from './diff/diff.component';
 import { DiffService } from './diff/diff.service';
 import { ResourceLimitModule } from './component/resource-limit/resource-limit.module';
+import { K8sGPTDiagnoseResultComponent } from './k8sgpt-diagnose-result/k8sgpt-diagnose-result.component';
+import { K8sGPTService } from './client/v1/k8sgpt.service';
+import { MarkdownModule } from 'ngx-markdown';
 import { EchartsModule } from './echarts/echars.module';
 import { ListPodComponent } from './list-pod/list-pod.component';
 import { ListEventComponent } from './list-event/list-event.component';
@@ -70,7 +73,8 @@ import { FooterModule } from './footer/footer.module';
     EchartsModule,
     ClarityModule,
     CollapseModule,
-    FooterModule
+    FooterModule,
+    MarkdownModule
   ],
   declarations: [
     PageNotFoundComponent,
@@ -103,7 +107,8 @@ import { FooterModule } from './footer/footer.module';
     ListPodComponent,
     ListEventComponent,
     SearchSectionComponent,
-    ModalComponent
+    ModalComponent,
+    K8sGPTDiagnoseResultComponent
   ],
   exports: [
     BrowserAnimationsModule,
@@ -147,7 +152,8 @@ import { FooterModule } from './footer/footer.module';
     ListEventComponent,
     SearchSectionComponent,
     CollapseModule,
-    FooterModule
+    FooterModule,
+    K8sGPTDiagnoseResultComponent
   ],
   providers: [
     SideNavService,
@@ -164,7 +170,8 @@ import { FooterModule } from './footer/footer.module';
     TabDragService,
     SelectCopyService,
     DiffService,
-    ModalService
+    ModalService,
+    K8sGPTService
   ]
 })
 export class SharedModule {

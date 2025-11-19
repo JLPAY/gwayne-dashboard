@@ -173,6 +173,7 @@ export const enum ConfirmationTargets {
   TRASH_CRONJOB_TPL,
   JOB,
   API_KEY,
+  K8SGPT_AI_PROVIDER,
   WEBHOOK,
   STATEFULSET,
   TRASH_STATEFULSET,

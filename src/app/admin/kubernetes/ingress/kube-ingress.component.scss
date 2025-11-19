@@ -1,0 +1,15 @@
+.table-search {
+  .table-search-left {
+    position: relative;
+    z-index: 1;
+    
+    button:last-child {
+      // 智检按钮样式优化
+      position: relative;
+      z-index: 530; // 高于 filter-box 的 z-index: 520
+      margin-top: 2px; // 提升 2px
+      pointer-events: auto; // 确保可以点击
+    }
+  }
+}
+

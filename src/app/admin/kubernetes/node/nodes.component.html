@@ -23,6 +23,10 @@
             <wayne-checkbox value="containerRuntimeVersion">CRI版本</wayne-checkbox>
           </wayne-checkbox-group>
         </wayne-filter-box>
+        <button class="wayne-button normal" (click)="diagnoseAllNodes()" [disabled]="diagnosing">
+          <span *ngIf="!diagnosing">智检</span>
+          <span *ngIf="diagnosing">诊断中...</span>
+        </button>
       </div>
     </div>
 
@@ -41,6 +45,21 @@
 </div>
 <wayne-ace-editor (outputObj)="saveNode($event)"></wayne-ace-editor>
 <create-edit-drain (refresh)="retrieve()"></create-edit-drain>
+
+<!-- K8sGPT 诊断结果模态框 -->
+<clr-modal [(clrModalOpen)]="diagnoseModalOpened" [clrModalSize]="'lg'">
+  <h3 class="modal-title">AI 诊断结果 - 集群节点</h3>
+  <div class="modal-body">
+    <wayne-k8sgpt-diagnose-result 
+      [diagnoseResponse]="diagnoseResponse" 
+      [loading]="diagnosing"
+      [cluster]="cluster">
+    </wayne-k8sgpt-diagnose-result>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="closeDiagnoseModal()">关闭</button>
+  </div>
+</clr-modal>
 <wayne-float-window value="{{cluster}}">
   <wayne-float-window-item *ngFor="let cluster of clusters" [value]="cluster"
                            (click)="jumpToHref(cluster)"></wayne-float-window-item>

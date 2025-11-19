@@ -1,0 +1,115 @@
+<div class="k8sgpt-diagnose-result" *ngIf="diagnoseResponse || loading">
+  <div class="loading-container" *ngIf="loading">
+    <span class="spinner spinner-inline"></span>
+    <span>正在诊断中...</span>
+  </div>
+
+  <div class="diagnose-result" *ngIf="!loading && diagnoseResponse">
+    <div class="result-header">
+      <div class="status-info">
+        <span class="status-badge" [ngClass]="getStatusClass(diagnoseResponse.status)">
+          {{ getStatusText(diagnoseResponse.status) }}
+        </span>
+        <span class="problems-count" *ngIf="diagnoseResponse.problems > 0">
+          发现 {{ diagnoseResponse.problems }} 个问题
+        </span>
+        <span class="provider-info" *ngIf="diagnoseResponse.provider">
+          使用 AI 引擎: {{ diagnoseResponse.provider }}
+        </span>
+      </div>
+    </div>
+
+    <!-- 显示诊断错误信息 -->
+    <div class="errors-section" *ngIf="diagnoseResponse.status === 'Error' && diagnoseResponse.errors && diagnoseResponse.errors.length > 0" style="margin-bottom: 1rem; padding: 1rem; background: #ffebee; border-radius: 4px; border-left: 3px solid #c62828;">
+      <div class="errors-title" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #c62828;">
+        <clr-icon shape="warning" class="is-warning" size="16"></clr-icon>
+        诊断错误
+      </div>
+      <ul class="errors-list" style="margin: 0; padding-left: 1.5rem;">
+        <li *ngFor="let error of diagnoseResponse.errors" class="error-item" style="margin-bottom: 0.5rem; color: #666; line-height: 1.5;">
+          {{ error }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="results-list" *ngIf="diagnoseResponse.results && diagnoseResponse.results.length > 0">
+      <div class="result-item" *ngFor="let result of diagnoseResponse.results; let i = index">
+        <div class="result-header-item">
+          <h4 class="resource-name">
+            <clr-icon shape="resource-pool" size="16"></clr-icon>
+            {{ result.kind }}: {{ result.name }}
+          </h4>
+          <button 
+            class="btn btn-sm btn-link explain-btn" 
+            (click)="explainResult(result, i)"
+            [disabled]="isExplaining(i)">
+            <span *ngIf="!isExplaining(i)">AI 解释</span>
+            <span *ngIf="isExplaining(i)">
+              <span class="spinner spinner-inline spinner-sm"></span>
+              解释中...
+            </span>
+          </button>
+        </div>
+
+        <div class="errors-section" *ngIf="result.errors && result.errors.length > 0">
+          <div class="errors-title">
+            <clr-icon shape="warning" class="is-warning" size="16"></clr-icon>
+            错误信息 ({{ result.errors.length }})
+          </div>
+          <ul class="errors-list">
+            <li *ngFor="let error of result.errors" class="error-item">
+              {{ error }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="details-section" *ngIf="result.details">
+          <div class="details-title">
+            <clr-icon shape="info-standard" class="is-info" size="16"></clr-icon>
+            AI 分析说明
+          </div>
+          <div class="details-content">
+            <markdown [data]="result.details"></markdown>
+          </div>
+        </div>
+
+        <div class="explain-section" *ngIf="hasExplanation(i)">
+          <div class="explain-title">
+            <clr-icon shape="lightbulb" class="is-success" size="16"></clr-icon>
+            AI 解释
+          </div>
+          <div class="explain-content">
+            <markdown [data]="getExplanation(i)"></markdown>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-problems" *ngIf="diagnoseResponse.results && diagnoseResponse.results.length === 0">
+      <clr-icon shape="check-circle" class="is-success" size="48"></clr-icon>
+      <p>未发现任何问题</p>
+      <div *ngIf="eventInfo" class="event-explain-section" style="margin-top: 1.5rem;">
+        <button 
+          class="btn btn-sm btn-primary" 
+          (click)="explainEvent()"
+          [disabled]="explainingEvent">
+          <span *ngIf="!explainingEvent">AI 解释此事件</span>
+          <span *ngIf="explainingEvent">
+            <span class="spinner spinner-inline spinner-sm"></span>
+            解释中...
+          </span>
+        </button>
+        <div *ngIf="hasEventExplanation()" class="explain-section" style="margin-top: 1rem;">
+          <div class="explain-title">
+            <clr-icon shape="lightbulb" class="is-success" size="16"></clr-icon>
+            AI 解释
+          </div>
+          <div class="explain-content">
+            <markdown [data]="getEventExplanation()"></markdown>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

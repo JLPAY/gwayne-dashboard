@@ -1,0 +1,60 @@
+<clr-modal [(clrModalOpen)]="modalOpened" [clrModalSize]="'lg'">
+  <h3 class="modal-title">{{title}}</h3>
+  <div class="modal-body">
+    <form #k8sgptForm="ngForm" clrForm clrLayout="horizontal" novalidate>
+      <clr-select-container>
+        <label class="required">AI 后端类型</label>
+        <select clrSelect id="backend" name="backend" [(ngModel)]="selectedBackend" (change)="onBackendChange()" 
+                required [disabled]="isEditMode">
+          <option value="">请选择</option>
+          <option *ngFor="let backend of backends; trackBy: trackByBackendName" [value]="backend?.name">
+            {{backend?.displayName || backend?.name || '未知'}}
+          </option>
+        </select>
+      </clr-select-container>
+
+      <clr-input-container *ngIf="selectedBackend">
+        <label>模型名称</label>
+        <input clrInput type="text" id="model" name="model" [(ngModel)]="provider.model" 
+               placeholder="例如: gpt-4, gpt-3.5-turbo">
+      </clr-input-container>
+
+      <clr-password-container>
+        <label class="required">API 密钥</label>
+        <input clrPassword type="password" id="password" name="password" [(ngModel)]="provider.password" 
+               placeholder="请输入 API 密钥" required>
+      </clr-password-container>
+
+      <clr-input-container>
+        <label>API 基础 URL</label>
+        <input clrInput type="text" id="baseurl" name="baseurl" [(ngModel)]="provider.baseurl" 
+               placeholder="例如: https://api.openai.com/v1">
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>温度参数 (0-1)</label>
+        <input clrInput type="number" id="temperature" name="temperature" [(ngModel)]="provider.temperature" 
+               min="0" max="1" step="0.1" placeholder="0.7">
+      </clr-input-container>
+
+      <clr-input-container *ngIf="selectedBackend === 'azureopenai' || selectedBackend === 'amazonbedrock'">
+        <label>区域</label>
+        <input clrInput type="text" id="providerregion" name="providerregion" [(ngModel)]="provider.providerregion" 
+               placeholder="例如: eastus, us-east-1">
+      </clr-input-container>
+
+      <clr-checkbox-container>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox [(ngModel)]="provider.enabled" name="enabled" 
+                 [checked]="provider.enabled !== false">
+          <label>启用此 AI 引擎</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="onCancel()">取消</button>
+    <button type="button" class="btn btn-primary" [disabled]="isSubmitOnGoing || !k8sgptForm.valid" (click)="onSubmit()">提交</button>
+  </div>
+</clr-modal>
+
