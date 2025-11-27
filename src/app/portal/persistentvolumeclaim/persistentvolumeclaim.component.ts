@@ -6,7 +6,6 @@ import { combineLatest } from 'rxjs';
 import { AppService } from '../../shared/client/v1/app.service';
 import { App } from '../../shared/model/v1/app';
 import { CacheService } from '../../shared/auth/cache.service';
-import { PublishHistoryService } from '../common/publish-history/publish-history.service';
 import { AuthService } from '../../shared/auth/auth.service';
 import { ListPersistentVolumeClaimComponent } from './list-persistentvolumeclaim/list-persistentvolumeclaim.component';
 import { CreateEditPersistentVolumeClaimComponent } from './create-edit-persistentvolumeclaim/create-edit-persistentvolumeclaim.component';
@@ -48,7 +47,6 @@ export class PersistentVolumeClaimComponent implements OnInit, OnDestroy {
               private router: Router,
               private publishService: PublishService,
               private deletionDialogService: ConfirmationDialogService,
-              private publishHistoryService: PublishHistoryService,
               public cacheService: CacheService,
               private appService: AppService,
               private pvcClient: PersistentVolumeClaimClient,
@@ -208,9 +206,6 @@ export class PersistentVolumeClaimComponent implements OnInit, OnDestroy {
   }
 
 
-  publishHistory() {
-    this.publishHistoryService.openModal(PublishType.PERSISTENT_VOLUME_CLAIM, this.pvcId);
-  }
 
   tabClick(id: number) {
     if (id) {

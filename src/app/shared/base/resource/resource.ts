@@ -1,4 +1,3 @@
-import { PublishHistoryService } from '../../../portal/common/publish-history/publish-history.service';
 import { TabDragService } from '../../client/v1/tab-drag.service';
 import { OrderItem } from '../../model/v1/order';
 import { Subscription } from 'rxjs/Subscription';
@@ -66,7 +65,6 @@ export class Resource {
   constructor(public resourceService: any,
               public templateService: any,
               public kubernetesClient: KubernetesClient,
-              public publishHistoryService: PublishHistoryService,
               public route: ActivatedRoute,
               public router: Router,
               public publishService: PublishService,
@@ -173,10 +171,6 @@ export class Resource {
     });
   }
 
-  // 展示发布历史
-  listPublishHistory() {
-    this.publishHistoryService.openModal(this.publishType, this.resourceId);
-  }
 
   // 创建操作执行后重新加载数据
   reloadAfterCreate(id: number) {

@@ -23,7 +23,6 @@ import { Secret } from '../../shared/model/v1/secret';
 import { SecretTpl } from '../../shared/model/v1/secrettpl';
 import { App } from '../../shared/model/v1/app';
 import { CacheService } from '../../shared/auth/cache.service';
-import { PublishHistoryService } from '../common/publish-history/publish-history.service';
 import { AuthService } from '../../shared/auth/auth.service';
 import { PublishService } from '../../shared/client/v1/publish.service';
 import { PublishStatus } from '../../shared/model/v1/publish-status';
@@ -78,7 +77,6 @@ export class SecretComponent implements AfterContentInit, OnDestroy, OnInit {
               private appService: AppService,
               private secretClient: SecretClient,
               private kubernetesClient: KubernetesClient,
-              private publishHistoryService: PublishHistoryService,
               public authService: AuthService,
               private deletionDialogService: ConfirmationDialogService,
               public cacheService: CacheService,
@@ -294,9 +292,6 @@ export class SecretComponent implements AfterContentInit, OnDestroy, OnInit {
     }
   }
 
-  publishHistory() {
-    this.publishHistoryService.openModal(PublishType.SECRET, this.secretId);
-  }
 
   cloneSecretTpl(tpl: SecretTpl) {
     if (tpl) {

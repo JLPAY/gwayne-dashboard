@@ -15,7 +15,6 @@ import { AppService } from '../../shared/client/v1/app.service';
 import { ClusterService } from '../../shared/client/v1/cluster.service';
 import { KubeDeployment } from '../../shared/model/v1/kubernetes/deployment';
 import { CacheService } from '../../shared/auth/cache.service';
-import { PublishHistoryService } from '../common/publish-history/publish-history.service';
 import {
   ConfirmationButtons,
   ConfirmationState,
@@ -76,7 +75,6 @@ export class DeploymentComponent implements OnInit, OnDestroy, AfterContentInit 
 
   constructor(
     private deploymentService: DeploymentService,
-    private publishHistoryService: PublishHistoryService,
     private deploymentTplService: DeploymentTplService,
     private deploymentClient: DeploymentClient,
     private route: ActivatedRoute,
@@ -376,9 +374,6 @@ export class DeploymentComponent implements OnInit, OnDestroy, AfterContentInit 
     });
   }
 
-  publishHistory() {
-    this.publishHistoryService.openModal(PublishType.DEPLOYMENT, this.deploymentId);
-  }
 
   // 创建部署成功
   create(id: number) {

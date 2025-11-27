@@ -58,24 +58,24 @@
     <clr-dg-cell>{{tpl.user}}</clr-dg-cell>
     <clr-dg-cell class="col-operate">
       <button class="wayne-button text" (click)="publishPvcTpl(tpl)"
-              *ngIf="authService.currentAppPermission.kubePersistentVolumeClaim.create || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.RELEASE' | translate}}
       </button>
       <button class="wayne-button text" (click)="detailPvcTpl(tpl)"
-              *ngIf="authService.currentAppPermission.pvc.read || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.DETAIL' | translate}}
       </button>
       <button class="wayne-button text" (click)="clonePvcTpl(tpl)"
-              *ngIf="authService.currentAppPermission.pvc.create || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.CLONE' | translate}}
       </button>
       <button class="wayne-button text"
-              *ngIf="!tpl.status && (authService.currentAppPermission.pvc.delete || authService.currentUser.admin)"
+              *ngIf="!tpl.status && (authService.currentUser.admin)"
               (click)="deletePvcTpl(tpl)">
         {{'BUTTON.DELETE' | translate}}
       </button>
       <button class="wayne-button text" (click)="offlinePvcTpl(tpl)"
-              *ngIf="tpl.status && (authService.currentAppPermission.kubePersistentVolumeClaim.delete || authService.currentUser.admin)">
+              *ngIf="tpl.status && (authService.currentUser.admin)">
         {{'BUTTON.DROP' | translate}}
       </button>
     </clr-dg-cell>

@@ -34,10 +34,10 @@
     <clr-dg-cell>{{apiKey.description}}</clr-dg-cell>
     <clr-dg-cell class="col-operate">
       <button class="wayne-button text"
-              *ngIf="authService.currentAppPermission.apiKey.read || authService.currentUser.admin"
+              *ngIf="authService.currentUser.admin"
               href="javascript:void(0)" (click)="tokenDetail(apiKey)">{{'BUTTON.DETAIL' | translate}}</button>
       <button class="wayne-button text"
-              *ngIf="authService.currentAppPermission.apiKey.delete || authService.currentUser.admin"
+              *ngIf="authService.currentUser.admin"
               href="javascript:void(0)" (click)="deleteApiKey(apiKey)">{{'BUTTON.DELETE' | translate}}</button>
     </clr-dg-cell>
   </clr-dg-row>

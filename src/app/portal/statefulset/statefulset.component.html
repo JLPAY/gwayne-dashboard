@@ -1,5 +1,5 @@
 <button (click)="createStatefulset()" class="wayne-button primary"
-        *ngIf="authService.currentAppPermission.statefulset?.create || authService.currentUser.admin">
+        *ngIf="authService.currentUser.admin">
   {{'STATEFULSET.CREATE' | translate}}
 </button>
 <create-edit-statefulset (create)="create($event)"></create-edit-statefulset>
@@ -17,19 +17,15 @@
   <div class="table-search">
     <div class="table-search-left">
       <button (click)="createStatefulsetTpl()" class="wayne-button normal"
-              *ngIf="authService.currentAppPermission.statefulset?.create || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'STATEFULSET.CREATE_TMP' | translate}}
       </button>
       <button (click)="editStatefulset()" class="wayne-button normal"
-              *ngIf="authService.currentAppPermission.statefulset?.update || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'STATEFULSET.EDIT' | translate}}
       </button>
-      <button (click)="publishHistory()" class="wayne-button normal"
-              *ngIf="authService.currentAppPermission.statefulset?.read || authService.currentUser.admin">
-        {{'BUTTON.HISTORY' | translate}}
-      </button>
       <button (click)="deleteStatefulset()" class="wayne-button normal"
-              *ngIf="authService.currentAppPermission.statefulset.delete || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'STATEFULSET.DELETE' | translate}}
       </button>
       <button class="wayne-button normal" (click)="diffTpl()">{{'BUTTON.COMPARE_TEMPLATES' | translate}}</button>

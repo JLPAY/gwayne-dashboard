@@ -8,7 +8,6 @@ import { Cluster } from '../../shared/model/v1/cluster';
 import { AppService } from '../../shared/client/v1/app.service';
 import { ClusterService } from '../../shared/client/v1/cluster.service';
 import { CacheService } from '../../shared/auth/cache.service';
-import { PublishHistoryService } from '../common/publish-history/publish-history.service';
 import {
   ConfirmationButtons,
   ConfirmationState,
@@ -76,7 +75,6 @@ export class StatefulsetComponent implements AfterContentInit, OnDestroy, OnInit
 
   constructor(
     private statefulsetService: StatefulsetService,
-    private publishHistoryService: PublishHistoryService,
     private statefulsetTplService: StatefulsetTplService,
     private statefulsetClient: StatefulsetClient,
     private route: ActivatedRoute,
@@ -340,9 +338,6 @@ export class StatefulsetComponent implements AfterContentInit, OnDestroy, OnInit
     });
   }
 
-  publishHistory() {
-    this.publishHistoryService.openModal(PublishType.STATEFULSET, this.statefulsetId);
-  }
 
   // 创建状态副本集成功
   create(id: number) {

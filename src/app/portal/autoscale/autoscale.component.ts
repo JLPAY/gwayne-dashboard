@@ -7,7 +7,6 @@ import { ConfirmationDialogService } from '../../shared/confirmation-dialog/conf
 import { PublishService } from '../../shared/client/v1/publish.service';
 import { AuthService } from '../../shared/auth/auth.service';
 import { AppService } from '../../shared/client/v1/app.service';
-import { PublishHistoryService } from '../common/publish-history/publish-history.service';
 import { ClusterService } from '../../shared/client/v1/cluster.service';
 import { CacheService } from '../../shared/auth/cache.service';
 import { AutoscaleService } from '../../shared/client/v1/autoscale.service';
@@ -34,7 +33,6 @@ export class AutoscaleComponent extends Resource implements OnInit, AfterContent
   constructor(public autoscaleService: AutoscaleService,
               public autoscaleTplService: AutoscaleTplService,
               public kubernetesClient: KubernetesClient,
-              public publishHistoryService: PublishHistoryService,
               public route: ActivatedRoute,
               public router: Router,
               public publishService: PublishService,
@@ -51,7 +49,6 @@ export class AutoscaleComponent extends Resource implements OnInit, AfterContent
       autoscaleService,
       autoscaleTplService,
       kubernetesClient,
-      publishHistoryService,
       route,
       router,
       publishService,

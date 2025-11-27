@@ -74,23 +74,23 @@
     <clr-dg-cell>
       <button class="wayne-button text"
               (click)="publishTpl(daemonSetTpl)"
-              *ngIf="authService.currentAppPermission.kubeDaemonSet?.create || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.RELEASE' | translate}}</button>
       <button class="wayne-button text"
               (click)="daemonSetTplDetail(daemonSetTpl)"
-              *ngIf="authService.currentAppPermission.daemonSet?.read || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.DETAIL' | translate}}</button>
       <button class="wayne-button text"
               (click)="cloneDaemonSetTpl(daemonSetTpl)"
-              *ngIf="authService.currentAppPermission.daemonSet?.create || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.CLONE' | translate}}</button>
       <button class="wayne-button text"
-              *ngIf="!daemonSetTpl.status && (authService.currentAppPermission.daemonSet?.delete || authService.currentUser.admin)"
+              *ngIf="!daemonSetTpl.status && (authService.currentUser.admin)"
               (click)="deleteDaemonSetTpl(daemonSetTpl)">
         {{'BUTTON.DELETE' | translate}}</button>
       <button class="wayne-button text"
               (click)="offlineDaemonSet(daemonSetTpl)"
-              *ngIf="daemonSetTpl.status && (authService.currentAppPermission.kubeDaemonSet?.delete || authService.currentUser.admin)">
+              *ngIf="daemonSetTpl.status && (authService.currentUser.admin)">
         {{'BUTTON.DROP' | translate}}</button>
     </clr-dg-cell>
   </clr-dg-row>

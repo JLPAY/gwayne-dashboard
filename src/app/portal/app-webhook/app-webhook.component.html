@@ -7,7 +7,7 @@
     <div class="table-search">
       <div class="table-search-left">
         <button
-          *ngIf="authService.currentNamespacePermission.webHook.create || authService.currentAppPermission.webHook.create || authService.currentUser.admin"
+          *ngIf="authService.currentNamespacePermission.webHook.create || authService.currentUser.admin"
           class="wayne-button normal" (click)="openModal()" [translate]="'WEBHOOK.CREATE'" [translateParams]="{value: resourceLabel}">
         </button>
         <wayne-filter-box (confirm)="confirmEvent()" (cancel)="cancelEvent()">

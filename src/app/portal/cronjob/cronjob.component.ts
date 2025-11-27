@@ -15,7 +15,6 @@ import { AppService } from '../../shared/client/v1/app.service';
 import { ClusterService } from '../../shared/client/v1/cluster.service';
 import { KubeCronJob } from '../../shared/model/v1/kubernetes/cronjob';
 import { CacheService } from '../../shared/auth/cache.service';
-import { PublishHistoryService } from '../common/publish-history/publish-history.service';
 import { JobClient } from '../../shared/client/v1/kubernetes/job';
 import { TabDragService } from '../../shared/client/v1/tab-drag.service';
 import { OrderItem } from '../../shared/model/v1/order';
@@ -82,7 +81,6 @@ export class CronjobComponent implements AfterContentInit, OnDestroy, OnInit {
   leave = false;
 
   constructor(private cronjobService: CronjobService,
-              private publishHistoryService: PublishHistoryService,
               private cronjobTplService: CronjobTplService,
               private kubernetesClient: KubernetesClient,
               private jobClient: JobClient,
@@ -364,9 +362,6 @@ export class CronjobComponent implements AfterContentInit, OnDestroy, OnInit {
     });
   }
 
-  publishHistory() {
-    this.publishHistoryService.openModal(PublishType.CRONJOB, this.cronjobId);
-  }
 
   // 创建部署成功
   create(id: number) {

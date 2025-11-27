@@ -30,7 +30,6 @@ import {
   PublishType,
   TemplateState
 } from '../../shared/shared.const';
-import { PublishHistoryService } from '../common/publish-history/publish-history.service';
 import { CreateEditDaemonSetComponent } from './create-edit-daemonset/create-edit-daemonset.component';
 import { ListDaemonSetComponent } from './list-daemonset/list-daemonset.component';
 import { TabDragService } from '../../shared/client/v1/tab-drag.service';
@@ -75,7 +74,6 @@ export class DaemonSetComponent implements AfterContentInit, OnDestroy, OnInit {
   leave = false;
 
   constructor(private daemonSetService: DaemonSetService,
-              private publishHistoryService: PublishHistoryService,
               private daemonSetTplService: DaemonSetTplService,
               private daemonSetClient: DaemonSetClient,
               private route: ActivatedRoute,
@@ -332,9 +330,6 @@ export class DaemonSetComponent implements AfterContentInit, OnDestroy, OnInit {
     });
   }
 
-  publishHistory() {
-    this.publishHistoryService.openModal(PublishType.DAEMONSET, this.daemonSetId);
-  }
 
   // 创建守护进程集成功
   create(id: number) {

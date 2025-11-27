@@ -72,27 +72,27 @@
     <clr-dg-cell class="col-operate">
       <button class="wayne-button text"
               (click)="publishTpl(cronjobTpl)"
-              *ngIf="authService.currentAppPermission.kubeCronJob.create || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.RELEASE' | translate}}</button>
       <button class="wayne-button text"
               (click)="cronjobTplDetail(cronjobTpl)"
-              *ngIf="authService.currentAppPermission.cronjob.read || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.DETAIL' | translate}}</button>
       <button class="wayne-button text"
               (click)="cloneCronjobTpl(cronjobTpl)"
-              *ngIf="authService.currentAppPermission.cronjob.create || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.CLONE' | translate}}</button>
       <button class="wayne-button text"
-              *ngIf="!cronjobTpl.status && (authService.currentAppPermission.cronjob.delete || authService.currentUser.admin)"
+              *ngIf="!cronjobTpl.status && (authService.currentUser.admin)"
               (click)="deleteCronjobTpl(cronjobTpl)">
         {{'BUTTON.DELETE' | translate}}</button>
       <button class="wayne-button text"
               (click)="offlineCronjobTpl(cronjobTpl)"
-              *ngIf="cronjobTpl.status && (authService.currentAppPermission.kubeCronJob.delete || authService.currentUser.admin)">
+              *ngIf="cronjobTpl.status && (authService.currentUser.admin)">
         {{'BUTTON.DROP' | translate}}</button>
       <button class="wayne-button text"
               (click)="suspend(cronjobTpl)"
-              *ngIf="cronjobTpl.status && (authService.currentAppPermission.kubeCronJob.create || authService.currentUser.admin)">
+              *ngIf="cronjobTpl.status && (authService.currentUser.admin)">
         {{'BUTTON.LANG_UP' | translate}}</button>
     </clr-dg-cell>
   </clr-dg-row>

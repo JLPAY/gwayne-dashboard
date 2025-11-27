@@ -5,7 +5,7 @@
     </div>
     <div class="table-search">
       <div class="table-search-left">
-        <button *ngIf="authService.currentAppPermission.apiKey.create || authService.currentUser.admin"
+        <button *ngIf="authService.currentUser.admin"
                 class="wayne-button normal"
                 (click)="openModal()">
           {{'ACTION.CREATE' | translate}} APIKey

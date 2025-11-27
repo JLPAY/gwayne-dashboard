@@ -34,7 +34,6 @@ import { Service } from '../../shared/model/service';
 import { ServiceTpl } from '../../shared/model/servicetpl';
 import { ServiceClient } from '../../shared/client/v1/kubernetes/service';
 import { ServiceService } from '../../shared/client/v1/service.service';
-import { PublishHistoryService } from '../../../src/app/portal/common/publish-history/publish-history.service';
 import { ServiceTplService } from '../../shared/client/v1/servicetpl.service';
 import { KubeService } from '../../shared/model/kubernetes/service';
 import { KubernetesClient } from '../../../src/app/shared/client/v1/kubernetes/kubernetes';
@@ -88,7 +87,6 @@ export class ServiceComponent implements AfterContentInit, OnInit, OnDestroy {
               private serviceClient: ServiceClient,
               private kubernetesClient: KubernetesClient,
               private serviceService: ServiceService,
-              private publishHistoryService: PublishHistoryService,
               private tabDragService: TabDragService,
               private el: ElementRef,
               private serviceTplService: ServiceTplService,
@@ -308,9 +306,6 @@ export class ServiceComponent implements AfterContentInit, OnInit, OnDestroy {
     }
   }
 
-  publishHistory() {
-    this.publishHistoryService.openModal(PublishType.SERVICE, this.serviceId);
-  }
 
   tabClick(id: number) {
     if (id) {

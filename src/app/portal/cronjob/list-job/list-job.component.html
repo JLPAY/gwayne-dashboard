@@ -152,7 +152,7 @@
               <clr-dg-cell>{{obj.status.completionTime | date: "yyyy-MM-dd HH:mm:ss"}}</clr-dg-cell>
               <clr-dg-cell>
                 <button class="wayne-button text"
-                        *ngIf="authService.currentAppPermission.kubeJob.delete || authService.currentUser.admin"
+                        *ngIf="authService.currentUser.admin"
                         (click)="deleteJob(obj)">
                   {{'BUTTON.DELETE' | translate}}</button>
               </clr-dg-cell>

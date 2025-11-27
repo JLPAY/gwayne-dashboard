@@ -22,7 +22,6 @@ import { ConfigMap } from '../../shared/model/v1/configmap';
 import { ConfigMapTpl } from '../../shared/model/v1/configmaptpl';
 import { App } from '../../shared/model/v1/app';
 import { CacheService } from '../../shared/auth/cache.service';
-import { PublishHistoryService } from '../common/publish-history/publish-history.service';
 import { AuthService } from '../../shared/auth/auth.service';
 import { PublishService } from '../../shared/client/v1/publish.service';
 import { PublishStatus } from '../../shared/model/v1/publish-status';
@@ -73,7 +72,6 @@ export class ConfigMapComponent implements AfterContentInit, OnDestroy, OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private publishService: PublishService,
-              private publishHistoryService: PublishHistoryService,
               public cacheService: CacheService,
               private appService: AppService,
               private kubernetesClient: KubernetesClient,
@@ -284,9 +282,6 @@ export class ConfigMapComponent implements AfterContentInit, OnDestroy, OnInit {
     }
   }
 
-  publishHistory() {
-    this.publishHistoryService.openModal(PublishType.CONFIGMAP, this.configMapId);
-  }
 
   tabClick(id: number) {
     if (id) {

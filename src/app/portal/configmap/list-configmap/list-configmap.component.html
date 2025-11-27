@@ -60,23 +60,23 @@
     <clr-dg-cell class="col-operate">
       <button class="wayne-button text"
               (click)="publishConfigMapTpl(configMapTpl)"
-              *ngIf="authService.currentAppPermission.kubeConfigMap.create || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.RELEASE' | translate}}</button>
       <button class="wayne-button text"
               (click)="detailConfigMapTpl(configMapTpl)"
-              *ngIf="authService.currentAppPermission.configmap.read || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.DETAIL' | translate}}</button>
       <button class="wayne-button text"
               (click)="cloneConfigMapTpl(configMapTpl)"
-              *ngIf="authService.currentAppPermission.configmap.create || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'BUTTON.CLONE' | translate}}</button>
       <button class="wayne-button text"
-              *ngIf="!configMapTpl.status && (authService.currentAppPermission.configmap.delete || authService.currentUser.admin)"
+              *ngIf="!configMapTpl.status && (authService.currentUser.admin)"
               (click)="deleteConfigMapTpl(configMapTpl)">
         {{'BUTTON.DELETE' | translate}}</button>
       <button class="wayne-button text"
               (click)="offlineConfigMapTpl(configMapTpl)"
-              *ngIf="configMapTpl.status && (authService.currentAppPermission.kubeConfigMap.delete || authService.currentUser.admin)">
+              *ngIf="configMapTpl.status && (authService.currentUser.admin)">
         {{'BUTTON.DROP' | translate}}</button>
     </clr-dg-cell>
   </clr-dg-row>

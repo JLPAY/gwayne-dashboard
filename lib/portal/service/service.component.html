@@ -25,10 +25,6 @@
               *ngIf="authService.currentAppPermission.service.update || authService.currentUser.admin">
         编辑负载均衡
       </button>
-      <button (click)="publishHistory()" class="wayne-button normal"
-              *ngIf="authService.currentAppPermission.service.read || authService.currentUser.admin">
-        发布历史
-      </button>
       <button (click)="deleteService()" class="wayne-button normal"
               *ngIf="authService.currentAppPermission.service.delete || authService.currentUser.admin">
         删除负载均衡

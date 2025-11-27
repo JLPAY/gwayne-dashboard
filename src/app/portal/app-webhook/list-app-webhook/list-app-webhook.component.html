@@ -31,10 +31,6 @@
   </clr-dg-column>
   <clr-dg-column
     *ngIf="
-      authService.currentNamespacePermission.webHook.update ||
-      authService.currentAppPermission.webHook.update ||
-      authService.currentNamespacePermission.webHook.delete ||
-      authService.currentAppPermission.webHook.delete ||
       authService.currentUser.admin"
   >
     <ng-container *clrDgHideableColumn="showState['action']">
@@ -52,22 +48,16 @@
     <clr-dg-cell>{{webHook.createTime | date:"yyyy-MM-dd HH:mm"}}</clr-dg-cell>
     <clr-dg-cell
       *ngIf="
-      authService.currentNamespacePermission.webHook.update ||
-      authService.currentAppPermission.webHook.update ||
-      authService.currentNamespacePermission.webHook.delete ||
-      authService.currentAppPermission.webHook.delete ||
       authService.currentUser.admin"
     >
       <button class="wayne-button text"
               *ngIf="authService.currentNamespacePermission.webHook.update ||
-        authService.currentAppPermission.webHook.update ||
         authService.currentUser.admin"
               (click)="editWebhook(webHook)">
         {{'BUTTON.EDIT' | translate}}
       </button>
       <button class="wayne-button text"
               *ngIf="authService.currentNamespacePermission.webHook.delete ||
-          authService.currentAppPermission.webHook.delete ||
           authService.currentUser.admin"
               (click)="deleteWebhook(webHook)">
         {{'BUTTON.DELETE' | translate}}</button>

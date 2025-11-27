@@ -6,7 +6,6 @@ import { IngressService } from '../../shared/client/v1/ingress.service';
 import { AppService } from '../../shared/client/v1/app.service';
 import { ClusterService } from '../../shared/client/v1/cluster.service';
 import { CacheService } from '../../shared/auth/cache.service';
-import { PublishHistoryService } from '../common/publish-history/publish-history.service';
 import {
   ConfirmationTargets, KubeResourceIngress,
   PublishType,
@@ -45,7 +44,6 @@ export class IngressComponent extends Resource implements OnInit, OnDestroy, Aft
   constructor(public ingressService: IngressService,
               public ingressTplService: IngressTplService,
               public kubernetesClient: KubernetesClient,
-              public publishHistoryService: PublishHistoryService,
               public route: ActivatedRoute,
               public router: Router,
               public publishService: PublishService,
@@ -62,7 +60,6 @@ export class IngressComponent extends Resource implements OnInit, OnDestroy, Aft
       ingressService,
       ingressTplService,
       kubernetesClient,
-      publishHistoryService,
       route,
       router,
       publishService,

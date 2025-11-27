@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { FooterModule } from '../../shared/footer/footer.module';
 import { SidenavModule } from '../sidenav/sidenav.module';
 import { BaseComponent } from './base.component';
-import { PublishHistoryModule } from '../common/publish-history/publish-history.module';
 import { TplDetailModule } from '../../shared/tpl-detail/tpl-detail.module';
 
 @NgModule({
@@ -13,7 +12,6 @@ import { TplDetailModule } from '../../shared/tpl-detail/tpl-detail.module';
     RouterModule,
     FooterModule,
     SidenavModule,
-    PublishHistoryModule,
     TplDetailModule,
   ],
   providers: [],

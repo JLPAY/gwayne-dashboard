@@ -1,5 +1,5 @@
 <button (click)="createCronjob()" class="wayne-button primary"
-        *ngIf="authService.currentAppPermission.cronjob.create || authService.currentUser.admin">
+        *ngIf="authService.currentUser.admin">
   {{'CRONJOB.CREATE' | translate}}
 </button>
 <create-edit-cronjob (create)="create($event)"></create-edit-cronjob>
@@ -17,19 +17,15 @@
   <div class="table-search">
     <div class="table-search-left">
       <button (click)="createCronjobTpl()" class="wayne-button normal"
-              *ngIf="authService.currentAppPermission.cronjob.create || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'CRONJOB.CREATE_TMP' | translate}}
       </button>
       <button (click)="editCronjob()" class="wayne-button normal"
-              *ngIf="authService.currentAppPermission.cronjob.update || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'CRONJOB.EDIT' | translate}}
       </button>
-      <button (click)="publishHistory()" class="wayne-button normal"
-              *ngIf="authService.currentAppPermission.cronjob.read || authService.currentUser.admin">
-        {{'BUTTON.HISTORY' | translate}}
-      </button>
       <button (click)="deleteCronjob()" class="wayne-button normal"
-              *ngIf="authService.currentAppPermission.cronjob.delete || authService.currentUser.admin">
+              *ngIf="authService.currentUser.admin">
         {{'CRONJOB.DELETE' | translate}}
       </button>
       <button class="wayne-button normal" (click)="diffTpl()">{{'BUTTON.COMPARE_TEMPLATES' | translate}}</button>
