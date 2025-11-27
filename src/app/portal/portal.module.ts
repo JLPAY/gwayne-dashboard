@@ -29,6 +29,7 @@ import { SidenavModule } from './sidenav/sidenav.module';
 import { NodesModule } from './kubernetes/node/nodes.module';
 import { KubeNamespaceModule } from './kubernetes/namespace/kube-namespace.module';
 import { KubeDeploymentModule } from './kubernetes/deployment/kube-deployment.module';
+import { KubeStatefulsetModule } from './kubernetes/statefulset/kube-statefulset.module';
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import { KubeDeploymentModule } from './kubernetes/deployment/kube-deployment.mo
     NodesModule,
     KubeNamespaceModule,
     KubeDeploymentModule,
+    KubeStatefulsetModule,
     MarkdownModule.forRoot(),
   ],
   providers: [
