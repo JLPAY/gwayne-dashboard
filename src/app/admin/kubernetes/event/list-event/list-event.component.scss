@@ -1,0 +1,27 @@
+.event-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  color: white;
+  cursor: default;
+}
+
+.event-normal {
+  background-color: #00b894; /* 绿色 - 正常事件 */
+}
+
+.event-warning {
+  background-color: #f39c12; /* 橙色 - 警告事件 */
+}
+
+.event-unknown {
+  background-color: #95a5a6; /* 灰色 - 未知事件类型 */
+}
+
+.no-labels {
+  color: #95a5a6;
+  font-style: italic;
+} 

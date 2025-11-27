@@ -1,0 +1,59 @@
+<clr-modal [(clrModalOpen)]="drainModalOpened" [clrModalClosable]="false" [clrModalSize]="'md'">
+  <h3 class="modal-title">节点驱逐</h3>
+  <div class="modal-body">
+    <form #drainForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <div class="inline-label-group">
+          <label class="inline-label">节点名称</label>
+          <input type="text" class="inline-input" [value]="nodeName" readonly>
+        </div>
+        <small class="form-text">将对节点 {{nodeName}} 执行驱逐操作</small>
+      </div>
+
+      <div class="form-group">
+        <div class="label-with-comment">
+          <label class="form-label">驱逐选项</label>
+          <small class="label-comment">配置节点驱逐的相关参数</small>
+        </div>
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="force" name="force" [(ngModel)]="drainOptions.force">
+            <label for="force">强制驱逐 (即使有不可终止的Pod)</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="ignoreDaemonSets" name="ignoreDaemonSets" [(ngModel)]="drainOptions.ignoreDaemonSets">
+            <label for="ignoreDaemonSets">忽略DaemonSet Pod</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="deleteEmptyDirData" name="deleteEmptyDirData" [(ngModel)]="drainOptions.deleteEmptyDirData">
+            <label for="deleteEmptyDirData">删除emptyDir数据</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="inline-label-group">
+          <label class="inline-label">优雅终止期 (秒)</label>
+          <input type="number" class="inline-input" name="gracePeriod" 
+                 [(ngModel)]="drainOptions.gracePeriod" min="0" max="300">
+        </div>
+        <small class="form-text">Pod终止的等待时间，0表示立即终止</small>
+      </div>
+
+      <div class="alert alert-warning">
+        <clr-icon shape="warning-standard"></clr-icon>
+        <div class="alert-item">
+          <span class="alert-text">
+            警告：驱逐操作将终止节点上的所有Pod，请确保已备份重要数据。
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="onCancel()">取消</button>
+    <button type="submit" class="btn btn-danger" [disabled]="!isValid" (click)="onSubmit()">
+      确认驱逐
+    </button>
+  </div>
+</clr-modal>

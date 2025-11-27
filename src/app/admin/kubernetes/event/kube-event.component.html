@@ -1,0 +1,40 @@
+<div class="clr-row">
+  <div class="clr-col-lg-12 clr-col-md-12 clr-col-sm-12 clr-col-xs-12">
+    <div class="table-search">
+      <div class="table-search-left">
+        <button class="wayne-button normal" (click)="retrieveResource()">
+          {{'ADMIN.KUBERNETES.ACTION.REFRESH' | translate}}
+        </button>
+        <wayne-filter-box (confirm)="onConfirmEvent()" (cancel)="onCancelEvent()">
+          <wayne-checkbox-group [(ngModel)]="showList">
+            <wayne-checkbox value="name">{{'ADMIN.KUBERNETES.EVENT.LIST.NAME' | translate}}</wayne-checkbox>
+            <wayne-checkbox value="namespace">{{'ADMIN.KUBERNETES.EVENT.LIST.NAMESPACE' | translate}}</wayne-checkbox>
+            <wayne-checkbox value="label">{{'ADMIN.KUBERNETES.EVENT.LIST.LABEL' | translate}}</wayne-checkbox>
+            <wayne-checkbox value="type">{{'ADMIN.KUBERNETES.EVENT.LIST.TYPE' | translate}}</wayne-checkbox>
+            <wayne-checkbox value="reason">{{'ADMIN.KUBERNETES.EVENT.LIST.REASON' | translate}}</wayne-checkbox>
+            <wayne-checkbox value="source">{{'ADMIN.KUBERNETES.EVENT.LIST.SOURCE' | translate}}</wayne-checkbox>
+            <wayne-checkbox value="message">{{'ADMIN.KUBERNETES.EVENT.LIST.MESSAGE' | translate}}</wayne-checkbox>
+            <wayne-checkbox value="age">{{'ADMIN.KUBERNETES.EVENT.LIST.AGE' | translate}}</wayne-checkbox>
+          </wayne-checkbox-group>
+        </wayne-filter-box>
+      </div>
+    </div>
+
+    <wayne-list-event
+      [resources]="resources"
+      [showState]="showState"
+      [pageState]="pageState"
+      (delete)="onDeleteResourceEvent($event)"
+      (edit)="onEditResourceEvent($event)"
+      [page]="pageState.page"
+      [cluster]="cluster"
+      (paginate)="retrieveResource($event)">
+    </wayne-list-event>
+  </div>
+</div>
+<deletion-dialog (outputObj)="confirmDeleteEvent($event)"></deletion-dialog>
+<wayne-ace-editor (createOutputObj)="onCreateResourceEvent($event)" (outputObj)="onSaveResourceEvent($event)"></wayne-ace-editor>
+<wayne-float-window value="{{ cluster }}">
+  <wayne-float-window-item *ngFor="let cluster of clusters" [value]="cluster"
+                           (click)="jumpToHref(cluster)"></wayne-float-window-item>
+</wayne-float-window> 
