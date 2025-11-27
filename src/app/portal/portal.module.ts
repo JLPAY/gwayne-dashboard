@@ -24,6 +24,8 @@ import { TplDetailModule } from '../shared/tpl-detail/tpl-detail.module';
 import { MarkdownModule } from 'ngx-markdown';
 import { LibraryPortalModule } from '../../../lib/portal/library-portal.module';
 import { AutoscaleModule } from './autoscale/autoscale.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { SidenavModule } from './sidenav/sidenav.module';
 
 @NgModule({
   imports: [
@@ -44,6 +46,8 @@ import { AutoscaleModule } from './autoscale/autoscale.module';
     LibraryPortalModule,
     IngressModule,
     AutoscaleModule,
+    DashboardModule,
+    SidenavModule,
     MarkdownModule.forRoot(),
   ],
   providers: [

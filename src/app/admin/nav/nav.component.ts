@@ -29,9 +29,7 @@ export class NavComponent implements OnInit {
   }
 
   goFront() {
-    if (window) {
-      window.location.href = '/';
-    }
+    this.router.navigateByUrl('/portal/dashboard');
   }
 
   showLang(lang: string): string {

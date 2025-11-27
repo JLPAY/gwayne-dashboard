@@ -2,6 +2,11 @@
   <global-message></global-message>
   <diff></diff>
   <wayne-nav></wayne-nav>
-  <router-outlet></router-outlet>
+  <div class="content-container">
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+    <wayne-sidenav style="display: flex; order: -1"></wayne-sidenav>
+  </div>
 </clr-main-container>
 <confiramtion-dialog style="display: flex"></confiramtion-dialog>

@@ -38,9 +38,7 @@ export class NavComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (window) {
-      window.location.href = '/admin/reportform/overview';
-    }
+    this.router.navigateByUrl('/admin/reportform/overview');
   }
 
   showLang(lang: string): string {

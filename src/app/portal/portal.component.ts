@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { defaultRoutingUrl } from '../shared/shared.const';
-import { CacheService } from '../shared/auth/cache.service';
 
 @Component({
   selector: 'wayne-portal',
@@ -10,13 +8,12 @@ import { CacheService } from '../shared/auth/cache.service';
 })
 export class PortalComponent implements OnInit {
 
-  constructor(private router: Router,
-              public cacheService: CacheService) {
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
     if (this.router.url === '/portal') {
-      this.router.navigate([defaultRoutingUrl]);
+      this.router.navigate(['/portal/dashboard']);
     }
   }
 
