@@ -28,6 +28,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { SidenavModule } from './sidenav/sidenav.module';
 import { NodesModule } from './kubernetes/node/nodes.module';
 import { KubeNamespaceModule } from './kubernetes/namespace/kube-namespace.module';
+import { KubeDeploymentModule } from './kubernetes/deployment/kube-deployment.module';
 
 @NgModule({
   imports: [
@@ -52,6 +53,7 @@ import { KubeNamespaceModule } from './kubernetes/namespace/kube-namespace.modul
     SidenavModule,
     NodesModule,
     KubeNamespaceModule,
+    KubeDeploymentModule,
     MarkdownModule.forRoot(),
   ],
   providers: [

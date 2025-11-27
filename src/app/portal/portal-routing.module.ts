@@ -5,6 +5,7 @@ import { PortalComponent } from './portal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NodesComponent } from './kubernetes/node/nodes.component';
 import { KubeNamespaceComponent } from './kubernetes/namespace/kube-namespace.component';
+import { KubeDeploymentComponent } from './kubernetes/deployment/kube-deployment.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,14 @@ const routes: Routes = [
       {
         path: 'kubernetes/namespace/:cluster',
         component: KubeNamespaceComponent
+      },
+      {
+        path: 'kubernetes/deployment',
+        component: KubeDeploymentComponent
+      },
+      {
+        path: 'kubernetes/deployment/:cluster',
+        component: KubeDeploymentComponent
       }
     ]
   },

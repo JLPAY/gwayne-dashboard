@@ -1,0 +1,25 @@
+<clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="true" [clrModalSize]="'md'">
+  <h3 class="modal-title">{{'ADMIN.KUBERNETES.DEPLOYMENT.SCALE.TITLE' | translate}}</h3>
+  <div class="modal-body">
+    <form clrForm>
+      <clr-input-container>
+        <label>{{'ADMIN.KUBERNETES.DEPLOYMENT.SCALE.REPLICAS' | translate}}</label>
+        <input clrInput 
+               type="number" 
+               [(ngModel)]="replicas" 
+               name="replicas"
+               min="0"
+               (keydown)="onKeyDown($event)"
+               placeholder="0">
+      </clr-input-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="close()">
+      {{'BUTTON.CANCEL' | translate}}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="confirm()" [disabled]="replicas < 0">
+      {{'BUTTON.CONFIRM' | translate}}
+    </button>
+  </div>
+</clr-modal>
