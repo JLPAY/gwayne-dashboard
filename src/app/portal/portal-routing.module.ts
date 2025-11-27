@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { PodLoggingComponent } from './pod-logging/pod-logging.component';
 import { PortalComponent } from './portal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { NodesComponent } from './kubernetes/node/nodes.component';
+import { KubeNamespaceComponent } from './kubernetes/namespace/kube-namespace.component';
 
 const routes: Routes = [
   {
@@ -12,6 +14,22 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent
+      },
+      {
+        path: 'kubernetes/node',
+        component: NodesComponent
+      },
+      {
+        path: 'kubernetes/node/:cluster',
+        component: NodesComponent
+      },
+      {
+        path: 'kubernetes/namespace',
+        component: KubeNamespaceComponent
+      },
+      {
+        path: 'kubernetes/namespace/:cluster',
+        component: KubeNamespaceComponent
       }
     ]
   },

@@ -26,6 +26,8 @@ import { LibraryPortalModule } from '../../../lib/portal/library-portal.module';
 import { AutoscaleModule } from './autoscale/autoscale.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SidenavModule } from './sidenav/sidenav.module';
+import { NodesModule } from './kubernetes/node/nodes.module';
+import { KubeNamespaceModule } from './kubernetes/namespace/kube-namespace.module';
 
 @NgModule({
   imports: [
@@ -48,6 +50,8 @@ import { SidenavModule } from './sidenav/sidenav.module';
     AutoscaleModule,
     DashboardModule,
     SidenavModule,
+    NodesModule,
+    KubeNamespaceModule,
     MarkdownModule.forRoot(),
   ],
   providers: [
