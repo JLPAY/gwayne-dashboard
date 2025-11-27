@@ -30,6 +30,7 @@ import { NodesModule } from './kubernetes/node/nodes.module';
 import { KubeNamespaceModule } from './kubernetes/namespace/kube-namespace.module';
 import { KubeDeploymentModule } from './kubernetes/deployment/kube-deployment.module';
 import { KubeStatefulsetModule } from './kubernetes/statefulset/kube-statefulset.module';
+import { KubeDaemonsetModule } from './kubernetes/daemonset/kube-daemonset.module';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { KubeStatefulsetModule } from './kubernetes/statefulset/kube-statefulset
     KubeNamespaceModule,
     KubeDeploymentModule,
     KubeStatefulsetModule,
+    KubeDaemonsetModule,
     MarkdownModule.forRoot(),
   ],
   providers: [

@@ -7,6 +7,7 @@ import { NodesComponent } from './kubernetes/node/nodes.component';
 import { KubeNamespaceComponent } from './kubernetes/namespace/kube-namespace.component';
 import { KubeDeploymentComponent } from './kubernetes/deployment/kube-deployment.component';
 import { KubeStatefulsetComponent } from './kubernetes/statefulset/kube-statefulset.component';
+import { KubeDaemonsetComponent } from './kubernetes/daemonset/kube-daemonset.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,14 @@ const routes: Routes = [
       {
         path: 'kubernetes/statefulset/:cluster',
         component: KubeStatefulsetComponent
+      },
+      {
+        path: 'kubernetes/daemonset',
+        component: KubeDaemonsetComponent
+      },
+      {
+        path: 'kubernetes/daemonset/:cluster',
+        component: KubeDaemonsetComponent
       }
     ]
   },
