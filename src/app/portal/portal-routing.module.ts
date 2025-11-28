@@ -9,6 +9,7 @@ import { KubeDeploymentComponent } from './kubernetes/deployment/kube-deployment
 import { KubeStatefulsetComponent } from './kubernetes/statefulset/kube-statefulset.component';
 import { KubeDaemonsetComponent } from './kubernetes/daemonset/kube-daemonset.component';
 import { KubeJobComponent } from './kubernetes/job/kube-job.component';
+import { KubePodComponent } from './kubernetes/pod/kube-pod.component';
 
 const routes: Routes = [
   {
@@ -66,6 +67,14 @@ const routes: Routes = [
       {
         path: 'kubernetes/job/:cluster',
         component: KubeJobComponent
+      },
+      {
+        path: 'kubernetes/pod',
+        component: KubePodComponent
+      },
+      {
+        path: 'kubernetes/pod/:cluster',
+        component: KubePodComponent
       }
     ]
   },
