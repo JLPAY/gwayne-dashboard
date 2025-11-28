@@ -14,6 +14,7 @@ import { KubeCronjobComponent } from './kubernetes/cronjob/kube-cronjob.componen
 import { KubeConfigmapComponent } from './kubernetes/configmap/kube-configmap.component';
 import { KubeSecretComponent } from './kubernetes/secret/kube-secret.component';
 import { KubeServiceComponent } from './kubernetes/service/kube-service.component';
+import { KubeIngressComponent } from './kubernetes/ingress/kube-ingress.component';
 
 const routes: Routes = [
   {
@@ -111,6 +112,14 @@ const routes: Routes = [
       {
         path: 'kubernetes/service/:cluster',
         component: KubeServiceComponent
+      },
+      {
+        path: 'kubernetes/ingress',
+        component: KubeIngressComponent
+      },
+      {
+        path: 'kubernetes/ingress/:cluster',
+        component: KubeIngressComponent
       }
     ]
   },

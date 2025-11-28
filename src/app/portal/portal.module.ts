@@ -37,6 +37,7 @@ import { KubeCronjobModule } from './kubernetes/cronjob/kube-cronjob.module';
 import { KubeConfigmapModule } from './kubernetes/configmap/kube-configmap.module';
 import { KubeSecretModule } from './kubernetes/secret/kube-secret.module';
 import { KubeServiceModule } from './kubernetes/service/kube-service.module';
+import { KubeIngressModule } from './kubernetes/ingress/kube-ingress.module';
 
 @NgModule({
   imports: [
@@ -70,6 +71,7 @@ import { KubeServiceModule } from './kubernetes/service/kube-service.module';
     KubeConfigmapModule,
     KubeSecretModule,
     KubeServiceModule,
+    KubeIngressModule,
     MarkdownModule.forRoot(),
   ],
   providers: [
