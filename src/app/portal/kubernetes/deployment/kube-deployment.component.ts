@@ -42,6 +42,9 @@ export class KubeDeploymentComponent extends KubernetesNamespacedResource implem
   @ViewChild(ScaleDialogComponent, { static: false })
   scaleDialogComponent: ScaleDialogComponent;
 
+  viewModalOpened = false;
+  viewTitle = '查看 Deployment';
+
   constructor(public kubernetesClient: KubernetesClient,
               public route: ActivatedRoute,
               public router: Router,
@@ -142,6 +145,15 @@ export class KubeDeploymentComponent extends KubernetesNamespacedResource implem
             this.messageHandlerService.handleError(error);
           }
         );
+    }
+  }
+
+  onViewModalChange(info: any) {
+    if (info && info.modalOpened) {
+      this.viewModalOpened = true;
+      if (info.title) {
+        this.viewTitle = info.title;
+      }
     }
   }
 
