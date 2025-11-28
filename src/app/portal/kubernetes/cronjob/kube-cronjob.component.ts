@@ -10,6 +10,8 @@ import { KubernetesNamespacedResource } from '../../../shared/base/kubernetes-na
 import { DeletionDialogComponent } from '../../../shared/deletion-dialog/deletion-dialog.component';
 import { MigrationComponent } from './migration/migration.component';
 import { ListCronjobComponent } from './list-cronjob/list-cronjob.component';
+import { AceEditorService } from '../../../shared/ace-editor/ace-editor.service';
+import { AceEditorMsg } from '../../../shared/ace-editor/ace-editor';
 
 const showState = {
   'name': {hidden: false},
@@ -40,12 +42,16 @@ export class KubeCronjobComponent extends KubernetesNamespacedResource implement
   @ViewChild(MigrationComponent, { static: false })
   migrationComponent: MigrationComponent;
 
+  viewModalOpened = false;
+  viewTitle = '查看 CronJob';
+
   constructor(public kubernetesClient: KubernetesClient,
               public route: ActivatedRoute,
               public router: Router,
               public clusterService: ClusterService,
               public authService: AuthService,
-              public messageHandlerService: MessageHandlerService) {
+              public messageHandlerService: MessageHandlerService,
+              public aceEditorService: AceEditorService) {
     super(kubernetesClient, route, router, clusterService, authService, messageHandlerService);
     super.registResourceType('cronjob');
     super.registKubeResource(KubeResourceCronJob);
@@ -60,9 +66,17 @@ export class KubeCronjobComponent extends KubernetesNamespacedResource implement
     super.ngOnDestroy();
   }
 
-
   migration(obj: any) {
     this.migrationComponent.openModal(this.cluster, obj);
+  }
+
+  onViewModalChange(info: any) {
+    if (info && info.modalOpened) {
+      this.viewModalOpened = true;
+      if (info.title) {
+        this.viewTitle = info.title;
+      }
+    }
   }
 
 }
