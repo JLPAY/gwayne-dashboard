@@ -13,6 +13,7 @@ import { KubePodComponent } from './kubernetes/pod/kube-pod.component';
 import { KubeCronjobComponent } from './kubernetes/cronjob/kube-cronjob.component';
 import { KubeConfigmapComponent } from './kubernetes/configmap/kube-configmap.component';
 import { KubeSecretComponent } from './kubernetes/secret/kube-secret.component';
+import { KubeServiceComponent } from './kubernetes/service/kube-service.component';
 
 const routes: Routes = [
   {
@@ -102,6 +103,14 @@ const routes: Routes = [
       {
         path: 'kubernetes/secret/:cluster',
         component: KubeSecretComponent
+      },
+      {
+        path: 'kubernetes/service',
+        component: KubeServiceComponent
+      },
+      {
+        path: 'kubernetes/service/:cluster',
+        component: KubeServiceComponent
       }
     ]
   },
