@@ -49,6 +49,8 @@
   <clr-dg-row *ngFor="let obj of resources" [clrDgItem]="obj">
     <clr-dg-action-overflow>
       <button class="action-item" *ngIf="!authService.currentUser.admin" (click)="onViewEvent(obj)">{{'ACTION.LOOK_UP' | translate}}</button>
+      <button class="action-item" *ngIf="!authService.currentUser.admin" (click)="podLog(obj)">{{'ADMIN.KUBERNETES.ACTION.LOG' | translate}}</button>
+      <button class="action-item" *ngIf="!authService.currentUser.admin" (click)="onDeleteEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.DELETE' | translate}}</button>
       <button class="action-item" *ngIf="authService.currentUser.admin" (click)="onEditEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.EDIT' | translate}}</button>
       <button class="action-item" *ngIf="authService.currentUser.admin" (click)="onDeleteEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.DELETE' | translate}}</button>
       <button class="action-item" *ngIf="authService.currentUser.admin" (click)="onForceDeleteEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.FORCEDELETE' | translate}}</button>

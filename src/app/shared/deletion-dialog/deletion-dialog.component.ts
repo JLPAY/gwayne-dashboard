@@ -12,7 +12,7 @@ export class DeletionDialogComponent implements OnDestroy {
   dialogTitle = '';
   dialogContent = '';
   obj: any;
-  @Output() outputObj = new EventEmitter<boolean>();
+  @Output() outputObj = new EventEmitter<any>();
 
   constructor() {
 

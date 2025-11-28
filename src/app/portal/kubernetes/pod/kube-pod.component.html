@@ -46,7 +46,7 @@
     </wayne-list-pod>
   </div>
 </div>
-<deletion-dialog (outputObj)="confirmDeleteEvent($event)" *ngIf="authService.currentUser.admin"></deletion-dialog>
+<deletion-dialog (outputObj)="confirmDeleteEvent($event)"></deletion-dialog>
 <wayne-ace-editor (createOutputObj)="onCreateResourceEvent($event)" (outputObj)="onSaveResourceEvent($event)" *ngIf="authService.currentUser.admin"></wayne-ace-editor>
 <clr-modal [clrModalSize]="'lg'" [(clrModalOpen)]="viewModalOpened" #viewModal>
   <h3 class="modal-title">{{viewTitle}}
