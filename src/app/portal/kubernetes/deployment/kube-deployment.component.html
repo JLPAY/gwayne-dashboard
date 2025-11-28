@@ -48,7 +48,7 @@
   </div>
 </div>
 <kube-migration *ngIf="authService.currentUser.admin"></kube-migration>
-<deletion-dialog (outputObj)="confirmDeleteEvent($event)" *ngIf="authService.currentUser.admin"></deletion-dialog>
+<deletion-dialog (outputObj)="confirmDeleteEvent($event)"></deletion-dialog>
 <wayne-scale-dialog (scaleConfirmed)="onScaleConfirmed($event)" *ngIf="authService.currentUser.admin"></wayne-scale-dialog>
 <wayne-ace-editor (createOutputObj)="onCreateResourceEvent($event)" (outputObj)="onSaveResourceEvent($event)" *ngIf="authService.currentUser.admin"></wayne-ace-editor>
 <clr-modal [clrModalSize]="'lg'" [(clrModalOpen)]="viewModalOpened" #viewModal>
