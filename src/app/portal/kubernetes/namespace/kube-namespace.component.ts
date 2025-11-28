@@ -32,6 +32,9 @@ export class KubeNamespaceComponent extends KubernetesUnNamespacedResource imple
   @ViewChild(DeletionDialogComponent, { static: false })
   deletionDialogComponent: DeletionDialogComponent;
 
+  viewModalOpened = false;
+  viewTitle = '查看命名空间';
+
   constructor(public kubernetesClient: KubernetesClient,
               public route: ActivatedRoute,
               public router: Router,
@@ -50,6 +53,15 @@ export class KubeNamespaceComponent extends KubernetesUnNamespacedResource imple
 
   ngOnDestroy(): void {
     super.ngOnDestroy();
+  }
+
+  onViewModalChange(info: any) {
+    if (info && info.modalOpened) {
+      this.viewModalOpened = true;
+      if (info.title) {
+        this.viewTitle = info.title;
+      }
+    }
   }
 
 }

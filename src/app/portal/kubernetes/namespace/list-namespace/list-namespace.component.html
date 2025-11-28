@@ -22,9 +22,10 @@
 
 
   <clr-dg-row *ngFor="let obj of resources" [clrDgItem]="obj">
-    <clr-dg-action-overflow *ngIf="authService.currentUser.admin">
-      <button class="action-item" (click)="onEditEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.EDIT' | translate}}</button>
-      <button class="action-item" (click)="onDeleteEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.DELETE' | translate}}</button>
+    <clr-dg-action-overflow>
+      <button class="action-item" *ngIf="!authService.currentUser.admin" (click)="onViewEvent(obj)">{{'ACTION.LOOK_UP' | translate}}</button>
+      <button class="action-item" *ngIf="authService.currentUser.admin" (click)="onEditEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.EDIT' | translate}}</button>
+      <button class="action-item" *ngIf="authService.currentUser.admin" (click)="onDeleteEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.DELETE' | translate}}</button>
     </clr-dg-action-overflow>
     <clr-dg-cell class="col-app-name"> {{ obj.metadata.name }} </clr-dg-cell>
     <clr-dg-cell>
