@@ -37,6 +37,9 @@ export class KubePodComponent extends KubernetesNamespacedResource implements On
   @ViewChild(DeletionDialogComponent, { static: false })
   deletionDialogComponent: DeletionDialogComponent;
 
+  viewModalOpened = false;
+  viewTitle = '查看 Pod';
+
   constructor(public kubernetesClient: KubernetesClient,
               public route: ActivatedRoute,
               public router: Router,
@@ -61,6 +64,15 @@ export class KubePodComponent extends KubernetesNamespacedResource implements On
 
   ngOnDestroy(): void {
     super.ngOnDestroy();
+  }
+
+  onViewModalChange(info: any) {
+    if (info && info.modalOpened) {
+      this.viewModalOpened = true;
+      if (info.title) {
+        this.viewTitle = info.title;
+      }
+    }
   }
 
 }

@@ -5,6 +5,8 @@ import { KubePod } from '../../../../shared/model/v1/kubernetes/kubepod';
 import { KubePodUtil } from '../../../../shared/utils';
 import { KubeResourcePod } from '../../../../shared/shared.const';
 import { AuthService } from '../../../../shared/auth/auth.service';
+import { AceEditorService } from '../../../../shared/ace-editor/ace-editor.service';
+import { AceEditorMsg } from '../../../../shared/ace-editor/ace-editor';
 
 @Component({
   selector: 'wayne-list-pod',
@@ -17,7 +19,8 @@ export class ListPodComponent extends KubernetesListResource {
   @Input() cluster: string;
 
   constructor(public tplDetailService: TplDetailService,
-              public authService: AuthService) {
+              public authService: AuthService,
+              public aceEditorService: AceEditorService) {
     super(tplDetailService);
   }
 
@@ -36,6 +39,10 @@ export class ListPodComponent extends KubernetesListResource {
   // getPodStatus returns the pod state
   getPodStatus(pod: KubePod): string {
     return KubePodUtil.getPodStatus(pod);
+  }
+
+  onViewEvent(obj: any) {
+    this.aceEditorService.announceMessage(AceEditorMsg.Instance(obj, false, '查看 Pod'));
   }
 
 }
