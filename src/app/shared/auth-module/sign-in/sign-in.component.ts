@@ -34,7 +34,7 @@ export class SignInComponent implements OnInit {
     });
 
     const sid = this.route.snapshot.queryParams['sid'];
-    const ref = this.route.snapshot.queryParams['ref'] ? this.route.snapshot.queryParams['ref'] : '/';
+    const ref = this.route.snapshot.queryParams['ref'] ? this.route.snapshot.queryParams['ref'] : '/portal/dashboard';
     if (sid) {
       localStorage.setItem(LoginTokenKey, sid);
       window.location.replace(ref);
@@ -61,7 +61,7 @@ export class SignInComponent implements OnInit {
     }
     this.authoriseService.Login(this.username, this.password, type).subscribe(
       resp => {
-        const ref = this.route.snapshot.queryParams['ref'] ? this.route.snapshot.queryParams['ref'] : '/';
+        const ref = this.route.snapshot.queryParams['ref'] ? this.route.snapshot.queryParams['ref'] : '/portal/dashboard';
         const data = resp.data;
         localStorage.setItem(LoginTokenKey, data.token);
         window.location.replace(ref);
@@ -76,7 +76,7 @@ export class SignInComponent implements OnInit {
 
   oauth2Login() {
     const currentUrl = document.location.origin;
-    const ref = this.route.snapshot.queryParams['ref'] ? this.route.snapshot.queryParams['ref'] : '/';
+    const ref = this.route.snapshot.queryParams['ref'] ? this.route.snapshot.queryParams['ref'] : '/portal/dashboard';
     window.location.replace(`/login/oauth2/oauth2?next=${currentUrl}/sign-in?ref=${ref}`);
   }
 

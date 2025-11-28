@@ -63,7 +63,7 @@ export const defaultResources = {
 export const appLabelKey = 'appLabelKey';
 export const namespaceLabelKey = 'namespaceLabelKey';
 
-export const defaultRoutingUrl = 'portal/namespace/0/app';
+export const defaultRoutingUrl = 'portal/dashboard';
 
 export const namespaceClusterIndex = 'clusters';
 

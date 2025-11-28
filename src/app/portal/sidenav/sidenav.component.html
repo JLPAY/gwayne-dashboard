@@ -23,6 +23,7 @@
     <clr-icon clrVerticalNavIcon shape="layers"></clr-icon>
     命名空间
   </a>
+  <div class="nav-divider"></div>
   <a
     clrVerticalNavLink
     title="Deployment"
@@ -47,6 +48,15 @@
     <clr-icon clrVerticalNavIcon shape="layers"></clr-icon>
     Daemonset
   </a>
+  <div class="nav-divider"></div>
+  <a
+    clrVerticalNavLink
+    title="Pod"
+    routerLink="/portal/kubernetes/pod"
+    routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="container"></clr-icon>
+    Pod
+  </a>
   <a
     clrVerticalNavLink
     title="Job"
@@ -55,13 +65,14 @@
     <clr-icon clrVerticalNavIcon shape="clock"></clr-icon>
     Job
   </a>
+  
   <a
     clrVerticalNavLink
-    title="Pod"
-    routerLink="/portal/kubernetes/pod"
+    title="Cronjob"
+    routerLink="/portal/kubernetes/cronjob"
     routerLinkActive="active">
-    <clr-icon clrVerticalNavIcon shape="container"></clr-icon>
-    Pod
+    <clr-icon clrVerticalNavIcon shape="clock"></clr-icon>
+    Cronjob
   </a>
   <div class="nav-divider"></div>
   <a href="javascript:;" style="flex: 1;"></a>

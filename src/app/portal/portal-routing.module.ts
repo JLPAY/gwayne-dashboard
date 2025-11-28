@@ -10,6 +10,7 @@ import { KubeStatefulsetComponent } from './kubernetes/statefulset/kube-stateful
 import { KubeDaemonsetComponent } from './kubernetes/daemonset/kube-daemonset.component';
 import { KubeJobComponent } from './kubernetes/job/kube-job.component';
 import { KubePodComponent } from './kubernetes/pod/kube-pod.component';
+import { KubeCronjobComponent } from './kubernetes/cronjob/kube-cronjob.component';
 
 const routes: Routes = [
   {
@@ -75,6 +76,14 @@ const routes: Routes = [
       {
         path: 'kubernetes/pod/:cluster',
         component: KubePodComponent
+      },
+      {
+        path: 'kubernetes/cronjob',
+        component: KubeCronjobComponent
+      },
+      {
+        path: 'kubernetes/cronjob/:cluster',
+        component: KubeCronjobComponent
       }
     ]
   },
