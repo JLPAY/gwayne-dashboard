@@ -57,6 +57,10 @@ export class AceEditorBoxComponent implements OnInit, OnDestroy {
         this.editor.$blockScrolling = Infinity;
         this.editor.setFontSize('16px');
         this.editor.setShowPrintMargin(false);
+        // 如果是查看模式（edit === false），设置编辑器为只读
+        if (message.edit === false) {
+          this.editor.setReadOnly(true);
+        }
         this.editor.setValue(typeof this.aceEditorMsg.message === 'string' ?
           JSON.stringify(JSON.parse(this.aceEditorMsg.message), null, 2) : JSON.stringify(this.aceEditorMsg.message, null, 2));
 

@@ -34,6 +34,7 @@ import { KubeDaemonsetModule } from './kubernetes/daemonset/kube-daemonset.modul
 import { KubeJobModule } from './kubernetes/job/kube-job.module';
 import { KubePodModule } from './kubernetes/pod/kube-pod.module';
 import { KubeCronjobModule } from './kubernetes/cronjob/kube-cronjob.module';
+import { KubeConfigmapModule } from './kubernetes/configmap/kube-configmap.module';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { KubeCronjobModule } from './kubernetes/cronjob/kube-cronjob.module';
     KubeJobModule,
     KubePodModule,
     KubeCronjobModule,
+    KubeConfigmapModule,
     MarkdownModule.forRoot(),
   ],
   providers: [
