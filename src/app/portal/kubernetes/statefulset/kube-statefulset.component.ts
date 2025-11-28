@@ -38,6 +38,9 @@ export class KubeStatefulsetComponent extends KubernetesNamespacedResource imple
   @ViewChild(MigrationComponent, { static: false })
   migrationComponent: MigrationComponent;
 
+  viewModalOpened = false;
+  viewTitle = '查看 StatefulSet';
+
   constructor(public kubernetesClient: KubernetesClient,
               public route: ActivatedRoute,
               public router: Router,
@@ -102,6 +105,15 @@ export class KubeStatefulsetComponent extends KubernetesNamespacedResource imple
             this.messageHandlerService.handleError(error);
           }
         );
+    }
+  }
+
+  onViewModalChange(info: any) {
+    if (info && info.modalOpened) {
+      this.viewModalOpened = true;
+      if (info.title) {
+        this.viewTitle = info.title;
+      }
     }
   }
 
