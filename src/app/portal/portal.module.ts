@@ -38,6 +38,7 @@ import { KubeConfigmapModule } from './kubernetes/configmap/kube-configmap.modul
 import { KubeSecretModule } from './kubernetes/secret/kube-secret.module';
 import { KubeServiceModule } from './kubernetes/service/kube-service.module';
 import { KubeIngressModule } from './kubernetes/ingress/kube-ingress.module';
+import { KubeHpaModule } from './kubernetes/hpa/kube-hpa.module';
 
 @NgModule({
   imports: [
@@ -72,6 +73,7 @@ import { KubeIngressModule } from './kubernetes/ingress/kube-ingress.module';
     KubeSecretModule,
     KubeServiceModule,
     KubeIngressModule,
+    KubeHpaModule,
     MarkdownModule.forRoot(),
   ],
   providers: [

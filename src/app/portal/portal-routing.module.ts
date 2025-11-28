@@ -15,6 +15,7 @@ import { KubeConfigmapComponent } from './kubernetes/configmap/kube-configmap.co
 import { KubeSecretComponent } from './kubernetes/secret/kube-secret.component';
 import { KubeServiceComponent } from './kubernetes/service/kube-service.component';
 import { KubeIngressComponent } from './kubernetes/ingress/kube-ingress.component';
+import { KubeHpaComponent } from './kubernetes/hpa/kube-hpa.component';
 
 const routes: Routes = [
   {
@@ -120,6 +121,14 @@ const routes: Routes = [
       {
         path: 'kubernetes/ingress/:cluster',
         component: KubeIngressComponent
+      },
+      {
+        path: 'kubernetes/hpa',
+        component: KubeHpaComponent
+      },
+      {
+        path: 'kubernetes/hpa/:cluster',
+        component: KubeHpaComponent
       }
     ]
   },
