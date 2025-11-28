@@ -38,6 +38,9 @@ export class KubeDaemonsetComponent extends KubernetesNamespacedResource impleme
   @ViewChild(MigrationComponent, { static: false })
   migrationComponent: MigrationComponent;
 
+  viewModalOpened = false;
+  viewTitle = '查看 DaemonSet';
+
   constructor(public kubernetesClient: KubernetesClient,
               public route: ActivatedRoute,
               public router: Router,
@@ -102,6 +105,15 @@ export class KubeDaemonsetComponent extends KubernetesNamespacedResource impleme
             this.messageHandlerService.handleError(error);
           }
         );
+    }
+  }
+
+  onViewModalChange(info: any) {
+    if (info && info.modalOpened) {
+      this.viewModalOpened = true;
+      if (info.title) {
+        this.viewTitle = info.title;
+      }
     }
   }
 }
