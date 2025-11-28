@@ -50,6 +50,7 @@ export class ListNodesComponent implements OnInit {
   labelFilter = new LabelFilter();
   @Output() delete = new EventEmitter<Node>();
   @Output() edit = new EventEmitter<Node>();
+  @Output() view = new EventEmitter<Node>();
   @Output() refresh = new EventEmitter<boolean>();
   @Output() isolate = new EventEmitter<Node>();
   @Output() unisolate = new EventEmitter<Node>();
@@ -108,6 +109,10 @@ export class ListNodesComponent implements OnInit {
 
   drainNode(node: Node) {
     this.drain.emit(node);
+  }
+
+  onViewEvent(node: Node) {
+    this.view.emit(node);
   }
 
 }

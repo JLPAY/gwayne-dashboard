@@ -32,6 +32,7 @@
       (refresh)="refresh($event)"
       (delete)="deleteNode($event)"
       (edit)="editNode($event)"
+      (view)="viewNode($event)"
       (isolate)="isolateNode($event)"
       (unisolate)="unisolateNode($event)"
       (drain)="drainNode($event)"
@@ -41,6 +42,17 @@
 </div>
 <wayne-ace-editor (outputObj)="saveNode($event)" *ngIf="authService.currentUser.admin"></wayne-ace-editor>
 <create-edit-drain (refresh)="retrieve()" *ngIf="authService.currentUser.admin"></create-edit-drain>
+<clr-modal [clrModalSize]="'lg'" [(clrModalOpen)]="viewModalOpened" #viewModal>
+  <h3 class="modal-title">{{viewTitle}}
+    <wayne-modal-operate [modal]="viewModal" *ngIf="viewModalOpened"></wayne-modal-operate>
+  </h3>
+  <div class="modal-body">
+    <wayne-ace-editor-box (modalChange)="onViewModalChange($event)"></wayne-ace-editor-box>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="viewModalOpened = false">{{'BUTTON.CLOSE' | translate}}</button>
+  </div>
+</clr-modal>
 <wayne-float-window value="{{cluster}}">
   <wayne-float-window-item *ngFor="let cluster of clusters" [value]="cluster"
                            (click)="jumpToHref(cluster)"></wayne-float-window-item>

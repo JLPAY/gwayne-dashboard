@@ -14,6 +14,8 @@ import { NodeClient } from '../../../shared/client/v1/kubernetes/node';
 import { Inventory } from './list-nodes/inventory';
 import { KubeNode, NodeSummary } from '../../../shared/model/v1/kubernetes/node';
 import { AceEditorComponent } from '../../../shared/ace-editor/ace-editor.component';
+import { AceEditorService } from '../../../shared/ace-editor/ace-editor.service';
+import { AceEditorMsg } from '../../../shared/ace-editor/ace-editor';
 const showState = {
   'name': {hidden: false},
   'label': {hidden: false},
@@ -57,6 +59,8 @@ export class NodesComponent implements OnInit, OnDestroy {
   resourceData: NodeSummary;
 
   subscription: Subscription;
+  viewModalOpened = false;
+  viewTitle = '查看节点';
 
   constructor(private nodeClient: NodeClient,
               private route: ActivatedRoute,
@@ -65,7 +69,8 @@ export class NodesComponent implements OnInit, OnDestroy {
               private clusterService: ClusterService,
               public authService: AuthService,
               private messageHandlerService: MessageHandlerService,
-              private deletionDialogService: ConfirmationDialogService) {
+              private deletionDialogService: ConfirmationDialogService,
+              private aceEditorService: AceEditorService) {
     this.subscription = deletionDialogService.confirmationConfirm$.subscribe(message => {
       if (message &&
         message.state === ConfirmationState.CONFIRMED &&
@@ -212,6 +217,18 @@ export class NodesComponent implements OnInit, OnDestroy {
     );
   }
 
+  viewNode(node: Node) {
+    this.nodeClient.getByName(node.name, this.cluster).subscribe(
+      resp => {
+        const data = resp.data;
+        this.aceEditorService.announceMessage(AceEditorMsg.Instance(data, false, '查看节点'));
+      },
+      error => {
+        this.messageHandlerService.handleError(error);
+      }
+    );
+  }
+
   saveNode(editedNode: KubeNode) {
     this.nodeClient.getByName(editedNode.metadata.name, this.cluster).subscribe(
       resp => {
@@ -276,6 +293,15 @@ export class NodesComponent implements OnInit, OnDestroy {
   jumpToHref(cluster: string) {
     this.setCluster(cluster);
     this.retrieve();
+  }
+
+  onViewModalChange(info: any) {
+    if (info && info.modalOpened) {
+      this.viewModalOpened = true;
+      if (info.title) {
+        this.viewTitle = info.title;
+      }
+    }
   }
 
 }
