@@ -9,6 +9,8 @@ import { KubeResourceJob } from '../../../shared/shared.const';
 import { KubernetesNamespacedResource } from '../../../shared/base/kubernetes-namespaced/kubernetes-namespaced-resource';
 import { DeletionDialogComponent } from '../../../shared/deletion-dialog/deletion-dialog.component';
 import { ListJobComponent } from './list-job/list-job.component';
+import { AceEditorService } from '../../../shared/ace-editor/ace-editor.service';
+import { AceEditorMsg } from '../../../shared/ace-editor/ace-editor';
 
 const showState = {
   'name': {hidden: false},
@@ -34,12 +36,16 @@ export class KubeJobComponent extends KubernetesNamespacedResource implements On
   @ViewChild(DeletionDialogComponent, { static: false })
   deletionDialogComponent: DeletionDialogComponent;
 
+  viewModalOpened = false;
+  viewTitle = '查看 Job';
+
   constructor(public kubernetesClient: KubernetesClient,
               public route: ActivatedRoute,
               public router: Router,
               public clusterService: ClusterService,
               public authService: AuthService,
-              public messageHandlerService: MessageHandlerService) {
+              public messageHandlerService: MessageHandlerService,
+              public aceEditorService: AceEditorService) {
     super(kubernetesClient, route, router, clusterService, authService, messageHandlerService);
     super.registResourceType('job');
     super.registKubeResource(KubeResourceJob);
@@ -52,6 +58,15 @@ export class KubeJobComponent extends KubernetesNamespacedResource implements On
 
   ngOnDestroy(): void {
     super.ngOnDestroy();
+  }
+
+  onViewModalChange(info: any) {
+    if (info && info.modalOpened) {
+      this.viewModalOpened = true;
+      if (info.title) {
+        this.viewTitle = info.title;
+      }
+    }
   }
 
 }
