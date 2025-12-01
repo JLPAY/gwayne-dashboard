@@ -77,7 +77,18 @@ export class SignInComponent implements OnInit {
   oauth2Login() {
     const currentUrl = document.location.origin;
     const ref = this.route.snapshot.queryParams['ref'] ? this.route.snapshot.queryParams['ref'] : '/portal/dashboard';
-    window.location.replace(`/login/oauth2/oauth2?next=${currentUrl}/sign-in?ref=${ref}`);
+    // 从配置中获取 OAuth2 服务名称，如果没有则使用默认值 "oauth2"
+    const oauth2Name = (this.authService.config && this.authService.config['oauth2Name']) || 'oauth2';
+    // 使用 OAuth2 配置中的 RedirectURL 作为后端地址
+    const backendUrl = (this.authService.config && this.authService.config['oauth2RedirectURL']) 
+      || (window as any).CONFIG && (window as any).CONFIG.URL
+      || currentUrl;
+    // 构建 next 参数，包含完整的回调 URL，并进行 URL 编码
+    const nextUrl = `${currentUrl}/sign-in?ref=${encodeURIComponent(ref)}`;
+    // 跳转到后端 OAuth2 登录端点（使用 OAuth2 RedirectURL 作为后端地址）
+    const loginUrl = `${backendUrl}/login/oauth2/${oauth2Name}?next=${encodeURIComponent(nextUrl)}`;
+    console.log('OAuth2 login URL:', loginUrl);
+    window.location.href = loginUrl;
   }
 
   getOAuth2Title() {
