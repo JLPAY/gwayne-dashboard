@@ -71,6 +71,8 @@ import { KubeCrdModule } from './kubernetes/crd/kube-crd.module';
 import { KubeEventModule } from './kubernetes/event/kube-event.module';
 import { RoadMapModule } from './roadmap/roadmap.module';
 import { CustomlinkModule } from './customlink/customlink.module';
+import { AIBackendModule } from './k8sgpt/aibackend/aibackend.module';
+import { DiagnosisModule } from './k8sgpt/diagnosis/diagnosis.module';
 
 @NgModule({
   imports: [
@@ -136,7 +138,9 @@ import { CustomlinkModule } from './customlink/customlink.module';
     KubeCrdModule,
     KubeEventModule,
     RoadMapModule,
-    CustomlinkModule
+    CustomlinkModule,
+    AIBackendModule,
+    DiagnosisModule
   ],
   providers: [
     AdminAuthCheckGuard,

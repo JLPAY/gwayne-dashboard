@@ -1,0 +1,85 @@
+<clr-datagrid>
+  <clr-dg-column class="col-id">
+    <ng-container *clrDgHideableColumn="{hidden: false}">
+      ID
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column class="col-name">
+    <ng-container *clrDgHideableColumn="{hidden: false}">
+      {{'TITLE.NAME' | translate}}
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">
+      提供商
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">
+      模型
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">
+      基础URL
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">
+      温度
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">
+      状态
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">
+      默认
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{hidden: false}">
+      {{'TITLE.DESCRIPTION' | translate}}
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column class="col-time">
+    <ng-container *clrDgHideableColumn="{hidden: false}">
+      {{'TITLE.CREATE_TIME' | translate}}
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-row *ngFor="let backend of backends" [clrDgItem]="backend">
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="editBackend(backend)">{{'BUTTON.EDIT' | translate}}</button>
+      <button class="action-item" (click)="setDefaultBackend(backend)" *ngIf="!backend.isDefault">设为默认</button>
+      <button class="action-item" (click)="deleteBackend(backend)">{{'BUTTON.DELETE' | translate}}</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell class="col-id">{{backend.id}}</clr-dg-cell>
+    <clr-dg-cell class="col-name copy">{{backend.name}}</clr-dg-cell>
+    <clr-dg-cell>{{getProviderName(backend.provider)}}</clr-dg-cell>
+    <clr-dg-cell>{{backend.model}}</clr-dg-cell>
+    <clr-dg-cell>{{backend.baseURL || '-'}}</clr-dg-cell>
+    <clr-dg-cell>{{backend.temperature}}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="badge" [class.badge-success]="backend.enabled" [class.badge-danger]="!backend.enabled">
+        {{backend.enabled ? '启用' : '禁用'}}
+      </span>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <span class="badge badge-info" *ngIf="backend.isDefault">默认</span>
+      <span *ngIf="!backend.isDefault">-</span>
+    </clr-dg-cell>
+    <clr-dg-cell>{{backend.description || '-'}}</clr-dg-cell>
+    <clr-dg-cell class="col-time">{{backend.createTime | date:'yyyy-MM-dd HH:mm'}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer *ngIf="backends && backends.length > 0">
+    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50]">每页显示</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+      共 {{pagination.totalItems}} 条
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+

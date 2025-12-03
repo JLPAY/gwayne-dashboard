@@ -67,5 +67,12 @@ const adminSideNav: any[] = [
       { a: { link: 'system/user', text: 'MENU.USER_LIST', options: { exact: true } } },
     ]
   },
+  { type: SideNavType.Divider },
+  {
+    type: SideNavType.GroupLink, icon: { title: 'K8sGPT', shape: 'cpu', solid: true }, text: 'K8sGPT', child: [
+      { a: { link: 'k8sgpt/aibackend', text: 'AI后端管理', options: { exact: true }, icon: { shape: 'settings', solid: false } } },
+      { a: { link: 'k8sgpt/diagnosis', text: '集群诊断', options: { exact: true }, icon: { shape: 'search', solid: false } } },
+    ]
+  },
 ];
 export { adminSideNav, SideNavType, SideNavCollapseStorage };

@@ -91,6 +91,8 @@ import { KubeCrdComponent } from './kubernetes/crd/kube-crd.component';
 import { KubeEventComponent } from './kubernetes/event/kube-event.component';
 import { RoadmapComponent } from './roadmap/roadmap.component';
 import { CustomlinkComponent } from './customlink/customlink.component';
+import { AIBackendComponent } from './k8sgpt/aibackend/aibackend.component';
+import { DiagnosisComponent } from './k8sgpt/diagnosis/diagnosis.component';
 
 const routes: Routes = [
   {
@@ -214,6 +216,8 @@ const routes: Routes = [
       {path: 'kubernetes/customresourcedefinition/:cluster', component: KubeCrdComponent},
       {path: 'kubernetes/event', component: KubeEventComponent},
       {path: 'kubernetes/event/:cluster', component: KubeEventComponent},
+      {path: 'k8sgpt/aibackend', component: AIBackendComponent},
+      {path: 'k8sgpt/diagnosis', component: DiagnosisComponent},
       ...ADMINROUTES
     ]
   }

@@ -186,7 +186,8 @@ export const enum ConfirmationTargets {
   NOTIFICATION,
   NODE,
   HPA,
-  ENDPOINT
+  ENDPOINT,
+  AI_BACKEND
 }
 
 export const enum ActionType {
