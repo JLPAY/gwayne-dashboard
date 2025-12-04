@@ -44,7 +44,7 @@ export class ListAIBackendComponent implements OnInit {
       'huggingface': 'Hugging Face',
       'ocigenai': 'OCI GenAI',
       'watsonxai': 'IBM Watsonx AI',
-      'noopai': 'Other AI'
+      'noopai': 'NoOp AI'
     };
     return providerMap[provider] || provider;
   }

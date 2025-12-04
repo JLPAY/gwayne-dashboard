@@ -39,7 +39,7 @@ export class CreateEditAIBackendComponent {
     { value: 'huggingface', label: 'Hugging Face' },
     { value: 'ocigenai', label: 'OCI GenAI' },
     { value: 'watsonxai', label: 'IBM Watsonx AI' },
-    { value: 'noopai', label: 'Other AI' }
+    { value: 'noopai', label: 'NoOp AI' }
   ];
 
   constructor(private aibackendService: AIBackendService,
