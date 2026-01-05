@@ -58,7 +58,11 @@ export class TerminalCommandRuleComponent implements OnInit {
 
   openModal(rule?: TerminalCommandRule) {
     if (rule) {
-      this.currentRule = { ...rule };
+      // 编辑模式：将逗号分隔的命令转换为换行分隔，便于在 textarea 中显示
+      this.currentRule = {
+        ...rule,
+        command: this.formatCommandForDisplay(rule.command)
+      };
       this.isCreateMode = false;
     } else {
       this.currentRule = {
@@ -73,6 +77,30 @@ export class TerminalCommandRuleComponent implements OnInit {
     this.modalOpened = true;
   }
 
+  // 将命令格式化为显示格式（逗号转换行）
+  private formatCommandForDisplay(command: string): string {
+    if (!command) {
+      return '';
+    }
+    // 将逗号分隔的命令转换为换行分隔
+    return command.split(',').map(cmd => cmd.trim()).filter(cmd => cmd).join('\n');
+  }
+
+  // 将命令格式化为保存格式（统一为逗号分隔）
+  private formatCommandForSave(command: string): string {
+    if (!command) {
+      return '';
+    }
+    // 先按换行符分割，再按逗号分割，然后合并去重并去除空值
+    const commands = command
+      .split(/[\n,]/)
+      .map(cmd => cmd.trim())
+      .filter(cmd => cmd && cmd.length > 0);
+    // 去重
+    const uniqueCommands = [...new Set(commands)];
+    return uniqueCommands.join(',');
+  }
+
   closeModal() {
     this.modalOpened = false;
   }
@@ -83,9 +111,17 @@ export class TerminalCommandRuleComponent implements OnInit {
       return;
     }
 
+    // 格式化命令：统一转换为逗号分隔格式（后端要求）
+    const formattedCommand = this.formatCommandForSave(this.currentRule.command);
+    if (!formattedCommand) {
+      this.messageHandlerService.showError('命令模式不能为空');
+      return;
+    }
+
     // 确保 ruleType 是数字类型
     const ruleToSave = {
       ...this.currentRule,
+      command: formattedCommand,
       ruleType: typeof this.currentRule.ruleType === 'string' 
         ? parseInt(this.currentRule.ruleType, 10) 
         : this.currentRule.ruleType

@@ -18,7 +18,11 @@
             <clr-dg-row *ngFor="let rule of rules">
               <clr-dg-cell>{{ rule.role }}</clr-dg-cell>
               <clr-dg-cell>{{ getRuleTypeName(rule.ruleType) }}</clr-dg-cell>
-              <clr-dg-cell>{{ rule.command }}</clr-dg-cell>
+              <clr-dg-cell>
+                <span [title]="rule.command" class="command-pattern">
+                  {{ rule.command.length > 50 ? (rule.command.substring(0, 50) + '...') : rule.command }}
+                </span>
+              </clr-dg-cell>
               <clr-dg-cell>{{ rule.description || '-' }}</clr-dg-cell>
               <clr-dg-cell>
                 <span class="badge" [class.badge-success]="rule.enabled" [class.badge-danger]="!rule.enabled">
@@ -65,11 +69,16 @@
         </select>
       </clr-select-container>
 
-      <clr-input-container>
+      <clr-textarea-container>
         <label>命令模式（支持正则表达式）</label>
-        <input clrInput [(ngModel)]="currentRule.command" name="command" placeholder="例如: rm -rf, mv, ^rm" required />
-        <clr-control-helper>支持正则表达式，例如: ^rm 匹配以 rm 开头的命令</clr-control-helper>
-      </clr-input-container>
+        <textarea clrTextarea [(ngModel)]="currentRule.command" name="command" 
+                  placeholder="例如: rm -rf, mv, ^rm&#10;或者每行一个命令:&#10;rm -rf&#10;mv&#10;^rm" 
+                  rows="5" required></textarea>
+        <clr-control-helper>
+          支持正则表达式，例如: ^rm 匹配以 rm 开头的命令<br>
+          多个命令可以用逗号分隔（如: rm -rf, mv, ^rm）或每行一个命令
+        </clr-control-helper>
+      </clr-textarea-container>
 
       <clr-textarea-container>
         <label>描述</label>
