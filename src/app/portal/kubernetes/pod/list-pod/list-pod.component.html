@@ -54,7 +54,7 @@
       <button class="action-item" *ngIf="authService.currentUser.admin" (click)="onEditEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.EDIT' | translate}}</button>
       <button class="action-item" *ngIf="authService.currentUser.admin" (click)="onDeleteEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.DELETE' | translate}}</button>
       <button class="action-item" *ngIf="authService.currentUser.admin" (click)="onForceDeleteEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.FORCEDELETE' | translate}}</button>
-      <button class="action-item" *ngIf="authService.currentUser.admin" (click)="enterContainer(obj)">{{'ADMIN.KUBERNETES.ACTION.ENTER_CONTAINER' | translate}}</button>
+      <button class="action-item" (click)="enterContainer(obj)">{{'ADMIN.KUBERNETES.ACTION.ENTER_CONTAINER' | translate}}</button>
       <button class="action-item" *ngIf="authService.currentUser.admin" (click)="podLog(obj)">{{'ADMIN.KUBERNETES.ACTION.LOG' | translate}}</button>
     </clr-dg-action-overflow>
     <clr-dg-cell> {{ obj.metadata.name }} </clr-dg-cell>

@@ -13,6 +13,7 @@ import { NamespaceComponent } from './namespace/namespace.component';
 import { UserComponent } from './user/user.component';
 import { GroupComponent } from './group/group.component';
 import { PermissionComponent } from './permission/permission.component';
+import { TerminalCommandRuleComponent } from './terminal-command-rule/terminal-command-rule.component';
 import { SecretComponent } from './secret/secret.component';
 import { TrashSecretComponent } from './secret/trash-secret/trash-secret.component';
 import { SecretTplComponent } from './secrettpl/secrettpl.component';
@@ -133,6 +134,7 @@ const routes: Routes = [
       {path: 'system/user/:gid', component: UserComponent},
       {path: 'system/group', component: GroupComponent},
       {path: 'system/permission', component: PermissionComponent},
+      {path: 'terminal/command-rule', component: TerminalCommandRuleComponent},
       {path: 'secret', component: SecretComponent},
       {path: 'secret/trash', component: TrashSecretComponent},
       {path: 'secret/tpl', component: SecretTplComponent},

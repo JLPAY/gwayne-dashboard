@@ -1,0 +1,92 @@
+<div class="content-area">
+  <div class="clr-row">
+    <div class="clr-col-12">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">终端命令规则管理</span>
+          <button class="btn btn-primary btn-sm" (click)="openModal()">新建规则</button>
+        </div>
+        <div class="card-block">
+          <clr-datagrid>
+            <clr-dg-column>角色</clr-dg-column>
+            <clr-dg-column>规则类型</clr-dg-column>
+            <clr-dg-column>命令模式</clr-dg-column>
+            <clr-dg-column>描述</clr-dg-column>
+            <clr-dg-column>状态</clr-dg-column>
+            <clr-dg-column>操作</clr-dg-column>
+
+            <clr-dg-row *ngFor="let rule of rules">
+              <clr-dg-cell>{{ rule.role }}</clr-dg-cell>
+              <clr-dg-cell>{{ getRuleTypeName(rule.ruleType) }}</clr-dg-cell>
+              <clr-dg-cell>{{ rule.command }}</clr-dg-cell>
+              <clr-dg-cell>{{ rule.description || '-' }}</clr-dg-cell>
+              <clr-dg-cell>
+                <span class="badge" [class.badge-success]="rule.enabled" [class.badge-danger]="!rule.enabled">
+                  {{ rule.enabled ? '启用' : '禁用' }}
+                </span>
+              </clr-dg-cell>
+              <clr-dg-cell>
+                <button class="btn btn-sm btn-link" (click)="openModal(rule)">编辑</button>
+                <button class="btn btn-sm btn-link" (click)="toggleEnabled(rule)">
+                  {{ rule.enabled ? '禁用' : '启用' }}
+                </button>
+                <button class="btn btn-sm btn-link" (click)="confirmDelete(rule)">删除</button>
+              </clr-dg-cell>
+            </clr-dg-row>
+
+            <clr-dg-footer>
+              <clr-dg-pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50]">规则每页</clr-dg-page-size>
+                <span *ngIf="rules.length > 0">{{ rules.length }} 条规则</span>
+              </clr-dg-pagination>
+            </clr-dg-footer>
+          </clr-datagrid>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<clr-modal [(clrModalOpen)]="modalOpened" [clrModalSize]="'lg'">
+  <h3 class="modal-title">{{ isCreateMode ? '新建' : '编辑' }}命令规则</h3>
+  <div class="modal-body">
+    <form clrForm>
+      <clr-select-container>
+        <label>角色</label>
+        <select clrSelect [(ngModel)]="currentRule.role" name="role" required>
+          <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+        </select>
+      </clr-select-container>
+
+      <clr-select-container>
+        <label>规则类型</label>
+        <select clrSelect [(ngModel)]="currentRule.ruleType" name="ruleType" required>
+          <option *ngFor="let type of ruleTypes" [ngValue]="type.value">{{ type.label }}</option>
+        </select>
+      </clr-select-container>
+
+      <clr-input-container>
+        <label>命令模式（支持正则表达式）</label>
+        <input clrInput [(ngModel)]="currentRule.command" name="command" placeholder="例如: rm -rf, mv, ^rm" required />
+        <clr-control-helper>支持正则表达式，例如: ^rm 匹配以 rm 开头的命令</clr-control-helper>
+      </clr-input-container>
+
+      <clr-textarea-container>
+        <label>描述</label>
+        <textarea clrTextarea [(ngModel)]="currentRule.description" name="description" rows="3"></textarea>
+      </clr-textarea-container>
+
+      <clr-checkbox-container>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox [(ngModel)]="currentRule.enabled" name="enabled" />
+          <label>启用</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="closeModal()">取消</button>
+    <button type="button" class="btn btn-primary" (click)="save()">保存</button>
+  </div>
+</clr-modal>
+

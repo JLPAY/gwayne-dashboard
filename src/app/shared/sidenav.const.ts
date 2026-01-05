@@ -65,6 +65,7 @@ const adminSideNav: any[] = [
   {
     type: SideNavType.GroupLink, icon: { title: 'MENU.PERMISSION', shape: 'users' }, text: 'MENU.PERMISSION', name: 'system', child: [
       { a: { link: 'system/user', text: 'MENU.USER_LIST', options: { exact: true } } },
+      { a: { link: 'terminal/command-rule', text: '终端命令规则', options: { exact: true } } },
     ]
   },
   { type: SideNavType.Divider },

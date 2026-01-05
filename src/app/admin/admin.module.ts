@@ -73,6 +73,7 @@ import { RoadMapModule } from './roadmap/roadmap.module';
 import { CustomlinkModule } from './customlink/customlink.module';
 import { AIBackendModule } from './k8sgpt/aibackend/aibackend.module';
 import { DiagnosisModule } from './k8sgpt/diagnosis/diagnosis.module';
+import { TerminalCommandRuleModule } from './terminal-command-rule/terminal-command-rule.module';
 
 @NgModule({
   imports: [
@@ -140,7 +141,8 @@ import { DiagnosisModule } from './k8sgpt/diagnosis/diagnosis.module';
     RoadMapModule,
     CustomlinkModule,
     AIBackendModule,
-    DiagnosisModule
+    DiagnosisModule,
+    TerminalCommandRuleModule
   ],
   providers: [
     AdminAuthCheckGuard,
