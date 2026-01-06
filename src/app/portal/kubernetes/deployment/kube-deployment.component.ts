@@ -101,15 +101,14 @@ export class KubeDeploymentComponent extends KubernetesNamespacedResource implem
   }
 
   onScaleConfirmed(event: any) {
-    // 创建完整的 Kubernetes 资源对象
+    // 创建完整的 Kubernetes 资源对象，保留所有 metadata 字段（包括 labels 和 annotations）
     const updateData = {
       apiVersion: event.obj.apiVersion,
       kind: event.obj.kind,
       metadata: {
-        name: event.obj.metadata.name,
-        namespace: event.obj.metadata.namespace,
-        resourceVersion: event.obj.metadata.resourceVersion,
-        uid: event.obj.metadata.uid
+        ...event.obj.metadata,
+        // 确保 resourceVersion 是最新的，用于并发控制
+        resourceVersion: event.obj.metadata.resourceVersion
       },
       spec: {
         ...event.obj.spec,
