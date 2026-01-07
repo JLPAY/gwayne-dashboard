@@ -7,6 +7,7 @@ import { throwError } from 'rxjs';
 export interface TerminalCommandRule {
   id?: number;
   role: string;
+  cluster?: string; // 集群名称，空字符串表示所有集群
   ruleType: number; // 0-黑名单，1-白名单
   command: string;
   description?: string;

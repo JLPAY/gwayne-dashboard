@@ -9,6 +9,7 @@
         <div class="card-block">
           <clr-datagrid>
             <clr-dg-column>角色</clr-dg-column>
+            <clr-dg-column>集群</clr-dg-column>
             <clr-dg-column>规则类型</clr-dg-column>
             <clr-dg-column>命令模式</clr-dg-column>
             <clr-dg-column>描述</clr-dg-column>
@@ -17,6 +18,7 @@
 
             <clr-dg-row *ngFor="let rule of rules">
               <clr-dg-cell>{{ rule.role }}</clr-dg-cell>
+              <clr-dg-cell>{{ rule.cluster || '所有集群' }}</clr-dg-cell>
               <clr-dg-cell>{{ getRuleTypeName(rule.ruleType) }}</clr-dg-cell>
               <clr-dg-cell>
                 <span [title]="rule.command" class="command-pattern">
@@ -60,6 +62,17 @@
         <select clrSelect [(ngModel)]="currentRule.role" name="role" required>
           <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
         </select>
+      </clr-select-container>
+
+      <clr-select-container>
+        <label>集群</label>
+        <select clrSelect [(ngModel)]="currentRule.cluster" name="cluster">
+          <option [value]="''">所有集群</option>
+          <option *ngFor="let cluster of clusters" [value]="cluster">{{ cluster }}</option>
+        </select>
+        <clr-control-helper>
+          选择集群后，规则仅对该集群生效。选择"所有集群"则对所有集群生效。
+        </clr-control-helper>
       </clr-select-container>
 
       <clr-select-container>

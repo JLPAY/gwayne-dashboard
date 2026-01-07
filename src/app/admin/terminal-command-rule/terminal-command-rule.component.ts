@@ -4,6 +4,7 @@ import { MessageHandlerService } from '../../shared/message-handler/message-hand
 import { ConfirmationDialogService } from '../../shared/confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationMessage } from '../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../shared/shared.const';
+import { ClusterService } from '../../shared/client/v1/cluster.service';
 
 @Component({
   selector: 'wayne-terminal-command-rule',
@@ -14,6 +15,7 @@ export class TerminalCommandRuleComponent implements OnInit {
   rules: TerminalCommandRule[] = [];
   currentRule: TerminalCommandRule = {
     role: 'user',
+    cluster: '',
     ruleType: 0,
     command: '',
     description: '',
@@ -22,6 +24,7 @@ export class TerminalCommandRuleComponent implements OnInit {
   isCreateMode = true;
   modalOpened = false;
   roles = ['admin', 'user'];
+  clusters: string[] = [];
   ruleTypes = [
     { value: 0, label: '黑名单' },
     { value: 1, label: '白名单' }
@@ -30,7 +33,8 @@ export class TerminalCommandRuleComponent implements OnInit {
   constructor(
     private ruleService: TerminalCommandRuleService,
     private messageHandlerService: MessageHandlerService,
-    private deletionDialogService: ConfirmationDialogService
+    private deletionDialogService: ConfirmationDialogService,
+    private clusterService: ClusterService
   ) {
     this.deletionDialogService.confirmationConfirm$.subscribe(message => {
       if (message && message.state === ConfirmationState.CONFIRMED) {
@@ -42,7 +46,21 @@ export class TerminalCommandRuleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadClusters();
     this.retrieve();
+  }
+
+  loadClusters() {
+    this.clusterService.getNames().subscribe(
+      response => {
+        // 后端返回的是 Cluster 对象数组，需要提取 name 字段
+        const clusterData = response.data || [];
+        this.clusters = clusterData.map((cluster: any) => cluster.name || cluster).filter((name: string) => name);
+      },
+      error => {
+        this.messageHandlerService.handleError(error);
+      }
+    );
   }
 
   retrieve() {
@@ -67,6 +85,7 @@ export class TerminalCommandRuleComponent implements OnInit {
     } else {
       this.currentRule = {
         role: 'user',
+        cluster: '',
         ruleType: 0,
         command: '',
         description: '',
@@ -109,6 +128,11 @@ export class TerminalCommandRuleComponent implements OnInit {
     if (!this.currentRule.command || !this.currentRule.role) {
       this.messageHandlerService.showError('请填写必填字段');
       return;
+    }
+
+    // 确保 cluster 字段存在（如果未选择，设置为空字符串表示所有集群）
+    if (this.currentRule.cluster === undefined || this.currentRule.cluster === null) {
+      this.currentRule.cluster = '';
     }
 
     // 格式化命令：统一转换为逗号分隔格式（后端要求）
