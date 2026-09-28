@@ -17,6 +17,7 @@ export class SignInComponent implements OnInit {
   username: string;
   password: string;
   isSubmitOnGoing: boolean;
+  oauth2Providers: { name: string; title: string }[] = [];
   ngForm: NgForm;
   @ViewChild('ngForm', { static: true })
   currentForm: NgForm;
@@ -41,6 +42,10 @@ export class SignInComponent implements OnInit {
     }
     if (this.authService.currentUser) {
       window.location.replace(ref);
+    }
+
+    if (this.authService.config?.oauth2Providers) {
+      this.oauth2Providers = this.authService.config.oauth2Providers;
     }
   }
 
@@ -74,26 +79,16 @@ export class SignInComponent implements OnInit {
 
   }
 
-  oauth2Login() {
+  oauth2Login(providerName: string) {
     const currentUrl = document.location.origin;
     const ref = this.route.snapshot.queryParams['ref'] ? this.route.snapshot.queryParams['ref'] : '/portal/dashboard';
-    // 从配置中获取 OAuth2 服务名称，如果没有则使用默认值 "oauth2"
-    const oauth2Name = (this.authService.config && this.authService.config['oauth2Name']) || 'oauth2';
-    // 使用 OAuth2 配置中的 RedirectURL 作为后端地址
-    const backendUrl = (this.authService.config && this.authService.config['oauth2RedirectURL']) 
+    const backendUrl = (this.authService.config && this.authService.config['oauth2RedirectURL'])
       || (window as any).CONFIG && (window as any).CONFIG.URL
       || currentUrl;
-    // 构建 next 参数，包含完整的回调 URL，并进行 URL 编码
     const nextUrl = `${currentUrl}/sign-in?ref=${encodeURIComponent(ref)}`;
-    // 跳转到后端 OAuth2 登录端点（使用 OAuth2 RedirectURL 作为后端地址）
-    const loginUrl = `${backendUrl}/login/oauth2/${oauth2Name}?next=${encodeURIComponent(nextUrl)}`;
+    const loginUrl = `${backendUrl}/login/oauth2/${providerName}?next=${encodeURIComponent(nextUrl)}`;
     console.log('OAuth2 login URL:', loginUrl);
     window.location.href = loginUrl;
-  }
-
-  getOAuth2Title() {
-    const oauth2Title = this.authService.config['system.oauth2-title'];
-    return oauth2Title ? oauth2Title : 'OAuth 2.0 Login';
   }
 
   getTitle() {

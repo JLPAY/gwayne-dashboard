@@ -21,10 +21,13 @@
         </button>
       </div>
     </div>
-    <div *ngIf="authService.config?.oauth2Login" style="padding-bottom:5px;text-align:center;">
+    <div *ngIf="oauth2Providers.length > 0" style="padding-bottom:5px;text-align:center;">
       <hr style="width: 240px;"/>
-      <button style="margin-top: 10px; width:240px;height: 40px;font-size: 16px;" type="submit" (click)="oauth2Login()"
-              class="wayne-button normal">{{getOAuth2Title()}}</button>
+      <div *ngFor="let provider of oauth2Providers" style="margin-top: 10px;">
+        <button style="width:240px;height: 40px;font-size: 16px;" type="submit"
+                (click)="oauth2Login(provider.name)"
+                class="wayne-button normal">{{provider.title}}</button>
+      </div>
     </div>
   </form>
 </div>
