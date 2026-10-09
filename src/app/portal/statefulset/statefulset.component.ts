@@ -51,9 +51,9 @@ const showState = {
   styleUrls: ['./statefulset.component.scss']
 })
 export class StatefulsetComponent implements AfterContentInit, OnDestroy, OnInit {
-  @ViewChild(ListStatefulsetComponent, { static: false })
+  @ViewChild(ListStatefulsetComponent)
   listStatefulset: ListStatefulsetComponent;
-  @ViewChild(CreateEditStatefulsetComponent, { static: false })
+  @ViewChild(CreateEditStatefulsetComponent)
   createEditStatefulset: CreateEditStatefulsetComponent;
 
   pageState: PageState = new PageState();

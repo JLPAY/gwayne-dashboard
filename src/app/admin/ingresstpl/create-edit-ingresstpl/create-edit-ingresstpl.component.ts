@@ -36,7 +36,7 @@ export class CreateEditIngressTplComponent implements OnInit {
 
   ingresses: Ingress[];
 
-  @ViewChild(AceEditorBoxComponent, { static: false }) aceBox: any;
+  @ViewChild(AceEditorBoxComponent) aceBox: any;
   constructor(private ingressTplService: IngressTplService,
               private ingressService: IngressService,
               private messageHandlerService: MessageHandlerService,

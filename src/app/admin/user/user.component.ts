@@ -18,9 +18,9 @@ import { PageState } from '../../shared/page/page-state';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit, OnDestroy {
-  @ViewChild(ListUserComponent, { static: false })
+  @ViewChild(ListUserComponent)
   listUser: ListUserComponent;
-  @ViewChild(CreateEditUserComponent, { static: false })
+  @ViewChild(CreateEditUserComponent)
   createEditUser: CreateEditUserComponent;
 
   pageState: PageState = new PageState();

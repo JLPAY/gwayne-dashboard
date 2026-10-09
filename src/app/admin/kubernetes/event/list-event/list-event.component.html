@@ -51,7 +51,7 @@
       <div *ngFor="let label of obj.metadata.labels | keyvalue" class="version-text">
         <a href="javascript:" (click)="versionDetail(label.key + ': ' + label.value)">{{label.key}}: {{label.value}}</a>
       </div>
-      <span *ngIf="!obj.metadata.labels || Object.keys(obj.metadata.labels).length === 0" class="no-labels">
+      <span *ngIf="hasNoLabels(obj)" class="no-labels">
         -
       </span>
     </clr-dg-cell>

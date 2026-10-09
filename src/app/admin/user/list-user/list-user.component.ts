@@ -13,7 +13,7 @@ import { Page } from '../../../shared/page/page-state';
   templateUrl: 'list-user.component.html'
 })
 export class ListUserComponent implements OnInit {
-  @ViewChild(ResetPasswordComponent, { static: false })
+  @ViewChild(ResetPasswordComponent)
   resetPasswordComponent: ResetPasswordComponent;
   @Input() users: User[];
 

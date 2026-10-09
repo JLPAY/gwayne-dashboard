@@ -17,9 +17,9 @@ import { CustomlinkService } from '../../shared/client/v1/customlink.service';
   styleUrls: ['./customlink.component.scss']
 })
 export class CustomlinkComponent implements OnInit, OnDestroy {
-  @ViewChild(ListCustomlinkComponent, { static: false })
+  @ViewChild(ListCustomlinkComponent)
   list: ListCustomlinkComponent;
-  @ViewChild(CreateEditCustomlinkComponent, { static: false })
+  @ViewChild(CreateEditCustomlinkComponent)
   createEdit: CreateEditCustomlinkComponent;
 
   pageState: PageState = new PageState();

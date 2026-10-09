@@ -1,4 +1,4 @@
-import { EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { EventEmitter, OnInit, Output, ViewChild, Directive } from '@angular/core';
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -9,6 +9,7 @@ import { AceEditorBoxComponent } from '../../ace-editor/ace-editor-box/ace-edito
 import { AceEditorService } from '../../ace-editor/ace-editor.service';
 import { AceEditorMsg } from '../../ace-editor/ace-editor';
 
+@Directive()
 export class CreateEditResourceTemplateComponent implements OnInit {
   @Output() create = new EventEmitter<boolean>();
   modalOpened: boolean;
@@ -26,7 +27,7 @@ export class CreateEditResourceTemplateComponent implements OnInit {
 
   resources: any[];
 
-  @ViewChild(AceEditorBoxComponent, { static: false }) aceBox: any;
+  @ViewChild(AceEditorBoxComponent) aceBox: any;
   constructor(public resourceTemplateService: any,
               public resourceService: any,
               public messageHandlerService: MessageHandlerService,

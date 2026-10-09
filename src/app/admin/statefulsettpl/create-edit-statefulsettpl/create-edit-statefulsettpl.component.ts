@@ -35,7 +35,7 @@ export class CreateEditStatefulsettplComponent implements OnInit {
 
   statefulsets: Statefulset[];
 
-  @ViewChild(AceEditorBoxComponent, { static: false }) aceBox: any;
+  @ViewChild(AceEditorBoxComponent) aceBox: any;
 
   constructor(private statefulsetTplService: StatefulsetTplService,
               private statefulsetService: StatefulsetService,

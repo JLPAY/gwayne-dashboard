@@ -20,11 +20,11 @@ import { MigrateNamespaceComponent } from './migrate-namespace/migrate-namespace
   styleUrls: ['./namespace.component.scss']
 })
 export class NamespaceComponent implements OnInit, OnDestroy {
-  @ViewChild(ListNamespaceComponent, { static: false })
+  @ViewChild(ListNamespaceComponent)
   listNamespace: ListNamespaceComponent;
-  @ViewChild(CreateEditNamespaceComponent, { static: false })
+  @ViewChild(CreateEditNamespaceComponent)
   createEditNamespace: CreateEditNamespaceComponent;
-  @ViewChild(MigrateNamespaceComponent, {static: false})
+  @ViewChild(MigrateNamespaceComponent)
   migrateNamespaceComponent: MigrateNamespaceComponent;
 
   pageState: PageState = new PageState();

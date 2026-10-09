@@ -18,9 +18,9 @@ import { PageState } from '../../shared/page/page-state';
   styleUrls: ['./secret.component.scss']
 })
 export class SecretComponent implements OnInit, OnDestroy {
-  @ViewChild(ListSecretComponent, { static: false })
+  @ViewChild(ListSecretComponent)
   listSecret: ListSecretComponent;
-  @ViewChild(CreateEditSecretComponent, { static: false })
+  @ViewChild(CreateEditSecretComponent)
   createEditSecret: CreateEditSecretComponent;
 
   pageState: PageState = new PageState();

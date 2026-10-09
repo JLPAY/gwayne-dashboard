@@ -20,9 +20,9 @@ import { isNotEmpty } from '../../shared/utils';
 })
 export class DeploymentTplComponent implements OnInit, OnDestroy {
 
-  @ViewChild(ListDeploymentTplComponent, { static: false })
+  @ViewChild(ListDeploymentTplComponent)
   listDeployment: ListDeploymentTplComponent;
-  @ViewChild(CreateEditDeploymentTplComponent, { static: false })
+  @ViewChild(CreateEditDeploymentTplComponent)
   createEditDeployment: CreateEditDeploymentTplComponent;
   pageState: PageState = new PageState();
   deploymentId: string;

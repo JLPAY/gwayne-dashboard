@@ -36,7 +36,7 @@ export class CreateEditServiceTplComponent implements OnInit {
 
   services: Service[];
 
-  @ViewChild(AceEditorBoxComponent, { static: false }) aceBox: any;
+  @ViewChild(AceEditorBoxComponent) aceBox: any;
 
   constructor(private serviceTplService: ServiceTplService,
               private serviceService: ServiceService,

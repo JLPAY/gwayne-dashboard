@@ -44,9 +44,9 @@ import { KubernetesClient } from '../../../shared/client/v1/kubernetes/kubernete
 })
 export class ListPersistentVolumeClaimComponent implements OnInit, OnDestroy {
   selected: PersistentVolumeClaimTpl[] = [];
-  @ViewChild(PublishPersistentVolumeClaimTplComponent, { static: false })
+  @ViewChild(PublishPersistentVolumeClaimTplComponent)
   publishTpl: PublishPersistentVolumeClaimTplComponent;
-  @ViewChild(UserInfoComponent, { static: false })
+  @ViewChild(UserInfoComponent)
   userInfoComponent: UserInfoComponent;
   appId: number;
   pvcId: number;

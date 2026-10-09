@@ -32,9 +32,9 @@ const showState = {
 export class AppWebHookComponent implements OnInit, OnDestroy {
   showList: any[] = new Array();
   showState: object = showState;
-  @ViewChild(ListAppWebHookComponent, { static: false })
+  @ViewChild(ListAppWebHookComponent)
   listWebHook: ListAppWebHookComponent;
-  @ViewChild(CreateEditAppWebHookComponent, { static: false })
+  @ViewChild(CreateEditAppWebHookComponent)
   createEditWebHook: CreateEditAppWebHookComponent;
 
   pageState: PageState = new PageState();

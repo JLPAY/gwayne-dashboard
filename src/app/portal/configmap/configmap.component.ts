@@ -49,9 +49,9 @@ const showState = {
   styleUrls: ['./configmap.component.scss']
 })
 export class ConfigMapComponent implements AfterContentInit, OnDestroy, OnInit {
-  @ViewChild(ListConfigMapComponent, { static: false })
+  @ViewChild(ListConfigMapComponent)
   list: ListConfigMapComponent;
-  @ViewChild(CreateEditConfigMapComponent, { static: false })
+  @ViewChild(CreateEditConfigMapComponent)
   createEdit: CreateEditConfigMapComponent;
   configMapId: number;
   pageState: PageState = new PageState();

@@ -51,9 +51,9 @@ const showState = {
   styleUrls: ['./deployment.component.scss']
 })
 export class DeploymentComponent implements OnInit, OnDestroy, AfterContentInit {
-  @ViewChild(ListDeploymentComponent, { static: false })
+  @ViewChild(ListDeploymentComponent)
   listDeployment: ListDeploymentComponent;
-  @ViewChild(CreateEditDeploymentComponent, { static: false })
+  @ViewChild(CreateEditDeploymentComponent)
   createEditDeployment: CreateEditDeploymentComponent;
 
   pageState: PageState = new PageState();

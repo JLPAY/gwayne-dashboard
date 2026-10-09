@@ -24,10 +24,6 @@
               *ngIf="authService.currentUser.admin">
         {{'HPA.EDIT' | translate}}
       </button>
-      <button (click)="listPublishHistory()" class="wayne-button normal"
-              *ngIf="authService.currentUser.admin">
-        {{'BUTTON.HISTORY' | translate}}
-      </button>
       <button (click)="deleteResource('删除 HPA','是否确定删除 HPA','已上线 HPA 禁止直接删除！')" class="wayne-button normal"
               *ngIf="authService.currentUser.admin">
         {{'HPA.DELETE' | translate}}

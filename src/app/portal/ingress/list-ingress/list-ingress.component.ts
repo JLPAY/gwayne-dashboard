@@ -19,9 +19,9 @@ import { DiffService } from '../../../shared/diff/diff.service';
   styleUrls: ['list-ingress.scss']
 })
 export class ListIngressComponent extends ListResource implements OnInit, OnDestroy {
-  @ViewChild(PublishIngressTplComponent, { static: false })
+  @ViewChild(PublishIngressTplComponent)
   publishTemplateComponent: PublishIngressTplComponent;
-  @ViewChild(IngressStatusComponent, { static: false })
+  @ViewChild(IngressStatusComponent)
   resourceStatusComponent: IngressStatusComponent;
 
   constructor(public ingressTplService: IngressTplService,

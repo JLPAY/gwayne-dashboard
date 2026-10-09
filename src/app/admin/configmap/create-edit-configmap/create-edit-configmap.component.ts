@@ -26,7 +26,7 @@ export class CreateEditConfigMapComponent implements OnInit {
   @ViewChild('ngForm', { static: true })
   currentForm: NgForm;
 
-  @ViewChild(AceEditorBoxComponent, { static: false })
+  @ViewChild(AceEditorBoxComponent)
   aceBox: any;
 
   configMap: ConfigMap = new ConfigMap();

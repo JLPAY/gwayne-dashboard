@@ -35,7 +35,7 @@ export class CreateEditSecretTplComponent implements OnInit {
   actionType: ActionType;
   secrets: Secret[];
 
-  @ViewChild(AceEditorBoxComponent, { static: false }) aceBox: any;
+  @ViewChild(AceEditorBoxComponent) aceBox: any;
 
   constructor(
     private secrettplService: SecretTplService,

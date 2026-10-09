@@ -30,16 +30,16 @@ const showState = {
 })
 
 export class KubeCronjobComponent extends KubernetesNamespacedResource implements OnInit, OnDestroy {
-  @ViewChild(ListCronjobComponent, { static: false })
+  @ViewChild(ListCronjobComponent)
   listResourceComponent: ListCronjobComponent;
 
-  @ViewChild(AceEditorComponent, { static: false })
+  @ViewChild(AceEditorComponent)
   aceEditorModal: AceEditorComponent;
 
-  @ViewChild(DeletionDialogComponent, { static: false })
+  @ViewChild(DeletionDialogComponent)
   deletionDialogComponent: DeletionDialogComponent;
 
-  @ViewChild(MigrationComponent, { static: false })
+  @ViewChild(MigrationComponent)
   migrationComponent: MigrationComponent;
 
   viewModalOpened = false;

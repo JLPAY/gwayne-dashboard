@@ -12,7 +12,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   }]
 })
 export class SearchSectionComponent implements ControlValueAccessor, OnDestroy {
-  @ViewChild('input', { static: false }) inputElement: ElementRef;
+  @ViewChild('input') inputElement: ElementRef;
   _value: string;
   evtList: Array<Function> = Array();
   get value() {

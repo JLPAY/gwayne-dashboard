@@ -14,7 +14,7 @@ export class AceEditorComponent implements OnInit {
   title: string;
   hiddenFooter: boolean;
   isCreate: boolean;
-  @ViewChild(AceEditorBoxComponent, { static: false }) box: AceEditorBoxComponent;
+  @ViewChild(AceEditorBoxComponent) box: AceEditorBoxComponent;
 
   @Input() warningMsg = '';
   @Output() outputObj = new EventEmitter<any>();

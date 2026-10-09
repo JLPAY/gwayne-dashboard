@@ -30,9 +30,9 @@ const showState = {
   styleUrls: ['./apikey.component.scss']
 })
 export class AppApiKeyComponent implements OnInit, OnDestroy {
-  @ViewChild(ListApiKeyComponent, { static: false })
+  @ViewChild(ListApiKeyComponent)
   listApiKey: ListApiKeyComponent;
-  @ViewChild(CreateEditApiKeyComponent, { static: false })
+  @ViewChild(CreateEditApiKeyComponent)
   createEditApiKey: CreateEditApiKeyComponent;
   changedApiKeys: ApiKey[];
   pageState: PageState = new PageState();

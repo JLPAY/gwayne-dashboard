@@ -1,6 +1,8 @@
 import { Event } from '../model/v1/deploymenttpl';
 import { ClrDatagridComparatorInterface } from '@clr/angular';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class Inventory {
   public size = 10;
   private _all: Event[];

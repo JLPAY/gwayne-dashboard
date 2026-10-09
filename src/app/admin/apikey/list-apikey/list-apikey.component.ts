@@ -11,7 +11,7 @@ import { ApiKeyType } from '../../../shared/shared.const';
   styleUrls: ['list-apikey.scss']
 })
 export class ListApiKeyComponent implements OnInit {
-  @ViewChild(TokenDetailComponent, { static: false })
+  @ViewChild(TokenDetailComponent)
   tokenDetailComponent: TokenDetailComponent;
 
   @Input() apiKeys: ApiKey[];

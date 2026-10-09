@@ -25,7 +25,7 @@ export class CreateEditAppComponent implements OnInit {
   @ViewChild('appForm', { static: true })
   currentForm: NgForm;
 
-  @ViewChild(AceEditorBoxComponent, { static: false })
+  @ViewChild(AceEditorBoxComponent)
   aceBox: any;
 
   componentName = '项目';

@@ -1,4 +1,4 @@
-import { OnInit, ViewChild } from '@angular/core';
+import { OnInit, ViewChild, Directive } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AceEditorBoxComponent } from '../../ace-editor/ace-editor-box/ace-editor-box.component';
 import { App } from '../../model/v1/app';
@@ -10,6 +10,7 @@ import { KubernetesClient } from '../../client/v1/kubernetes/kubernetes';
 import { KubeResourcesName } from '../../shared.const';
 
 
+@Directive()
 export class MigrationResource implements OnInit {
   modalOpened: boolean;
   kubeResource: KubeResourcesName;
@@ -17,7 +18,7 @@ export class MigrationResource implements OnInit {
   @ViewChild('ngForm', { static: true })
   currentForm: NgForm;
 
-  @ViewChild(AceEditorBoxComponent, { static: false })
+  @ViewChild(AceEditorBoxComponent)
   aceBox: any;
 
   obj: any;

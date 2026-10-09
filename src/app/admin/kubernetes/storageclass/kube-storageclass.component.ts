@@ -24,13 +24,13 @@ const showState = {
 })
 
 export class KubeStorageclassComponent extends KubernetesUnNamespacedResource implements OnInit, OnDestroy {
-  @ViewChild(ListStorageclassComponent, { static: false })
+  @ViewChild(ListStorageclassComponent)
   listResourceComponent: ListStorageclassComponent;
 
-  @ViewChild(AceEditorComponent, { static: false })
+  @ViewChild(AceEditorComponent)
   aceEditorModal: AceEditorComponent;
 
-  @ViewChild(DeletionDialogComponent, { static: false })
+  @ViewChild(DeletionDialogComponent)
   deletionDialogComponent: DeletionDialogComponent;
 
   constructor(public kubernetesClient: KubernetesClient,

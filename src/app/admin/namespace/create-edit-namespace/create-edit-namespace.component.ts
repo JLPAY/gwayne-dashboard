@@ -34,7 +34,7 @@ export class CreateEditNamespaceComponent {
   },
   "namespace": ""
 }`;
-  @ViewChild(AceEditorBoxComponent, { static: false })
+  @ViewChild(AceEditorBoxComponent)
   aceBox: any;
 
   namespaceForm: NgForm;

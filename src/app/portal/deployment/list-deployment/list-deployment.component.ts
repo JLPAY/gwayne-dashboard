@@ -43,11 +43,11 @@ export class ListDeploymentComponent implements OnInit, OnDestroy {
   @Output() cloneTpl = new EventEmitter<DeploymentTpl>();
   @Output() createTpl = new EventEmitter<boolean>();
 
-  @ViewChild(ListPodComponent, { static: false })
+  @ViewChild(ListPodComponent)
   listPodComponent: ListPodComponent;
-  @ViewChild(ListEventComponent, { static: false })
+  @ViewChild(ListEventComponent)
   listEventComponent: ListEventComponent;
-  @ViewChild(PublishDeploymentTplComponent, { static: false })
+  @ViewChild(PublishDeploymentTplComponent)
   publishDeploymentTpl: PublishDeploymentTplComponent;
   state: ClrDatagridStateInterface;
   currentPage = 1;

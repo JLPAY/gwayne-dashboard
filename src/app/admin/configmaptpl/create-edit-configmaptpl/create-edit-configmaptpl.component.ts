@@ -34,7 +34,7 @@ export class CreateEditConfigMapTplComponent implements OnInit {
 
   configMaps: ConfigMap[];
 
-  @ViewChild(AceEditorBoxComponent, { static: false }) aceBox: any;
+  @ViewChild(AceEditorBoxComponent) aceBox: any;
 
   constructor(private configMapTplService: ConfigMapTplService,
               private configMapService: ConfigMapService,

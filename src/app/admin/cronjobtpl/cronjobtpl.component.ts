@@ -19,9 +19,9 @@ import { isNotEmpty } from '../../shared/utils';
   styleUrls: ['./cronjobtpl.component.scss']
 })
 export class CronjobTplComponent implements OnInit, OnDestroy {
-  @ViewChild(ListCronjobTplComponent, { static: false })
+  @ViewChild(ListCronjobTplComponent)
   list: ListCronjobTplComponent;
-  @ViewChild(CreateEditCronjobTplComponent, { static: false })
+  @ViewChild(CreateEditCronjobTplComponent)
   createEdit: CreateEditCronjobTplComponent;
 
   componentName = '计划任务模板';

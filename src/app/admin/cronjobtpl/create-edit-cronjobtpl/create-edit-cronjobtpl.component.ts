@@ -37,7 +37,7 @@ export class CreateEditCronjobTplComponent implements OnInit {
 
   cronjobs: Cronjob[];
 
-  @ViewChild(AceEditorBoxComponent, { static: false }) aceBox: any;
+  @ViewChild(AceEditorBoxComponent) aceBox: any;
 
   constructor(private cronjobTplService: CronjobTplService,
               private cronjobService: CronjobService,

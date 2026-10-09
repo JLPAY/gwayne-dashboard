@@ -35,7 +35,7 @@ export class CreateEditDeploymentTplComponent implements OnInit {
 
   deployments: Deployment[];
 
-  @ViewChild(AceEditorBoxComponent, { static: false }) aceBox: any;
+  @ViewChild(AceEditorBoxComponent) aceBox: any;
 
   constructor(private deploymentTplService: DeploymentTplService,
               private deploymentService: DeploymentService,

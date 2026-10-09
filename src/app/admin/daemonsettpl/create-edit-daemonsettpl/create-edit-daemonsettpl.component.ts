@@ -35,7 +35,7 @@ export class CreateEditDaemonsettplComponent implements OnInit {
 
   daemonsets: DaemonSet[];
 
-  @ViewChild(AceEditorBoxComponent, { static: false }) aceBox: any;
+  @ViewChild(AceEditorBoxComponent) aceBox: any;
 
   constructor(private daemonsetTplService: DaemonSetTplService,
               private daemonsetService: DaemonSetService,

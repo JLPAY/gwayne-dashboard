@@ -36,9 +36,9 @@ const showState = {
   styleUrls: ['./ingress.component.scss']
 })
 export class IngressComponent extends Resource implements OnInit, OnDestroy, AfterContentInit {
-  @ViewChild(CreateEditIngressComponent, { static: false })
+  @ViewChild(CreateEditIngressComponent)
   createEditResourceComponent: CreateEditIngressComponent;
-  @ViewChild(ListIngressComponent, { static: false })
+  @ViewChild(ListIngressComponent)
   listResourceComponent: ListIngressComponent;
 
   constructor(public ingressService: IngressService,

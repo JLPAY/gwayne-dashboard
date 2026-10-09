@@ -26,16 +26,16 @@ const showState = {
 })
 
 export class KubeDaemonsetComponent extends KubernetesNamespacedResource implements OnInit, OnDestroy {
-  @ViewChild(ListDaemonsetComponent, { static: false })
+  @ViewChild(ListDaemonsetComponent)
   listResourceComponent: ListDaemonsetComponent;
 
-  @ViewChild(AceEditorComponent, { static: false })
+  @ViewChild(AceEditorComponent)
   aceEditorModal: AceEditorComponent;
 
-  @ViewChild(DeletionDialogComponent, { static: false })
+  @ViewChild(DeletionDialogComponent)
   deletionDialogComponent: DeletionDialogComponent;
 
-  @ViewChild(MigrationComponent, { static: false })
+  @ViewChild(MigrationComponent)
   migrationComponent: MigrationComponent;
 
   viewModalOpened = false;

@@ -1,4 +1,4 @@
-import { EventEmitter, Input, Output } from '@angular/core';
+import { EventEmitter, Input, Output, Directive } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Page } from '../../page/page-state';
 import { TplDetailService } from '../../tpl-detail/tpl-detail.service';
@@ -8,6 +8,7 @@ export interface DeleteEvent {
   force?: boolean;
 }
 
+@Directive()
 export class KubernetesListResource {
   state: ClrDatagridStateInterface;
   currentPage = 1;

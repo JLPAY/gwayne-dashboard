@@ -17,9 +17,9 @@ import { RoadmapService } from '../../shared/client/v1/roadmap.service';
   styleUrls: ['./roadmap.component.scss']
 })
 export class RoadmapComponent implements OnInit, OnDestroy {
-  @ViewChild(ListRoadmapComponent, { static: false })
+  @ViewChild(ListRoadmapComponent)
   list: ListRoadmapComponent;
-  @ViewChild(CreateEditRoadmapComponent, { static: false })
+  @ViewChild(CreateEditRoadmapComponent)
   createEdit: CreateEditRoadmapComponent;
   pageState: PageState = new PageState();
   configs: LinkType[];

@@ -15,9 +15,9 @@ import { CreateEditAutoscaletplComponent } from './create-edit-autoscaletpl/crea
   styleUrls: ['./autoscaletpl.component.scss']
 })
 export class AutoscaletplComponent extends ResourceTemplateComponent {
-  @ViewChild(ListAutoscaletplComponent, { static: false })
+  @ViewChild(ListAutoscaletplComponent)
   listResourceTemplateComponent: ListAutoscaletplComponent;
-  @ViewChild(CreateEditAutoscaletplComponent, { static: false })
+  @ViewChild(CreateEditAutoscaletplComponent)
   createEditResourceTemplateComponent: CreateEditAutoscaletplComponent;
 
   constructor(

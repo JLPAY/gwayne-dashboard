@@ -25,7 +25,7 @@ export class CreateEditIngressComponent implements OnInit {
   @ViewChild('ngForm', { static: true })
   currentForm: NgForm;
 
-  @ViewChild(AceEditorBoxComponent, { static: false })
+  @ViewChild(AceEditorBoxComponent)
   aceBox: any;
 
   ingress: Ingress = new Ingress();

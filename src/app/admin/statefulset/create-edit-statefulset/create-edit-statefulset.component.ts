@@ -27,7 +27,7 @@ export class CreateEditStatefulsetComponent implements OnInit {
   @ViewChild('ngForm', { static: true })
   currentForm: NgForm;
 
-  @ViewChild(AceEditorBoxComponent, { static: false })
+  @ViewChild(AceEditorBoxComponent)
   aceBox: any;
 
   statefulset: Statefulset = new Statefulset();

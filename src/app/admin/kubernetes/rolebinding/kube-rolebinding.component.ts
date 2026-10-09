@@ -23,13 +23,13 @@ const showState = {
 })
 
 export class KubeRolebindingComponent extends KubernetesNamespacedResource implements OnInit, OnDestroy {
-  @ViewChild(ListRolebindingComponent, { static: false })
+  @ViewChild(ListRolebindingComponent)
   listResourceComponent: ListRolebindingComponent;
 
-  @ViewChild(AceEditorComponent, { static: false })
+  @ViewChild(AceEditorComponent)
   aceEditorModal: AceEditorComponent;
 
-  @ViewChild(DeletionDialogComponent, { static: false })
+  @ViewChild(DeletionDialogComponent)
   deletionDialogComponent: DeletionDialogComponent;
 
   constructor(public kubernetesClient: KubernetesClient,

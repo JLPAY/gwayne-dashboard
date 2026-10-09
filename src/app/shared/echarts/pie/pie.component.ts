@@ -10,7 +10,7 @@ import { Data } from './pie';
   styleUrls: ['./pie.component.scss']
 })
 export class EchartsPieComponent implements AfterViewInit {
-  @ViewChild('view', { static: false }) view;
+  @ViewChild('view') view;
   chart: ECharts;
   _title: string;
   _data: Data[];

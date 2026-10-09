@@ -20,10 +20,10 @@ export class CreateEditClusterComponent {
   @ViewChild('ngForm', { static: true })
   currentForm: NgForm;
 
-  @ViewChild('metaData', { static: false })
+  @ViewChild('metaData')
   metaData: AceEditorBoxComponent;
 
-  @ViewChild('kubeConfig', { static: false })
+  @ViewChild('kubeConfig')
   kubeConfig: AceEditorBoxComponent;
   cluster: Cluster = new Cluster();
   checkOnGoing = false;

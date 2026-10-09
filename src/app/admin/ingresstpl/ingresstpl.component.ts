@@ -19,9 +19,9 @@ import { isNotEmpty } from '../../shared/utils';
   styleUrls: ['./ingresstpl.component.scss']
 })
 export class IngressTplComponent implements OnInit, OnDestroy {
-  @ViewChild(ListIngressTplComponent, { static: false })
+  @ViewChild(ListIngressTplComponent)
   list: ListIngressTplComponent;
-  @ViewChild(CreateEditIngressTplComponent, { static: false })
+  @ViewChild(CreateEditIngressTplComponent)
   createEdit: CreateEditIngressTplComponent;
 
   pageState: PageState = new PageState({pageSize: 10});

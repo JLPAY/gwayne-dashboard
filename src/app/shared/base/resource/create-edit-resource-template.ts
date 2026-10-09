@@ -1,5 +1,5 @@
 import { NgForm } from '@angular/forms';
-import { ViewChild } from '@angular/core';
+import { ViewChild, Directive } from '@angular/core';
 import { App } from '../../model/v1/app';
 import { ActionType, appLabelKey, namespaceLabelKey } from '../../shared.const';
 import { Location } from '@angular/common';
@@ -13,6 +13,7 @@ import { AceEditorMsg } from '../../ace-editor/ace-editor';
 import { mergeDeep } from '../../utils';
 import { ObjectMeta } from '../../model/v1/kubernetes/base';
 
+@Directive()
 export class CreateEditResourceTemplate {
   ngForm: NgForm;
   @ViewChild('ngForm', { static: true })

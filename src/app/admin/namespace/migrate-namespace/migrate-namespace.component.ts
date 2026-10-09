@@ -13,9 +13,9 @@ import { MessageHandlerService } from 'app/shared/message-handler/message-handle
 })
 export class MigrateNamespaceComponent implements OnInit, OnDestroy {
   namespaceForm: NgForm;
-  @ViewChild('namespaceForm', { static: false })
+  @ViewChild('namespaceForm')
   currentForm: NgForm;
-  @ViewChild(ModalComponent, { static: false })
+  @ViewChild(ModalComponent)
   modalComponent: ModalComponent;
 
   currentNamespace: Namespace = new Namespace;

@@ -19,9 +19,9 @@ import { PageState } from '../../shared/page/page-state';
   styleUrls: ['./persistentvolumeclaim.component.scss']
 })
 export class PersistentVolumeClaimComponent implements OnInit, OnDestroy {
-  @ViewChild(ListPersistentVolumeClaimComponent, { static: false })
+  @ViewChild(ListPersistentVolumeClaimComponent)
   list: ListPersistentVolumeClaimComponent;
-  @ViewChild(CreateEditPersistentVolumeClaimComponent, { static: false })
+  @ViewChild(CreateEditPersistentVolumeClaimComponent)
   createEdit: CreateEditPersistentVolumeClaimComponent;
 
   pageState: PageState = new PageState();

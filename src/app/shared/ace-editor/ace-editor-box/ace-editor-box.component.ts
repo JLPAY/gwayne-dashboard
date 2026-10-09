@@ -15,7 +15,7 @@ import { MessageHandlerService } from '../../message-handler/message-handler.ser
 })
 export class AceEditorBoxComponent implements OnInit, OnDestroy {
 
-  @ViewChild('editorElement', { static: false })
+  @ViewChild('editorElement')
   editorElement: ElementRef;
   aceEditorMsg: AceEditorMsg;
   aceMode: string;

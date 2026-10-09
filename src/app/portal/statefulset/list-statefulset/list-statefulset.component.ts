@@ -45,11 +45,11 @@ export class ListStatefulsetComponent implements OnInit, OnDestroy {
   @Output() cloneTpl = new EventEmitter<StatefulsetTemplate>();
   @Output() createTpl = new EventEmitter<boolean>();
 
-  @ViewChild(ListPodComponent, { static: false })
+  @ViewChild(ListPodComponent)
   listPodComponent: ListPodComponent;
-  @ViewChild(ListEventComponent, { static: false })
+  @ViewChild(ListEventComponent)
   listEventComponent: ListEventComponent;
-  @ViewChild(PublishStatefulsetTplComponent, { static: false })
+  @ViewChild(PublishStatefulsetTplComponent)
   publishStatefulsetTpl: PublishStatefulsetTplComponent;
   state: ClrDatagridStateInterface;
   currentPage = 1;

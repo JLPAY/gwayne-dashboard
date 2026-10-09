@@ -26,10 +26,10 @@ import { CreateEditTaintComponent } from '../create-edit-taint/create-edit-taint
 
 export class ListNodesComponent implements OnInit {
 
-  @ViewChild(CreateEditLabelComponent, {static: false})
+  @ViewChild(CreateEditLabelComponent)
   editLabelModal: CreateEditLabelComponent;
 
-  @ViewChild(CreateEditTaintComponent, {static: false})
+  @ViewChild(CreateEditTaintComponent)
   editTaintModal: CreateEditTaintComponent;
 
   @Input() nodes: Node[];

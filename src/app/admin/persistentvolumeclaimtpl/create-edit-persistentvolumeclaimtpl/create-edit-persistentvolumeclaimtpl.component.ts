@@ -36,7 +36,7 @@ export class CreateEditPersistentVolumeClaimTplComponent implements OnInit {
 
   pvcs: PersistentVolumeClaim[];
 
-  @ViewChild(AceEditorBoxComponent, { static: false }) aceBox: any;
+  @ViewChild(AceEditorBoxComponent) aceBox: any;
 
   constructor(private pvcTplService: PersistentVolumeClaimTplService,
               private pvcService: PersistentVolumeClaimService,

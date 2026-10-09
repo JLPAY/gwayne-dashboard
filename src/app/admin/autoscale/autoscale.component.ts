@@ -15,9 +15,9 @@ import { CreateEditAutoscaleComponent } from './create-edit-autoscale/create-edi
   styleUrls: ['./autoscale.component.scss']
 })
 export class AutoscaleComponent extends ResourceComponent {
-  @ViewChild(ListAutoscaleComponent, { static: false })
+  @ViewChild(ListAutoscaleComponent)
   listResourceComponent: ListAutoscaleComponent;
-  @ViewChild(CreateEditAutoscaleComponent, { static: false })
+  @ViewChild(CreateEditAutoscaleComponent)
   createEditResourceComponent: CreateEditAutoscaleComponent;
 
   constructor(public breadcrumbService: BreadcrumbService,

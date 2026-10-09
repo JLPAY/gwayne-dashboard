@@ -15,9 +15,9 @@ import { AIBackendService } from '../../../shared/client/v1/aibackend.service';
   styleUrls: ['./aibackend.component.scss']
 })
 export class AIBackendComponent implements OnInit, OnDestroy {
-  @ViewChild(ListAIBackendComponent, { static: false })
+  @ViewChild(ListAIBackendComponent)
   list: ListAIBackendComponent;
-  @ViewChild(CreateEditAIBackendComponent, { static: false })
+  @ViewChild(CreateEditAIBackendComponent)
   createEdit: CreateEditAIBackendComponent;
 
   backends: AIBackend[];

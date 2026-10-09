@@ -35,7 +35,7 @@ export class EchartsGaugeComponent implements AfterViewInit {
   _reverse = false;
   _min = 0;
   _max = 100;
-  @ViewChild('view', { static: false }) view;
+  @ViewChild('view') view;
   @Input('save')
   set save(value: boolean) {
     this._save = value || false;

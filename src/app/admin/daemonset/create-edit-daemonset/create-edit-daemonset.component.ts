@@ -26,7 +26,7 @@ export class CreateEditDaemonsetComponent implements OnInit {
   @ViewChild('ngForm', { static: true })
   currentForm: NgForm;
 
-  @ViewChild(AceEditorBoxComponent, { static: false })
+  @ViewChild(AceEditorBoxComponent)
   aceBox: any;
 
   daemonset: DaemonSet = new DaemonSet();

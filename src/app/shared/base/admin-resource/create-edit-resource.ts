@@ -1,4 +1,4 @@
-import { EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { EventEmitter, OnInit, Output, ViewChild, Directive } from '@angular/core';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { NgForm } from '@angular/forms';
@@ -10,6 +10,7 @@ import { AceEditorService } from '../../ace-editor/ace-editor.service';
 import { AceEditorMsg } from '../../ace-editor/ace-editor';
 import { MessageHandlerService } from '../../message-handler/message-handler.service';
 
+@Directive()
 export class CreateEditResourceComponent implements OnInit {
   @Output() create = new EventEmitter<boolean>();
   modalOpened: boolean;
@@ -18,7 +19,7 @@ export class CreateEditResourceComponent implements OnInit {
   @ViewChild('ngForm', { static: true })
   currentForm: NgForm;
 
-  @ViewChild(AceEditorBoxComponent, { static: false })
+  @ViewChild(AceEditorBoxComponent)
   aceBox: any;
 
   checkOnGoing = false;

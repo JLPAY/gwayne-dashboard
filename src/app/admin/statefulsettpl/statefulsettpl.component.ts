@@ -20,9 +20,9 @@ import { isNotEmpty } from '../../shared/utils';
 })
 export class StatefulsettplComponent implements OnInit, OnDestroy {
 
-  @ViewChild(ListStatefulsettplComponent, { static: false })
+  @ViewChild(ListStatefulsettplComponent)
   listStatefulset: ListStatefulsettplComponent;
-  @ViewChild(CreateEditStatefulsettplComponent, { static: false })
+  @ViewChild(CreateEditStatefulsettplComponent)
   createEditStatefulset: CreateEditStatefulsettplComponent;
   pageState: PageState = new PageState({pageSize: 10});
   statefulsetId: number;

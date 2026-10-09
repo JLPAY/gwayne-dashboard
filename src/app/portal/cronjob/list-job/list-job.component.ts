@@ -26,9 +26,9 @@ export class ListJobComponent implements OnDestroy {
   currentPage = 1;
   state: ClrDatagridStateInterface;
 
-  @ViewChild(ListPodComponent, {static: false})
+  @ViewChild(ListPodComponent)
   listPodComponent: ListPodComponent;
-  @ViewChild(ListEventDatagridComponent, {static: false})
+  @ViewChild(ListEventDatagridComponent)
   listEventDatagridComponent: ListEventDatagridComponent;
   jobs: KubeJob[];
   private timer: any = null;

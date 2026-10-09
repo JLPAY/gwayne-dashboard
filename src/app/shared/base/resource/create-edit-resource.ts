@@ -1,13 +1,14 @@
 import { App } from '../../model/v1/app';
 import { ActionType, configKeyApiNameGenerateRule, defaultResources } from '../../shared.const';
 import { NgForm } from '@angular/forms';
-import { EventEmitter, Output, ViewChild } from '@angular/core';
+import { EventEmitter, Output, ViewChild, Directive } from '@angular/core';
 import { Cluster, ClusterMeta } from '../../model/v1/cluster';
 import { MessageHandlerService } from '../../message-handler/message-handler.service';
 import { AuthService } from '../../auth/auth.service';
 import { ApiNameGenerateRule } from '../../utils';
 import { Resources } from '../../model/v1/resources-limit';
 
+@Directive()
 export class CreateEditResource {
   @ViewChild('ngForm', { static: true })
   currentForm: NgForm;

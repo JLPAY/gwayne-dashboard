@@ -40,13 +40,13 @@ const showState = {
 })
 
 export class NodesComponent implements OnInit, OnDestroy {
-  @ViewChild(ListNodesComponent, { static: false })
+  @ViewChild(ListNodesComponent)
   list: ListNodesComponent;
 
-  @ViewChild(AceEditorComponent, { static: false })
+  @ViewChild(AceEditorComponent)
   editNodeModal: AceEditorComponent;
 
-  @ViewChild(CreateEditDrainComponent, { static: false })
+  @ViewChild(CreateEditDrainComponent)
   drainModal: CreateEditDrainComponent;
 
 

@@ -24,16 +24,16 @@ const showState = {
 })
 
 export class KubeIngressComponent extends KubernetesNamespacedResource implements OnInit, OnDestroy {
-  @ViewChild(ListIngressComponent, { static: false })
+  @ViewChild(ListIngressComponent)
   listResourceComponent: ListIngressComponent;
 
-  @ViewChild(AceEditorComponent, { static: false })
+  @ViewChild(AceEditorComponent)
   aceEditorModal: AceEditorComponent;
 
-  @ViewChild(DeletionDialogComponent, { static: false })
+  @ViewChild(DeletionDialogComponent)
   deletionDialogComponent: DeletionDialogComponent;
 
-  @ViewChild(MigrationComponent, { static: false })
+  @ViewChild(MigrationComponent)
   migrationComponent: MigrationComponent;
 
   constructor(public kubernetesClient: KubernetesClient,

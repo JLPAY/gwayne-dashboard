@@ -17,9 +17,9 @@ import { PageState } from '../../shared/page/page-state';
   styleUrls: ['./cluster.component.scss']
 })
 export class ClusterComponent implements OnInit, OnDestroy {
-  @ViewChild(ListClusterComponent, { static: false })
+  @ViewChild(ListClusterComponent)
   list: ListClusterComponent;
-  @ViewChild(CreateEditClusterComponent, { static: false })
+  @ViewChild(CreateEditClusterComponent)
   createEdit: CreateEditClusterComponent;
 
   pageState: PageState = new PageState();

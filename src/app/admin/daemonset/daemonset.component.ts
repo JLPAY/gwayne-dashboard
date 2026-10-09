@@ -20,9 +20,9 @@ import { PageState } from '../../shared/page/page-state';
 })
 export class DaemonsetComponent implements OnInit, OnDestroy {
 
-  @ViewChild(ListDaemonsetComponent, { static: false })
+  @ViewChild(ListDaemonsetComponent)
   listDaemonset: ListDaemonsetComponent;
-  @ViewChild(CreateEditDaemonsetComponent, { static: false })
+  @ViewChild(CreateEditDaemonsetComponent)
   createEditDaemonset: CreateEditDaemonsetComponent;
 
   appId: number;

@@ -1,4 +1,4 @@
-import { ViewChild } from '@angular/core';
+import { ViewChild, Directive } from '@angular/core';
 import { CreateEditResource } from './create-edit-resource';
 import { ResourceLimitComponent } from '../../component/resource-limit/resource-limit.component';
 import { ClusterMeta, Cluster } from '../../model/v1/cluster';
@@ -6,8 +6,9 @@ import { defaultResources } from '../../shared.const';
 import { AuthService } from 'app/shared/auth/auth.service';
 import { MessageHandlerService } from 'app/shared/message-handler/message-handler.service';
 
+@Directive()
 export class CreateEditLimitResource extends CreateEditResource {
-  @ViewChild(ResourceLimitComponent, { static: false })
+  @ViewChild(ResourceLimitComponent)
   resourceLimitComponent: ResourceLimitComponent;
   defaultClusterNum = 0;
   constructor(

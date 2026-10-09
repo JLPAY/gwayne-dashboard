@@ -24,16 +24,16 @@ const showState = {
 })
 
 export class KubeConfigmapComponent extends KubernetesNamespacedResource implements OnInit, OnDestroy {
-  @ViewChild(ListConfigmapComponent, { static: false })
+  @ViewChild(ListConfigmapComponent)
   listResourceComponent: ListConfigmapComponent;
 
-  @ViewChild(AceEditorComponent, { static: false })
+  @ViewChild(AceEditorComponent)
   aceEditorModal: AceEditorComponent;
 
-  @ViewChild(DeletionDialogComponent, { static: false })
+  @ViewChild(DeletionDialogComponent)
   deletionDialogComponent: DeletionDialogComponent;
 
-  @ViewChild(MigrationComponent, { static: false })
+  @ViewChild(MigrationComponent)
   migrationComponent: MigrationComponent;
 
   constructor(public kubernetesClient: KubernetesClient,

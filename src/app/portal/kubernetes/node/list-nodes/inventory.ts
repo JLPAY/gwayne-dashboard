@@ -1,6 +1,8 @@
 import { ClrDatagridComparatorInterface, ClrDatagridStringFilterInterface } from '@clr/angular';
 import { Node } from '../../../../shared/model/v1/kubernetes/node-list';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class Inventory {
   public size = 10;
   private _all: Node[];

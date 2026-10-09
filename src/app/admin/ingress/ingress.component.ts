@@ -18,9 +18,9 @@ import { PageState } from '../../shared/page/page-state';
   styleUrls: ['./ingress.component.scss']
 })
 export class IngressComponent implements OnInit, OnDestroy {
-  @ViewChild(ListIngressComponent, { static: false })
+  @ViewChild(ListIngressComponent)
   list: ListIngressComponent;
-  @ViewChild(CreateEditIngressComponent, { static: false })
+  @ViewChild(CreateEditIngressComponent)
   createEdit: CreateEditIngressComponent;
 
   pageState: PageState = new PageState();

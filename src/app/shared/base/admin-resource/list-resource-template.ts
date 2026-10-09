@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Directive } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Page } from '../../page/page-state';
 
+@Directive()
 export class ListResourceTemplateComponent implements OnInit {
 
   @Input() templates: any[];

@@ -25,7 +25,7 @@ import { DiffService } from '../../../shared/diff/diff.service';
 export class ListConfigMapComponent implements OnInit, OnDestroy {
   selected: ConfigMapTpl[] = [];
   @Input() showState: object;
-  @ViewChild(PublishConfigMapTplComponent, { static: false })
+  @ViewChild(PublishConfigMapTplComponent)
   publishTpl: PublishConfigMapTplComponent;
 
   @Input() app: App;

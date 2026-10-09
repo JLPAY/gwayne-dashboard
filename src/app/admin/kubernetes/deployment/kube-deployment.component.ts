@@ -27,19 +27,19 @@ const showState = {
 })
 
 export class KubeDeploymentComponent extends KubernetesNamespacedResource implements OnInit, OnDestroy {
-  @ViewChild(ListDeploymentComponent, { static: false })
+  @ViewChild(ListDeploymentComponent)
   listResourceComponent: ListDeploymentComponent;
 
-  @ViewChild(AceEditorComponent, { static: false })
+  @ViewChild(AceEditorComponent)
   aceEditorModal: AceEditorComponent;
 
-  @ViewChild(DeletionDialogComponent, { static: false })
+  @ViewChild(DeletionDialogComponent)
   deletionDialogComponent: DeletionDialogComponent;
 
-  @ViewChild(MigrationComponent, { static: false })
+  @ViewChild(MigrationComponent)
   migrationComponent: MigrationComponent;
 
-  @ViewChild(ScaleDialogComponent, { static: false })
+  @ViewChild(ScaleDialogComponent)
   scaleDialogComponent: ScaleDialogComponent;
 
   constructor(public kubernetesClient: KubernetesClient,

@@ -27,7 +27,7 @@ export class CreateEditDeploymentComponent implements OnInit {
   @ViewChild('deploymentForm', { static: true })
   currentForm: NgForm;
 
-  @ViewChild(AceEditorBoxComponent, { static: false })
+  @ViewChild(AceEditorBoxComponent)
   aceBox: any;
 
   deployment: Deployment = new Deployment();

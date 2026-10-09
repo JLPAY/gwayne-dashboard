@@ -23,13 +23,13 @@ const showState = {
 })
 
 export class KubeCrdComponent extends KubernetesUnNamespacedResource implements OnInit, OnDestroy {
-  @ViewChild(ListCrdComponent, { static: false })
+  @ViewChild(ListCrdComponent)
   listResourceComponent: ListCrdComponent;
 
-  @ViewChild(AceEditorComponent, { static: false })
+  @ViewChild(AceEditorComponent)
   aceEditorModal: AceEditorComponent;
 
-  @ViewChild(DeletionDialogComponent, { static: false })
+  @ViewChild(DeletionDialogComponent)
   deletionDialogComponent: DeletionDialogComponent;
 
   constructor(public kubernetesClient: KubernetesClient,

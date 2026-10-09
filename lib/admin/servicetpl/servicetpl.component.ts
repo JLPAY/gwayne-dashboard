@@ -19,9 +19,9 @@ import { isNotEmpty } from '../../../src/app/shared/utils';
   styleUrls: ['./servicetpl.component.scss']
 })
 export class ServiceTplComponent implements OnInit, OnDestroy {
-  @ViewChild(ListServiceTplComponent, { static: false })
+  @ViewChild(ListServiceTplComponent)
   list: ListServiceTplComponent;
-  @ViewChild(CreateEditServiceTplComponent, { static: false })
+  @ViewChild(CreateEditServiceTplComponent)
   createEdit: CreateEditServiceTplComponent;
 
   pageState: PageState = new PageState({pageSize: 10});

@@ -3,11 +3,12 @@ import { CacheService } from '../../auth/cache.service';
 import { MessageHandlerService } from '../../message-handler/message-handler.service';
 import { KubeResourcesName, ResourcesActionType } from '../../shared.const';
 import { Cluster } from '../../model/v1/cluster';
-import { EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { EventEmitter, Input, Output, ViewChild, Directive } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { PublishStatus } from '../../model/v1/publish-status';
 import { KubernetesClient } from '../../client/v1/kubernetes/kubernetes';
 
+@Directive()
 export class PublishTemplate {
   @Output() published = new EventEmitter<boolean>();
   @Input() appId: number;

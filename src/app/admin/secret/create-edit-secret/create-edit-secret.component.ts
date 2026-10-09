@@ -26,7 +26,7 @@ export class CreateEditSecretComponent implements OnInit {
   @ViewChild('secretForm', { static: true })
   currentForm: NgForm;
 
-  @ViewChild(AceEditorBoxComponent, { static: false })
+  @ViewChild(AceEditorBoxComponent)
   aceBox: any;
 
   secret: Secret = new Secret();

@@ -5,7 +5,7 @@ import { AceEditorService } from '../../ace-editor/ace-editor.service';
 import { AuthService } from '../../auth/auth.service';
 import { MessageHandlerService } from '../../message-handler/message-handler.service';
 import { Page } from '../../page/page-state';
-import { EventEmitter, Input, Output } from '@angular/core';
+import { EventEmitter, Input, Output, Directive } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import {
@@ -21,6 +21,7 @@ import { AceEditorMsg } from '../../ace-editor/ace-editor';
 import { PublishStatus } from '../../model/v1/publish-status';
 import { DiffService } from '../../diff/diff.service';
 
+@Directive()
 export class ListResource {
   publishTemplateComponent: any;
   resourceStatusComponent: any;
