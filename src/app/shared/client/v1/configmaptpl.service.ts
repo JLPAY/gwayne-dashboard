@@ -7,7 +7,7 @@ import { ConfigMapTpl } from '../../model/v1/configmaptpl';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class ConfigMapTplService {
@@ -18,57 +18,28 @@ export class ConfigMapTplService {
   }
 
   listPage(pageState: PageState, appId?: number, cId?: string): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    params = params.set('sortby', '-id');
     if ((typeof (appId) === 'undefined') || (!appId)) {
       appId = 0;
     }
-    params = params.set('cId', cId === undefined ? '' : cId.toString());
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
+    const params = buildListParams(pageState, {
+      literals: [
+        ['sortby', '-id'],
+        ['cId', cId === undefined ? '' : cId.toString()],
+      ],
     });
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
 
     return this.http
-      .get(`/api/v1/apps/${appId}/configmaps/tpls`, {params: params})
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/configmaps/tpls`, {params: params});
   }
 
   create(configMapTpl: ConfigMapTpl, appId: number): Observable<any> {
     return this.http
-      .post(`/api/v1/apps/${appId}/configmaps/tpls`, configMapTpl, this.options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/apps/${appId}/configmaps/tpls`, configMapTpl, this.options);
   }
 
   update(configMapTpl: ConfigMapTpl, appId: number): Observable<any> {
     return this.http
-      .put(`/api/v1/apps/${appId}/configmaps/tpls/${configMapTpl.id}`, configMapTpl, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/apps/${appId}/configmaps/tpls/${configMapTpl.id}`, configMapTpl, this.options);
   }
 
   deleteById(id: number, appId: number, logical?: boolean): Observable<any> {
@@ -79,15 +50,11 @@ export class ConfigMapTplService {
       options.params = params;
     }
     return this.http
-      .delete(`/api/v1/apps/${appId}/configmaps/tpls/${id}`, options)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/apps/${appId}/configmaps/tpls/${id}`, options);
   }
 
   getById(id: number, appId: number): Observable<any> {
     return this.http
-      .get(`/api/v1/apps/${appId}/configmaps/tpls/${id}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/configmaps/tpls/${id}`);
   }
 }

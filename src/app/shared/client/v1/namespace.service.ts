@@ -7,7 +7,7 @@ import 'rxjs/add/observable/throw';
 import { Namespace } from '../../model/v1/namespace';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
-import { throwError } from 'rxjs';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class NamespaceService {
@@ -18,60 +18,28 @@ export class NamespaceService {
   }
 
   listNamespace(pageState: PageState, deleted?: string): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    params = params.set('deleted', deleted);
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
+    const params = buildListParams(pageState, {
+      literals: [
+        ['deleted', deleted],
+      ],
     });
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    // sort param
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
     return this.http
-      .get('/api/v1/namespaces', {params: params})
-      //
-      .catch(error => throwError(error));
+      .get('/api/v1/namespaces', {params: params});
   }
 
   getNames(): Observable<any> {
     return this.http
-      .get('/api/v1/namespaces/names')
-
-      .catch(error => throwError(error));
+      .get('/api/v1/namespaces/names');
   }
 
   createNamespace(ns: Namespace): Observable<any> {
     return this.http
-      .post(`/api/v1/namespaces`, ns, this.options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/namespaces`, ns, this.options);
   }
 
   updateNamespace(ns: Namespace): Observable<any> {
     return this.http
-      .put(`/api/v1/namespaces/${ns.id}`, ns, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/namespaces/${ns.id}`, ns, this.options);
   }
 
   deleteNamespace(nsId: number, logical?: boolean): Observable<any> {
@@ -82,22 +50,16 @@ export class NamespaceService {
       options.params = params;
     }
     return this.http
-      .delete(`/api/v1/namespaces/${nsId}`, options)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/namespaces/${nsId}`, options);
   }
 
   getNamespace(nsId: number): Observable<any> {
     return this.http
-      .get(`/api/v1/namespaces/${nsId}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/namespaces/${nsId}`);
   }
 
   initDefault(): Observable<any> {
-    return this.http.get(`/api/v1/namespaces/init`)
-
-      .catch(error => throwError(error));
+    return this.http.get(`/api/v1/namespaces/init`);
   }
 
 
@@ -107,8 +69,7 @@ export class NamespaceService {
       params = params.set('app', appName);
     }
     return this.http
-      .get(`/api/v1/namespaces/${namespaceId}/history`, {params: params})
-      .catch(error => throwError(error));
+      .get(`/api/v1/namespaces/${namespaceId}/history`, {params: params});
   }
 
   migrateNamespace(sourceId: number, targetId: number) {
@@ -116,7 +77,6 @@ export class NamespaceService {
       .post(`/api/v1/namespaces/migration`, {
         sourceId,
         targetId
-      })
-      .catch(error => throwError(error));
+      });
   }
 }

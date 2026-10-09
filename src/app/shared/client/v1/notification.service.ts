@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { PageState } from '../../page/page-state';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Notification } from '../../model/v1/notification';
-import { throwError } from 'rxjs';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class NotificationService {
@@ -12,47 +12,45 @@ export class NotificationService {
   }
 
   query(pageState: PageState): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    params = params.set('sortby', '-id');
+    const params = buildListParams(pageState, {
+      trailingLiterals: [
+        ['sortby', '-id'],
+      ],
+      omitDynamicParams: true,
+      omitFilters: true,
+      omitSortOverride: true,
+    });
     return this.http
-      .get(`/api/v1/notifications`, {params: params})
-      //
-      .catch(error => throwError(error));
+      .get(`/api/v1/notifications`, {params: params});
   }
 
   publish(id): Observable<any> {
     return this.http
-      .put(`/api/v1/notifications?id=` + id, {})
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/notifications?id=` + id, {});
   }
 
   subscribe(pageState: PageState): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    params = params.set('sortby', '-id');
+    const params = buildListParams(pageState, {
+      trailingLiterals: [
+        ['sortby', '-id'],
+      ],
+      omitDynamicParams: true,
+      omitFilters: true,
+      omitSortOverride: true,
+    });
     // params = params.set('is_readed', pageState.params['is_readed'])
     return this.http
-      .get(`/api/v1/notifications/subscribe`, {params: params})
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/notifications/subscribe`, {params: params});
   }
 
   read(id): Observable<any> {
     return this.http
-      .put(`/api/v1/notifications/subscribe?id=` + id, {})
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/notifications/subscribe?id=` + id, {});
   }
 
   create(notify: Notification): Observable<any> {
     return this.http
-      .post(`/api/v1/notifications`, notify)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/notifications`, notify);
   }
 
 }

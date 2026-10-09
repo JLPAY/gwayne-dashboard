@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { throwError } from 'rxjs';
-
 @Injectable()
 
 export class PublicService {
@@ -22,8 +20,6 @@ export class PublicService {
     urlSearchParams.append('namespace', namespace);
     urlSearchParams.append('podName', podName);
     return this.http
-      .post(`/api/v1/public/shell/token`, urlSearchParams, options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/public/shell/token`, urlSearchParams, options);
   }
 }

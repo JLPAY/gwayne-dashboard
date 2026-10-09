@@ -7,8 +7,8 @@ import { Cluster } from '../../model/v1/cluster';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { throwError } from 'rxjs';
 import { TaintMetaData } from 'app/shared/model/v1/kubernetes/node-list';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class ClusterService {
@@ -21,59 +21,27 @@ export class ClusterService {
 
   getNames(): Observable<any> {
     return this.http
-      .get('/api/v1/clusters/names')
-      .catch(error => throwError(error));
+      .get('/api/v1/clusters/names');
   }
 
   list(pageState: PageState, deleted?: string): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    params = params.set('deleted', deleted);
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
+    const params = buildListParams(pageState, {
+      literals: [
+        ['deleted', deleted],
+      ],
     });
-
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    // sort param
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
     return this.http
-      .get('/api/v1/clusters', {params: params})
-
-      .catch(error => throwError(error));
+      .get('/api/v1/clusters', {params: params});
   }
 
   create(cluster: Cluster): Observable<any> {
     return this.http
-      .post(`/api/v1/clusters`, cluster, this.options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/clusters`, cluster, this.options);
   }
 
   update(cluster: Cluster): Observable<any> {
     return this.http
-      .put(`/api/v1/clusters/${cluster.name}`, cluster, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/clusters/${cluster.name}`, cluster, this.options);
   }
 
   deleteByName(name: string, logical?: boolean): Observable<any> {
@@ -85,48 +53,40 @@ export class ClusterService {
     }
 
     return this.http
-      .delete(`/api/v1/clusters/${name}`, options)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/clusters/${name}`, options);
   }
 
   getByName(name: string): Observable<any> {
     return this.http
-      .get(`/api/v1/clusters/${name}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/clusters/${name}`);
   }
 
   addLabels(name: string, cluster: string, label: Object) {
     return this.http
-      .post(`/api/v1/kubernetes/nodes/${name}/clusters/${cluster}/labels`, label, this.options)
-      .catch(error => throwError(error));
+      .post(`/api/v1/kubernetes/nodes/${name}/clusters/${cluster}/labels`, label, this.options);
   }
 
   deleteLabels(name: string, cluster: string, label: Object) {
     return this.http.request('delete', `/api/v1/kubernetes/nodes/${name}/clusters/${cluster}/labels`, {
       body: label
-    }).catch(error => throwError(error));
+    });
   }
 
   addTaint(name: string, cluster: string, taint: TaintMetaData) {
     return this.http
-      .post(`/api/v1/kubernetes/nodes/${name}/clusters/${cluster}/taint`, taint)
-      .catch(error => throwError(error));
+      .post(`/api/v1/kubernetes/nodes/${name}/clusters/${cluster}/taint`, taint);
   }
 
   deleteTaint(name: string, cluster: string, taint: TaintMetaData) {
     return this.http
       .request('delete', `/api/v1/kubernetes/nodes/${name}/clusters/${cluster}/taint`, {
         body: taint
-      })
-      .catch(error => throwError(error));
+      });
   }
 
   drainNode(name: string, cluster: string, options: any) {
     return this.http
-      .post(`/api/v1/kubernetes/nodes/${name}/clusters/${cluster}/drain`, options, this.options)
-      .catch(error => throwError(error));
+      .post(`/api/v1/kubernetes/nodes/${name}/clusters/${cluster}/drain`, options, this.options);
   }
 
 }

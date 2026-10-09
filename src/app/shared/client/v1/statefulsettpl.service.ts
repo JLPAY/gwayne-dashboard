@@ -7,7 +7,7 @@ import 'rxjs/add/observable/throw';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
 import { StatefulsetTemplate } from '../../model/v1/statefulsettpl';
-import { throwError } from 'rxjs';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class StatefulsetTplService {
@@ -18,56 +18,20 @@ export class StatefulsetTplService {
   }
 
   listPage(pageState: PageState, appId?: number): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    // query param
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
-    });
-
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-
-    // sort param
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
+    const params = buildListParams(pageState);
 
     return this.http
-      .get(`/api/v1/apps/${appId}/statefulsets/tpls`, {params: params})
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/statefulsets/tpls`, {params: params});
   }
 
   create(tpl: StatefulsetTemplate, appId: number): Observable<any> {
     return this.http
-      .post(`/api/v1/apps/${appId}/statefulsets/tpls`, tpl)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/apps/${appId}/statefulsets/tpls`, tpl);
   }
 
   update(tpl: StatefulsetTemplate, appId: number): Observable<any> {
     return this.http
-      .put(`/api/v1/apps/${appId}/statefulsets/tpls/${tpl.id}`, tpl, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/apps/${appId}/statefulsets/tpls/${tpl.id}`, tpl, this.options);
   }
 
   deleteById(id: number, appId: number, logical?: boolean): Observable<any> {
@@ -79,16 +43,12 @@ export class StatefulsetTplService {
     }
 
     return this.http
-      .delete(`/api/v1/apps/${appId}/statefulsets/tpls/${id}`, options)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/apps/${appId}/statefulsets/tpls/${id}`, options);
   }
 
   getById(id: number, appId: number): Observable<any> {
     return this.http
-      .get(`/api/v1/apps/${appId}/statefulsets/tpls/${id}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/statefulsets/tpls/${id}`);
   }
 
 }

@@ -19,26 +19,22 @@ export class DeploymentClient {
     }
 
     return this.http
-      .get(`/api/v1/kubernetes/apps/${appId}/deployments/namespaces/${namespace}/clusters/${cluster}`, {params: params})
-      .catch(error => throwError(error));
+      .get(`/api/v1/kubernetes/apps/${appId}/deployments/namespaces/${namespace}/clusters/${cluster}`, {params: params});
   }
 
   deploy(appId: number, cluster: string, resourceId: number, tplId: number, template: any): Observable<any> {
     return this.http
-      .post(`/api/v1/kubernetes/apps/${appId}/deployments/${resourceId}/tpls/${tplId}/clusters/${cluster}`, template)
-      .catch(error => throwError(error));
+      .post(`/api/v1/kubernetes/apps/${appId}/deployments/${resourceId}/tpls/${tplId}/clusters/${cluster}`, template);
   }
 
   getDetail(appId: number, cluster: string, namespace: string, name: string): Observable<any> {
     return this.http
-      .get(`/api/v1/kubernetes/apps/${appId}/deployments/${name}/detail/namespaces/${namespace}/clusters/${cluster}`)
-      .catch(error => throwError(error));
+      .get(`/api/v1/kubernetes/apps/${appId}/deployments/${name}/detail/namespaces/${namespace}/clusters/${cluster}`);
   }
 
   deleteByName(appId: number, cluster: string, namespace: string, name: string): Observable<any> {
     return this.http
-      .delete(`/api/v1/kubernetes/apps/${appId}/deployments/${name}/namespaces/${namespace}/clusters/${cluster}`)
-      .catch(error => throwError(error));
+      .delete(`/api/v1/kubernetes/apps/${appId}/deployments/${name}/namespaces/${namespace}/clusters/${cluster}`);
   }
 
   modifyReplica(appId: number, cluster: string, name: string, namespace: string, data: any) {

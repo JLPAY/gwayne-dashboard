@@ -94,7 +94,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
   deleteResource(resource: any) {
     const deletionMessage = new ConfirmationMessage(
       `删除 ${this.componentName} 确认`,
-      '你确认删除 ${this.componentName} ' +  resource.name + ' ？',
+      `你确认删除 ${this.componentName} ` + resource.name + ' ？',
       resource.id,
       this.confirmationTarget,
       ConfirmationButtons.DELETE_CANCEL

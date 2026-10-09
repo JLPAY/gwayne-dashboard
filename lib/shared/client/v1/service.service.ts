@@ -8,7 +8,7 @@ import { Service } from '../../model/service';
 import { PageState } from '../../../../src/app/shared/page/page-state';
 import { isNotEmpty } from '../../../../src/app/shared/utils';
 import { OrderItem } from '../../../../src/app/shared/model/v1/order';
-import { throwError } from 'rxjs';
+import { buildListParams } from '../../../../src/app/shared/client/v1/list-params';
 
 @Injectable()
 export class ServiceService {
@@ -24,72 +24,39 @@ export class ServiceService {
       appId = 0;
     }
     return this.http
-      .get(`/api/v1/apps/${appId}/services/names`, {params: params})
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/services/names`, {params: params});
   }
 
   list(pageState: PageState, deleted?: string, appId?: string): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    params = params.set('deleted', deleted);
-    params = params.set('relate', 'all');
-    params = params.set('appId', appId + '');
-    params = params.set('sortby', '-id');
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
+    const params = buildListParams(pageState, {
+      literals: [
+        ['deleted', deleted],
+        ['relate', 'all'],
+        ['appId', appId + ''],
+        ['sortby', '-id'],
+      ],
+      excludeSortby: ['app.name'],
     });
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    // sort param
-    if (Object.keys(pageState.sort).length !== 0 && pageState.sort.by !== 'app.name') {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
     if ((typeof (appId) === 'undefined') || (!appId)) {
       appId = '0';
     }
     return this.http
-      .get(`/api/v1/apps/${appId}/services`, {params: params})
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/services`, {params: params});
   }
 
   create(service: Service): Observable<any> {
     return this.http
-      .post(`/api/v1/apps/${service.appId}/services`, service, this.options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/apps/${service.appId}/services`, service, this.options);
   }
 
   update(service: Service): Observable<any> {
     return this.http
-      .put(`/api/v1/apps/${service.appId}/services/${service.id}`, service, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/apps/${service.appId}/services/${service.id}`, service, this.options);
   }
 
   updateOrder(appId: number, orderList: Array<OrderItem>): Observable<any> {
     return this.http
-      .put(`/api/v1/apps/${appId}/services/updateorders`, orderList, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/apps/${appId}/services/updateorders`, orderList, this.options);
   }
 
   deleteById(id: number, appId: number, logical?: boolean): Observable<any> {
@@ -101,15 +68,11 @@ export class ServiceService {
     }
 
     return this.http
-      .delete(`/api/v1/apps/${appId}/services/${id}`, options)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/apps/${appId}/services/${id}`, options);
   }
 
   getById(id: number, appId: number): Observable<any> {
     return this.http
-      .get(`/api/v1/apps/${appId}/services/${id}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/services/${id}`);
   }
 }

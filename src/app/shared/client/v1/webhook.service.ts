@@ -28,9 +28,7 @@ export class WebHookService {
     }
 
     return this.http
-      .get(restUrl, this.options)
-
-      .catch(error => throwError(error));
+      .get(restUrl, this.options);
   }
 
   query(pageState: PageState, scope: number, scopeId: number): Observable<any> {
@@ -75,9 +73,7 @@ export class WebHookService {
     }
 
     return this.http
-      .get(restUrl, {params: params})
-
-      .catch(error => throwError(error));
+      .get(restUrl, {params: params});
   }
 
   create(webHook: WebHook): Observable<any> {
@@ -89,9 +85,7 @@ export class WebHookService {
     }
 
     return this.http
-      .post(restUrl, webHook, this.options)
-
-      .catch(error => throwError(error));
+      .post(restUrl, webHook, this.options);
   }
 
   update(webHook: WebHook): Observable<any> {
@@ -103,9 +97,7 @@ export class WebHookService {
     }
 
     return this.http
-      .put(restUrl, webHook, this.options)
-
-      .catch(error => throwError(error));
+      .put(restUrl, webHook, this.options);
   }
 
   delete(webHook: WebHook): Observable<any> {
@@ -117,15 +109,11 @@ export class WebHookService {
     }
 
     return this.http
-      .delete(restUrl, this.options)
-
-      .catch(error => throwError(error));
+      .delete(restUrl, this.options);
   }
 
   getEvents(): Observable<any> {
     return this.http
-      .get(`/api/v1/apps/0/webhooks/events`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/0/webhooks/events`);
   }
 }

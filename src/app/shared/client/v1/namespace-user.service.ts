@@ -7,8 +7,6 @@ import 'rxjs/add/observable/throw';
 import { NamespaceUser } from '../../model/v1/namespace-user';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
-import { throwError } from 'rxjs';
-
 @Injectable()
 export class NamespaceUserService {
   headers = new HttpHeaders({'Content-type': 'application/json'});
@@ -66,33 +64,23 @@ export class NamespaceUserService {
       }
     }
 
-    return this.http.get(`/api/v1/namespaces/${namespaceId}/users`, {params: params})
-
-      .catch(error => throwError(error));
+    return this.http.get(`/api/v1/namespaces/${namespaceId}/users`, {params: params});
   }
 
   create(namespaceUser: NamespaceUser): Observable<any> {
-    return this.http.post(`/api/v1/namespaces/${namespaceUser.namespace.id}/users`, namespaceUser, this.options)
-
-      .catch(error => throwError(error));
+    return this.http.post(`/api/v1/namespaces/${namespaceUser.namespace.id}/users`, namespaceUser, this.options);
   }
 
   update(namespaceUser: NamespaceUser): Observable<any> {
-    return this.http.put(`/api/v1/namespaces/${namespaceUser.namespace.id}/users/${namespaceUser.id}`, namespaceUser, this.options)
-
-      .catch(error => throwError(error));
+    return this.http.put(`/api/v1/namespaces/${namespaceUser.namespace.id}/users/${namespaceUser.id}`, namespaceUser, this.options);
   }
 
   deleteById(id: number, namespaceId: number): Observable<any> {
     const options: any = {};
-    return this.http.delete(`/api/v1/namespaces/${namespaceId}/users/${id}`, options)
-
-      .catch(error => throwError(error));
+    return this.http.delete(`/api/v1/namespaces/${namespaceId}/users/${id}`, options);
   }
 
   getById(id: number, namespaceId: string): Observable<any> {
-    return this.http.get(`/api/v1/namespaces/${namespaceId}/users/${id}`)
-
-      .catch(error => throwError(error));
+    return this.http.get(`/api/v1/namespaces/${namespaceId}/users/${id}`);
   }
 }

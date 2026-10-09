@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { throwError } from 'rxjs';
 import { PageState } from '../../../page/page-state';
 import { BaseClient } from './base-client';
 
@@ -17,8 +16,7 @@ export class JobClient {
     }
     params = params.set('name', cronjobName);
     return this.http
-      .get(`/api/v1/kubernetes/apps/${appId}/jobs/namespaces/${namespace}/clusters/${cluster}`, {params: params})
-      .catch(error => throwError(error));
+      .get(`/api/v1/kubernetes/apps/${appId}/jobs/namespaces/${namespace}/clusters/${cluster}`, {params: params});
   }
 
   deleteJobByName(cluster: string, namespace: string, jobName: string, appId: number): Observable<any> {
@@ -28,13 +26,11 @@ export class JobClient {
     }
     params = params.set('name', jobName);
     return this.http
-      .delete(`/api/v1/kubernetes/apps/${appId}/jobs/namespaces/${namespace}/clusters/${cluster}`, {params: params})
-      .catch(error => throwError(error));
+      .delete(`/api/v1/kubernetes/apps/${appId}/jobs/namespaces/${namespace}/clusters/${cluster}`, {params: params});
   }
 
   PodsEvent(appId: number, cluster: string, namespace: string, jobName: string, cronjobName: string): Observable<any> {
     return this.http
-      .get(`/api/v1/kubernetes/apps/${appId}/jobs/getPodsEvent/${jobName}/${cronjobName}/namespaces/${namespace}/clusters/${cluster}`)
-      .catch(error => throwError(error));
+      .get(`/api/v1/kubernetes/apps/${appId}/jobs/getPodsEvent/${jobName}/${cronjobName}/namespaces/${namespace}/clusters/${cluster}`);
   }
 }

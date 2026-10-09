@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { throwError } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -17,16 +16,12 @@ export class AppStarredService {
 
   create(app: AppStarred): Observable<any> {
     return this.http
-      .post(`/api/v1/apps/stars`, app, this.options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/apps/stars`, app, this.options);
   }
 
   deleteByAppId(appId: number): Observable<any> {
     return this.http
-      .delete(`/api/v1/apps/stars/${appId}`)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/apps/stars/${appId}`);
   }
 
 }

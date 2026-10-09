@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
-import { throwError } from 'rxjs';
-
 export interface TerminalCommandRule {
   id?: number;
   role: string;
@@ -26,38 +24,32 @@ export class TerminalCommandRuleService {
 
   listRules(): Observable<any> {
     return this.http
-      .get('/api/v1/terminal/command-rules', this.options)
-      .catch(error => throwError(error));
+      .get('/api/v1/terminal/command-rules', this.options);
   }
 
   getRule(id: number): Observable<any> {
     return this.http
-      .get(`/api/v1/terminal/command-rules/${id}`, this.options)
-      .catch(error => throwError(error));
+      .get(`/api/v1/terminal/command-rules/${id}`, this.options);
   }
 
   createRule(rule: TerminalCommandRule): Observable<any> {
     return this.http
-      .post('/api/v1/terminal/command-rules', rule, this.options)
-      .catch(error => throwError(error));
+      .post('/api/v1/terminal/command-rules', rule, this.options);
   }
 
   updateRule(rule: TerminalCommandRule): Observable<any> {
     return this.http
-      .put(`/api/v1/terminal/command-rules/${rule.id}`, rule, this.options)
-      .catch(error => throwError(error));
+      .put(`/api/v1/terminal/command-rules/${rule.id}`, rule, this.options);
   }
 
   deleteRule(id: number): Observable<any> {
     return this.http
-      .delete(`/api/v1/terminal/command-rules/${id}`, this.options)
-      .catch(error => throwError(error));
+      .delete(`/api/v1/terminal/command-rules/${id}`, this.options);
   }
 
   getRulesByRole(role: string): Observable<any> {
     return this.http
-      .get(`/api/v1/terminal/command-rules/role/${role}`, this.options)
-      .catch(error => throwError(error));
+      .get(`/api/v1/terminal/command-rules/role/${role}`, this.options);
   }
 }
 

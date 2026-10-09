@@ -7,7 +7,7 @@ import 'rxjs/add/observable/throw';
 import { User } from '../../model/v1/user';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
-import { throwError } from 'rxjs';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class UserService {
@@ -18,93 +18,49 @@ export class UserService {
   }
 
   listUser(pageState: PageState): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
-    });
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
+    const params = buildListParams(pageState);
     return this.http
-      .get('/api/v1/users', {params: params})
-
-      .catch(error => throwError(error));
+      .get('/api/v1/users', {params: params});
   }
 
   createUser(user: User): Observable<any> {
     return this.http
-      .post(`/api/v1/users`, user, this.options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/users`, user, this.options);
   }
 
   getNames(): Observable<any> {
-    return this.http.get('/api/v1/users/names')
-
-      .catch(error => throwError(error));
+    return this.http.get('/api/v1/users/names');
   }
 
   updateUser(user: User): Observable<any> {
     return this.http
-      .put(`/api/v1/users/${user.id}`, user, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/users/${user.id}`, user, this.options);
   }
 
   updateUserAdmin(user: User): Observable<any> {
     return this.http
-      .put(`/api/v1/users/${user.id}/admin`, user, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/users/${user.id}/admin`, user, this.options);
   }
 
   resetPassword(user: User): Observable<any> {
     return this.http
-      .put(`/api/v1/users/${user.id}/resetpassword`, user, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/users/${user.id}/resetpassword`, user, this.options);
   }
 
   deleteUser(userId: number): Observable<any> {
     const options: any = {};
     return this.http
-      .delete(`/api/v1/users/${userId}`, options)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/users/${userId}`, options);
   }
 
   getUser(userId: number): Observable<any> {
     return this.http
-      .get(`/api/v1/users/${userId}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/users/${userId}`);
   }
 
   getStatistics(): Observable<any> {
     return this.http
-      .get('/api/v1/users/statistics')
-
-      .catch(error => throwError(error));
+      .get('/api/v1/users/statistics');
   }
 
 }

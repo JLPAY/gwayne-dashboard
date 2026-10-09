@@ -7,7 +7,7 @@ import 'rxjs/add/observable/throw';
 import { IngressTpl } from '../../model/v1/ingresstpl';
 import { isNotEmpty } from '../../utils';
 import { PageState } from '../../page/page-state';
-import { throwError } from 'rxjs';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class IngressTplService {
@@ -18,54 +18,28 @@ export class IngressTplService {
   }
 
   listPage(pageState: PageState, appId?: number, ingressId?: string): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    params = params.set('sortby', '-id');
     if ((typeof(appId) === 'undefined') || (!appId)) {
       appId = 0;
     }
-    params = params.set('ingressId', ingressId === undefined ? '' : ingressId.toString());
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
+    const params = buildListParams(pageState, {
+      literals: [
+        ['sortby', '-id'],
+        ['ingressId', ingressId === undefined ? '' : ingressId.toString()],
+      ],
     });
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
 
     return this.http
-      .get(`/api/v1/apps/${appId}/ingresses/tpls`, {params: params})
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/ingresses/tpls`, {params: params});
   }
 
   create(ingressTpl: IngressTpl, appId: number): Observable<any> {
     return this.http
-      .post(`/api/v1/apps/${appId}/ingresses/tpls`, ingressTpl, this.options)
-      .catch(error => throwError(error));
+      .post(`/api/v1/apps/${appId}/ingresses/tpls`, ingressTpl, this.options);
   }
 
   update(ingressTpl: IngressTpl, appId: number): Observable<any> {
     return this.http
-      .put(`/api/v1/apps/${appId}/ingresses/tpls/${ingressTpl.id}`, ingressTpl, this.options)
-      .catch(error => throwError(error));
+      .put(`/api/v1/apps/${appId}/ingresses/tpls/${ingressTpl.id}`, ingressTpl, this.options);
   }
 
   deleteById(id: number, appId: number, logical?: boolean): Observable<any> {
@@ -77,13 +51,11 @@ export class IngressTplService {
     }
 
     return this.http
-      .delete(`/api/v1/apps/${appId}/ingresses/tpls/${id}`, options)
-      .catch(error => throwError(error));
+      .delete(`/api/v1/apps/${appId}/ingresses/tpls/${id}`, options);
   }
 
   getById(id: number, appId: number): Observable<any> {
     return this.http
-      .get(`/api/v1/apps/${appId}/ingresses/tpls/${id}`)
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/ingresses/tpls/${id}`);
   }
 }

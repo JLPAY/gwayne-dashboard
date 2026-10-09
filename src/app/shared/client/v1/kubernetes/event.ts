@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
-import { throwError } from 'rxjs';
 import { PageState } from '../../../page/page-state';
 import { BaseClient } from './base-client';
 
@@ -19,8 +18,7 @@ export class EventClient {
     params = params.set('type', resouceType);
     params = params.set('name', name);
     return this.http
-      .get(`/api/v1/kubernetes/apps/${appId}/events/namespaces/${namespace}/clusters/${cluster}`, {params: params})
-      .catch(error => throwError(error));
+      .get(`/api/v1/kubernetes/apps/${appId}/events/namespaces/${namespace}/clusters/${cluster}`, {params: params});
   }
 
 }

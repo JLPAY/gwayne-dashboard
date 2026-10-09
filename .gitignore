@@ -40,3 +40,6 @@ typings
 # System Files
 .DS_Store
 Thumbs.db
+
+# 契约快照与重构验证产物（由 tools/ 下的脚本生成，含旧源码树副本，不入库）
+contract/

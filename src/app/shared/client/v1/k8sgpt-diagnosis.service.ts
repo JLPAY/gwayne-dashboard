@@ -4,8 +4,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { DiagnosisRequest, AnalyzerInfo } from '../../model/v1/aibackend';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { throwError } from 'rxjs';
-
 @Injectable()
 export class K8sGPTDiagnosisService {
   headers = new HttpHeaders({'Content-type': 'application/json'});
@@ -16,8 +14,7 @@ export class K8sGPTDiagnosisService {
 
   analyze(request: DiagnosisRequest): Observable<any> {
     return this.http
-      .post('/api/v1/k8sgpt/diagnosis/analyze', request, this.options)
-      .catch(error => throwError(error));
+      .post('/api/v1/k8sgpt/diagnosis/analyze', request, this.options);
   }
 
   analyzeByCluster(clusterName: string, namespace?: string, filters?: string[], backendID?: number): Observable<any> {
@@ -35,14 +32,12 @@ export class K8sGPTDiagnosisService {
     }
 
     return this.http
-      .get(`/api/v1/k8sgpt/diagnosis/clusters/${clusterName}`, {params: params})
-      .catch(error => throwError(error));
+      .get(`/api/v1/k8sgpt/diagnosis/clusters/${clusterName}`, {params: params});
   }
 
   listAnalyzers(): Observable<any> {
     return this.http
-      .get('/api/v1/k8sgpt/diagnosis/analyzers')
-      .catch(error => throwError(error));
+      .get('/api/v1/k8sgpt/diagnosis/analyzers');
   }
 }
 

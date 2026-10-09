@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
-import { throwError } from 'rxjs';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class PublishService {
@@ -17,43 +17,16 @@ export class PublishService {
   }
 
   listHistories(pageState: PageState, type?: number, resourceId?: number): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    params = params.set('type', type + '');
-    params = params.set('resourceId', resourceId + '');
-    params = params.set('sortby', '-id');
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
+    const params = buildListParams(pageState, {
+      literals: [
+        ['type', type + ''],
+        ['resourceId', resourceId + ''],
+        ['sortby', '-id'],
+      ],
     });
-
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    // sort param
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
 
     return this.http
-      .get('/api/v1/publish/histories', {params: params})
-
-      .catch(error => throwError(error));
+      .get('/api/v1/publish/histories', {params: params});
   }
 
   listStatus(type?: number, resourceId?: number): Observable<any> {
@@ -69,9 +42,7 @@ export class PublishService {
     params = params.set('start_time', startTime);
     params = params.set('end_time', endTime);
     return this.http
-      .get('/api/v1/publish/statistics', {params: params})
-
-      .catch(error => throwError(error));
+      .get('/api/v1/publish/statistics', {params: params});
   }
 
 }

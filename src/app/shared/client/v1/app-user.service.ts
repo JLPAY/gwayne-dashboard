@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { throwError } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -57,33 +56,23 @@ export class AppUserService {
       const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
       params = params.set('sortby', sortType);
     }
-    return this.http.get(`/api/v1/apps/${appId}/users`, {params: params})
-
-      .catch(error => throwError(error));
+    return this.http.get(`/api/v1/apps/${appId}/users`, {params: params});
   }
 
   create(appUser: AppUser): Observable<any> {
-    return this.http.post(`/api/v1/apps/${appUser.app.id}/users`, appUser, this.options)
-
-      .catch(error => throwError(error));
+    return this.http.post(`/api/v1/apps/${appUser.app.id}/users`, appUser, this.options);
   }
 
   update(appUser: AppUser): Observable<any> {
-    return this.http.put(`/api/v1/apps/${appUser.app.id}/users/${appUser.id}`, appUser, this.options)
-
-      .catch(error => throwError(error));
+    return this.http.put(`/api/v1/apps/${appUser.app.id}/users/${appUser.id}`, appUser, this.options);
   }
 
   deleteById(id: number, appId: number): Observable<any> {
     const options: any = {};
-    return this.http.delete(`/api/v1/apps/${appId}/users/${id}`, options)
-
-      .catch(error => throwError(error));
+    return this.http.delete(`/api/v1/apps/${appId}/users/${id}`, options);
   }
 
   getById(id: number, appId: number): Observable<any> {
-    return this.http.get(`/api/v1/apps/${appId}/users/${id}`)
-
-      .catch(error => throwError(error));
+    return this.http.get(`/api/v1/apps/${appId}/users/${id}`);
   }
 }

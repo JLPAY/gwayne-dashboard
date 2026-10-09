@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { PersistentVolume } from '../../../model/v1/kubernetes/persistentvolume';
-import { throwError } from 'rxjs';
-
 @Injectable()
 export class PersistentVolumeClient {
   constructor(private http: HttpClient) {
@@ -11,31 +9,26 @@ export class PersistentVolumeClient {
 
   list(cluster: string): Observable<any> {
     return this.http
-      .get(`/api/v1/kubernetes/persistentvolumes/clusters/${cluster}`)
-      .catch(error => throwError(error));
+      .get(`/api/v1/kubernetes/persistentvolumes/clusters/${cluster}`);
   }
 
   create(pv: PersistentVolume, cluster: string): Observable<any> {
     return this.http
-      .post(`/api/v1/kubernetes/persistentvolumes/clusters/${cluster}`, pv)
-      .catch(error => throwError(error));
+      .post(`/api/v1/kubernetes/persistentvolumes/clusters/${cluster}`, pv);
   }
 
   update(pv: PersistentVolume, cluster: string): Observable<any> {
     return this.http
-      .put(`/api/v1/kubernetes/persistentvolumes/${pv.metadata.name}/clusters/${cluster}`, pv)
-      .catch(error => throwError(error));
+      .put(`/api/v1/kubernetes/persistentvolumes/${pv.metadata.name}/clusters/${cluster}`, pv);
   }
 
   deleteById(name: string, cluster: string): Observable<any> {
     return this.http
-      .delete(`/api/v1/kubernetes/persistentvolumes/${name}/clusters/${cluster}`)
-      .catch(error => throwError(error));
+      .delete(`/api/v1/kubernetes/persistentvolumes/${name}/clusters/${cluster}`);
   }
 
   getById(name: number, cluster: string): Observable<any> {
-    return this.http.get(`/api/v1/kubernetes/persistentvolumes/${name}/clusters/${cluster}`)
-      .catch(error => throwError(error));
+    return this.http.get(`/api/v1/kubernetes/persistentvolumes/${name}/clusters/${cluster}`);
   }
 
 }

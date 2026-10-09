@@ -7,7 +7,7 @@ import { AvailablePort } from '../../model/v1/available-port';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class AvailablePortService {
@@ -19,80 +19,42 @@ export class AvailablePortService {
 
   getLvs(): Observable<any> {
     return this.http
-      .get(`/api/v1/services/availableports/lvs`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/services/availableports/lvs`);
   }
 
   list(pageState: PageState): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    params = params.set('sortby', '-id');
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
+    const params = buildListParams(pageState, {
+      literals: [
+        ['sortby', '-id'],
+      ],
     });
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    // sort param
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
     return this.http
-      .get('/api/v1/services/availableports', {params: params})
-
-      .catch(error => throwError(error));
+      .get('/api/v1/services/availableports', {params: params});
   }
 
   create(availablePort: AvailablePort): Observable<any> {
     return this.http
-      .post(`/api/v1/services/availableports`, availablePort, this.options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/services/availableports`, availablePort, this.options);
   }
 
   update(availablePort: AvailablePort): Observable<any> {
     return this.http
-      .put(`/api/v1/services/availableports/${availablePort.id}`, availablePort, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/services/availableports/${availablePort.id}`, availablePort, this.options);
   }
 
   deleteById(id: number): Observable<any> {
     return this.http
-      .delete(`/api/v1/services/availableports/${id}`)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/services/availableports/${id}`);
   }
 
   getById(id: number): Observable<any> {
     return this.http
-      .get(`/api/v1/services/availableports/${id}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/services/availableports/${id}`);
   }
 
   getByPort(port: number): Observable<any> {
     return this.http
-      .get(`/api/v1/services/availableports/port/${port}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/services/availableports/port/${port}`);
   }
 
 }

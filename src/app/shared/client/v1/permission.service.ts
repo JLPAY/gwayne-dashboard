@@ -7,7 +7,7 @@ import 'rxjs/add/observable/throw';
 import { Permission } from '../../model/v1/permission';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
-import { throwError } from 'rxjs';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class PermissionService {
@@ -18,72 +18,34 @@ export class PermissionService {
   }
 
   listPermission(pageState: PageState): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
-    });
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
+    const params = buildListParams(pageState);
     return this.http
-      .get('/api/v1/permissions', {params: params})
-
-      .catch(error => throwError(error));
+      .get('/api/v1/permissions', {params: params});
   }
 
   createPermission(permission: Permission): Observable<any> {
     return this.http
-      .post(`/api/v1/permissions`, permission, this.options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/permissions`, permission, this.options);
   }
 
   updatePermission(permission: Permission): Observable<any> {
     return this.http
-      .put(`/api/v1/permissions/${permission.id}`, permission, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/permissions/${permission.id}`, permission, this.options);
   }
 
   deletePermission(permissionId: number): Observable<any> {
     const options: any = {};
     return this.http
-      .delete(`/api/v1/permissions/${permissionId}`, options)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/permissions/${permissionId}`, options);
   }
 
   getPermission(permissionId: number): Observable<any> {
     return this.http
-      .get(`/api/v1/permissions/${permissionId}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/permissions/${permissionId}`);
   }
 
   initDict(): Observable<any> {
     return this.http
-      .get(`/api/v1/permissions/init`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/permissions/init`);
   }
 }

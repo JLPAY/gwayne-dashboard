@@ -5,8 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { PageState } from '../../../page/page-state';
 import { BaseClient } from './base-client';
-import { throwError } from 'rxjs';
-
 @Injectable()
 export class CustomCRDClient {
   constructor(private http: HttpClient) {
@@ -23,8 +21,7 @@ export class CustomCRDClient {
     }
 
     return this.http
-      .get(link)
-      .catch(error => throwError(error));
+      .get(link);
   }
 
   listPage(pageState: PageState, cluster: string, group, version, kind, namespace, appId?: string): Observable<any> {
@@ -39,8 +36,7 @@ export class CustomCRDClient {
     }
 
     return this.http
-      .get(link, {params: params})
-      .catch(error => throwError(error));
+      .get(link, {params: params});
   }
 
   create(obj: any, cluster: string, group, version, kind, namespace, appId?: string): Observable<any> {
@@ -53,8 +49,7 @@ export class CustomCRDClient {
     }
 
     return this.http
-      .post(link, obj)
-      .catch(error => throwError(error));
+      .post(link, obj);
   }
 
   update(obj: any, cluster: string, group, version, kind, namespace, name, appId?: string): Observable<any> {
@@ -68,8 +63,7 @@ export class CustomCRDClient {
     }
 
     return this.http
-      .put(link, obj)
-      .catch(error => throwError(error));
+      .put(link, obj);
   }
 
   // force delete will delete obj for etcd directly
@@ -84,8 +78,7 @@ export class CustomCRDClient {
     }
 
     return this.http
-      .delete(link)
-      .catch(error => throwError(error));
+      .delete(link);
   }
 
 }

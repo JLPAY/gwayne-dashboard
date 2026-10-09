@@ -4,8 +4,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { AIBackend } from '../../model/v1/aibackend';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { throwError } from 'rxjs';
-
 @Injectable()
 export class AIBackendService {
   headers = new HttpHeaders({'Content-type': 'application/json'});
@@ -16,38 +14,32 @@ export class AIBackendService {
 
   list(): Observable<any> {
     return this.http
-      .get('/api/v1/k8sgpt/ai-backends')
-      .catch(error => throwError(error));
+      .get('/api/v1/k8sgpt/ai-backends');
   }
 
   getById(id: number): Observable<any> {
     return this.http
-      .get(`/api/v1/k8sgpt/ai-backends/${id}`)
-      .catch(error => throwError(error));
+      .get(`/api/v1/k8sgpt/ai-backends/${id}`);
   }
 
   create(backend: AIBackend): Observable<any> {
     return this.http
-      .post('/api/v1/k8sgpt/ai-backends', backend, this.options)
-      .catch(error => throwError(error));
+      .post('/api/v1/k8sgpt/ai-backends', backend, this.options);
   }
 
   update(backend: AIBackend): Observable<any> {
     return this.http
-      .put(`/api/v1/k8sgpt/ai-backends/${backend.id}`, backend, this.options)
-      .catch(error => throwError(error));
+      .put(`/api/v1/k8sgpt/ai-backends/${backend.id}`, backend, this.options);
   }
 
   delete(id: number): Observable<any> {
     return this.http
-      .delete(`/api/v1/k8sgpt/ai-backends/${id}`)
-      .catch(error => throwError(error));
+      .delete(`/api/v1/k8sgpt/ai-backends/${id}`);
   }
 
   setDefault(id: number): Observable<any> {
     return this.http
-      .put(`/api/v1/k8sgpt/ai-backends/${id}/default`, {}, this.options)
-      .catch(error => throwError(error));
+      .put(`/api/v1/k8sgpt/ai-backends/${id}/default`, {}, this.options);
   }
 }
 

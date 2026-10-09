@@ -7,7 +7,7 @@ import 'rxjs/add/observable/throw';
 import { Group } from '../../model/v1/group';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
-import { throwError } from 'rxjs';
+import { buildListParams, ListParamPair } from './list-params';
 
 @Injectable()
 export class GroupService {
@@ -18,76 +18,38 @@ export class GroupService {
   }
 
   listGroup(pageState: PageState, type?: number): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    if (typeof (type) !== 'undefined') {
-      params = params.set('type', type + '');
-    }
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
+    const params = buildListParams(pageState, {
+      literals: [
+        ...((typeof (type) !== 'undefined') ? [['type', type + '']] as ListParamPair[] : []),
+      ],
     });
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    // sort param
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
 
     return this.http
-      .get('/api/v1/groups', {params: params})
-
-      .catch(error => throwError(error));
+      .get('/api/v1/groups', {params: params});
   }
 
   createGroup(group: Group): Observable<any> {
     return this.http
-      .post(`/api/v1/groups`, group, this.options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/groups`, group, this.options);
   }
 
   updateGroup(group: Group): Observable<any> {
     return this.http
-      .put(`/api/v1/groups/${group.id}`, group, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/groups/${group.id}`, group, this.options);
   }
 
   deleteGroup(groupId: number): Observable<any> {
     const options: any = {};
     return this.http
-      .delete(`/api/v1/groups/${groupId}`, options)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/groups/${groupId}`, options);
   }
 
   getGroup(groupId: number): Observable<any> {
     return this.http
-      .get(`/api/v1/groups/${groupId}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/groups/${groupId}`);
   }
 
   initGroup(): Observable<any> {
-    return this.http.get(`/api/v1/groups/init`)
-
-      .catch(error => throwError(error));
+    return this.http.get(`/api/v1/groups/init`);
   }
 }

@@ -7,7 +7,7 @@ import { Config } from '../../model/v1/config';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class ConfigService {
@@ -19,75 +19,37 @@ export class ConfigService {
 
   listSystemConfig() {
     return this.http
-      .get('/api/v1/configs/system')
-
-      .catch(error => throwError(error));
+      .get('/api/v1/configs/system');
   }
 
   list(pageState: PageState): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
+    const params = buildListParams(pageState, {
+      exactFilterKeys: ['id'],
     });
-
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    // sort param
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
     return this.http
-      .get('/api/v1/configs', {params: params})
-
-      .catch(error => throwError(error));
+      .get('/api/v1/configs', {params: params});
   }
 
   create(config: Config): Observable<any> {
     return this.http
-      .post(`/api/v1/configs`, config, this.options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/configs`, config, this.options);
   }
 
   update(config: Config): Observable<any> {
     return this.http
-      .put(`/api/v1/configs/${config.id}`, config, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/configs/${config.id}`, config, this.options);
   }
 
   deleteById(id: number): Observable<any> {
     const options: any = {};
 
     return this.http
-      .delete(`/api/v1/configs/${id}`, options)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/configs/${id}`, options);
   }
 
   getById(id: number): Observable<any> {
     return this.http
-      .get(`/api/v1/configs/${id}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/configs/${id}`);
   }
 
 }

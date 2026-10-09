@@ -7,7 +7,7 @@ import 'rxjs/add/observable/throw';
 import { SecretTpl } from '../../model/v1/secrettpl';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
-import { throwError } from 'rxjs';
+import { buildListParams } from './list-params';
 
 @Injectable()
 export class SecretTplService {
@@ -22,63 +22,32 @@ export class SecretTplService {
       appId = 0;
     }
     return this.http
-      .get(`/api/v1/apps/${appId}/secrets/tpls/names`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/secrets/tpls/names`);
   }
 
   listPage(pageState: PageState, appId?: number, secretId?: string, needStatus?: string): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('pageNo', pageState.page.pageNo + '');
-    params = params.set('pageSize', pageState.page.pageSize + '');
-    params = params.set('sortby', '-id');
     if ((typeof (appId) === 'undefined') || (!appId)) {
       appId = 0;
     }
-    params = params.set('secretId', secretId === undefined ? '' : secretId.toString());
-    Object.getOwnPropertyNames(pageState.params).map(key => {
-      const value = pageState.params[key];
-      if (isNotEmpty(value)) {
-        params = params.set(key, value);
-      }
+    const params = buildListParams(pageState, {
+      literals: [
+        ['sortby', '-id'],
+        ['secretId', secretId === undefined ? '' : secretId.toString()],
+      ],
     });
-    const filterList: Array<string> = [];
-    Object.getOwnPropertyNames(pageState.filters).map(key => {
-      const value = pageState.filters[key];
-      if (isNotEmpty(value)) {
-        if (key === 'deleted' || key === 'id') {
-          filterList.push(`${key}=${value}`);
-        } else {
-          filterList.push(`${key}__contains=${value}`);
-        }
-      }
-    });
-    if (filterList.length) {
-      params = params.set('filter', filterList.join(','));
-    }
-    if (Object.keys(pageState.sort).length !== 0) {
-      const sortType: any = pageState.sort.reverse ? `-${pageState.sort.by}` : pageState.sort.by;
-      params = params.set('sortby', sortType);
-    }
 
     return this.http
-      .get(`/api/v1/apps/${appId}/secrets/tpls`, {params: params})
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/secrets/tpls`, {params: params});
   }
 
   create(secretTpl: SecretTpl, appId: number): Observable<any> {
     return this.http
-      .post(`/api/v1/apps/${appId}/secrets/tpls`, secretTpl, this.options)
-
-      .catch(error => throwError(error));
+      .post(`/api/v1/apps/${appId}/secrets/tpls`, secretTpl, this.options);
   }
 
   update(secretTpl: SecretTpl, appId: number): Observable<any> {
     return this.http
-      .put(`/api/v1/apps/${appId}/secrets/tpls/${secretTpl.id}`, secretTpl, this.options)
-
-      .catch(error => throwError(error));
+      .put(`/api/v1/apps/${appId}/secrets/tpls/${secretTpl.id}`, secretTpl, this.options);
   }
 
   deleteById(id: number, appId: number, logical?: boolean): Observable<any> {
@@ -90,15 +59,11 @@ export class SecretTplService {
     }
 
     return this.http
-      .delete(`/api/v1/apps/${appId}/secrets/tpls/${id}`, options)
-
-      .catch(error => throwError(error));
+      .delete(`/api/v1/apps/${appId}/secrets/tpls/${id}`, options);
   }
 
   getById(id: number, appId: number): Observable<any> {
     return this.http
-      .get(`/api/v1/apps/${appId}/secrets/tpls/${id}`)
-
-      .catch(error => throwError(error));
+      .get(`/api/v1/apps/${appId}/secrets/tpls/${id}`);
   }
 }

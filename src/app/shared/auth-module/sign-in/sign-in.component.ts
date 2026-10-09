@@ -44,7 +44,7 @@ export class SignInComponent implements OnInit {
       window.location.replace(ref);
     }
 
-    if (this.authService.config?.oauth2Providers) {
+    if (this.authService.config && this.authService.config.oauth2Providers) {
       this.oauth2Providers = this.authService.config.oauth2Providers;
     }
   }
