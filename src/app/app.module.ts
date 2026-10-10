@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, ErrorHandler, Injector, NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, Injectable, Injector, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { RoutingModule } from './app-routing.module';
 import { PortalModule } from './portal/portal.module';
@@ -43,12 +43,17 @@ if (environment.production && (window as any).CONFIG.RAVEN ) {
 }
 
 
+// Angular 10 起，providers 中 useClass 指向的类必须带 Angular 装饰器，
+// 否则 DI 元数据无法静态分析（ng update 的 missing-injectable 迁移明确报出
+// 「Provider is not statically analyzable」——因为此处是三元表达式，它无法自动补）。
+@Injectable()
 export class RavenErrorHandler implements ErrorHandler {
   handleError(err: any): void {
     Raven.captureException(err);
   }
 }
 
+@Injectable()
 export class WayneErrorHandler implements ErrorHandler {
   handleError(err: any): void {
     throw err;

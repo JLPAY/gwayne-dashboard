@@ -1,6 +1,7 @@
-import { OnInit } from '@angular/core';
+import { OnInit, Directive } from '@angular/core';
 import { SideNavCollapseStorage } from '../../../shared/sidenav.const';
 
+@Directive()
 export class SideNavCollapse implements OnInit {
   constructor(
     public storage: any

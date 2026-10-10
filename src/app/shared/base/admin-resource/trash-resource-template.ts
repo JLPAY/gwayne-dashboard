@@ -1,4 +1,4 @@
-import { OnDestroy, OnInit } from '@angular/core';
+import { OnDestroy, OnInit, Directive } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { MessageHandlerService } from '../../message-handler/message-handler.service';
 import { ConfirmationMessage } from '../../confirmation-dialog/confirmation-message';
@@ -9,6 +9,7 @@ import { AceEditorService } from '../../ace-editor/ace-editor.service';
 import { AceEditorMsg } from '../../ace-editor/ace-editor';
 import { PageState } from '../../page/page-state';
 
+@Directive()
 export class TrashResourceTemplateComponent implements OnInit, OnDestroy {
 
   templates: any[];

@@ -1,4 +1,4 @@
-import { ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { ViewChild, OnInit, OnDestroy, Directive } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ import { MessageHandlerService } from '../../message-handler/message-handler.ser
 import { ListResourceComponent } from './list-resource';
 import { CreateEditResourceComponent } from './create-edit-resource';
 
+@Directive()
 export class ResourceComponent implements OnInit, OnDestroy {
   // @ViewChild(ListResourceComponent)
   listResourceComponent: ListResourceComponent;

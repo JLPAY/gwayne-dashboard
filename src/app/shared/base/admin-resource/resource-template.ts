@@ -1,4 +1,4 @@
-import { OnDestroy, OnInit } from '@angular/core';
+import { OnDestroy, OnInit, Directive } from '@angular/core';
 import { BreadcrumbService } from '../../client/v1/breadcrumb.service';
 import { ActivatedRoute } from '@angular/router';
 import { ClrDatagridStateInterface } from '@clr/angular';
@@ -12,6 +12,7 @@ import { CreateEditResourceTemplateComponent } from './create-edit-resource-temp
 import { ListResourceTemplateComponent } from './list-resource-template';
 import { isNotEmpty } from '../../utils';
 
+@Directive()
 export class ResourceTemplateComponent implements OnInit, OnDestroy {
   // @ViewChild(CreateEditResourceTemplateComponent)
   listResourceTemplateComponent: ListResourceTemplateComponent;

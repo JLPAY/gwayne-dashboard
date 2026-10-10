@@ -6,11 +6,12 @@ import { ClusterService } from '../../client/v1/cluster.service';
 import { PageState } from '../../page/page-state';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { KubeResourcesName } from '../../shared.const';
-import { OnDestroy, OnInit } from '@angular/core';
+import { OnDestroy, OnInit, Directive } from '@angular/core';
 import { KubernetesClient } from '../../client/v1/kubernetes/kubernetes';
 import { DeletionDialogComponent } from '../../deletion-dialog/deletion-dialog.component';
 import { DeleteEvent } from './kubernetes-list-resource';
 
+@Directive()
 export class KubernetesUnNamespacedResource implements OnInit, OnDestroy {
   aceEditorModal: AceEditorComponent;
   deletionDialogComponent: DeletionDialogComponent;
