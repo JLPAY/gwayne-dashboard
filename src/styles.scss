@@ -291,3 +291,37 @@ a {
 @import "./component/tpl.scss";
 @import './component/theme/custom.scss';
 @import '../node_modules/@clr/ui/src/utils/components.clarity';
+
+// Clarity 3 默认开启 CSS 自定义属性（$clr-use-custom-properties: true），
+// 表格/数据网格的边框色与表头底色在 :root 处被固化为字面量
+// （如 --clr-table-border-color: var(--clr-color-neutral-400)），
+// 导致 custom.scss 中的 SCSS 变量覆盖（transparent/#e8edf6）全部失效，
+// 升级后表格重新出现边框。此处必须在 Clarity 导入之后重设才能覆盖。
+:root {
+  /* 表头底色（原 $clr-thead-bgcolor: #e8edf6） */
+  --clr-thead-bgcolor: #e8edf6;
+  /* 数据网格行上边框、表头下边框、占位区上边框、列分隔线 */
+  --clr-table-border-color: transparent;
+  /* 普通表格表头下边框 */
+  --clr-table-header-border-bottom-color: transparent;
+  /* 数据网格分页脚上边框 */
+  --clr-table-footer-border-top-color: transparent;
+  /* 普通表格行边框 */
+  --clr-tablerow-bordercolor: transparent;
+}
+
+// Clarity 3 为行内固定列新增 .datagrid-row-sticky 容器，自带不透明白底
+// （var(--clr-table-bgcolor)），会把行背景的斑马纹盖住，导致同一行
+// "左侧固定列发白、行身有色"的断层。奇数行（斑马纹行）将 sticky 底色对齐
+// 斑马纹色——注意必须用【不透明】等效色 #f5f7fb（= rgba(232,237,246,.45)
+// 在白底上的合成结果）：sticky 叠在行宿主斑马纹之上，若再用半透明色会
+// 双重染色（实测合成出 #f0f3f9，与行身 #f5f7fb 形成肉眼可见色差）。
+// 悬停时也保持同色：本规则的特异性 (0,4,1) 压过 Clarity 的 sticky hover
+// 规则 .datagrid-row:hover .datagrid-row-sticky (0,3,0)，而行身斑马纹
+// (0,2,1) 本就压过行宿主 hover (0,2,0)——两侧都不变色，整行统一
+// （与 v2 悬停表现一致）。若这里用 :not(:hover) 让位，sticky 会变
+// #e8e8e8 而行身仍是斑马纹，悬停时反而出现断层（实测踩坑）。
+// 偶数行行身白底，sticky 白底天然一致。选中态交还 Clarity 自带配色。
+.datagrid-table clr-dg-row:nth-child(odd):not(.datagrid-selected) .datagrid-row-sticky {
+  background-color: #f5f7fb;
+}

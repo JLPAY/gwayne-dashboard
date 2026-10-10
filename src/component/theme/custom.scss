@@ -6,6 +6,9 @@ header.header-6, .header.header-6 {
 }
 
 // table
+// 注意：Clarity 3 起 $clr-use-custom-properties 默认为 true，下列 SCSS 变量覆盖
+// 对数据网格/表格边框已失效（颜色被固化进 :root 的 CSS 自定义属性），
+// 实际生效的覆盖见 src/styles.scss 末尾的 :root 块。
 $table-color: transparent;
 $clr-table-border-color: $table-color;
 $clr-table-header-border-bottom-color: $table-color;
