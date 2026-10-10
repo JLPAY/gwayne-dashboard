@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { CacheService } from '../../../shared/auth/cache.service';
@@ -9,7 +7,6 @@ import { ResourcesActionType } from '../../../shared/shared.const';
 import { PublishStatusService } from '../../../shared/client/v1/publishstatus.service';
 import { DaemonSetClient } from '../../../shared/client/v1/kubernetes/daemonset';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { DaemonSet } from '../../../shared/model/v1/daemonset';
 import { TemplateStatus } from '../../../shared/model/v1/status';
 import { Cluster } from '../../../shared/model/v1/cluster';

@@ -11,7 +11,7 @@ import {
   TemplateState
 } from '../../../shared/shared.const';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { PublishDeploymentTplComponent } from '../publish-tpl/publish-tpl.component';
 import { ListEventComponent } from '../../../shared/list-event/list-event.component';
 import { ListPodComponent } from '../../../shared/list-pod/list-pod.component';

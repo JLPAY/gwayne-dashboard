@@ -10,7 +10,7 @@ import {
   ResourcesActionType,
 } from '../../../shared/shared.const';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { PublishCronjobTplComponent } from '../publish-tpl/publish-tpl.component';
 import { CronjobStatus, CronjobTpl } from '../../../shared/model/v1/cronjobtpl';
 import { CronjobService } from '../../../shared/client/v1/cronjob.service';

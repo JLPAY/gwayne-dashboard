@@ -1,7 +1,7 @@
 import { AfterContentInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageHandlerService } from '../../shared/message-handler/message-handler.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { App } from '../../shared/model/v1/app';
 import { Cluster } from '../../shared/model/v1/cluster';
@@ -21,7 +21,6 @@ import { PublishService } from '../../shared/client/v1/publish.service';
 import { PublishStatus } from '../../shared/model/v1/publish-status';
 import { ConfirmationMessage } from '../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationDialogService } from '../../shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
 import { PageState } from '../../shared/page/page-state';
 import { CreateEditStatefulsetComponent } from './create-edit-statefulset/create-edit-statefulset.component';
 import { ListStatefulsetComponent } from './list-statefulset/list-statefulset.component';

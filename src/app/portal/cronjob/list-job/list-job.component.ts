@@ -4,7 +4,7 @@ import { MessageHandlerService } from '../../../shared/message-handler/message-h
 import { JobClient } from '../../../shared/client/v1/kubernetes/job';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { CacheService } from '../../../shared/auth/cache.service';
 import { PageState } from '../../../shared/page/page-state';
 import { KubeJob } from '../../../shared/model/v1/kubernetes/job';

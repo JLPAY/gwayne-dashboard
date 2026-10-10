@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { ActionType } from '../../../shared/shared.const';
 import { ActivatedRoute, Router } from '@angular/router';

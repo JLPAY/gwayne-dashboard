@@ -4,7 +4,7 @@ import { MessageHandlerService } from '../../../../src/app/shared/message-handle
 import { ConfirmationMessage } from '../../../../src/app/shared/confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../../../src/app/shared/shared.const';
 import { ConfirmationDialogService } from '../../../../src/app/shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ServiceTpl } from '../../../shared/model/servicetpl';
 import { ServiceTplService } from '../../../shared/client/v1/servicetpl.service';
 import { AceEditorService } from '../../../../src/app/shared/ace-editor/ace-editor.service';

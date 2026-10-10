@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+import { Observable } from 'rxjs';
 import { Customlink } from '../../model/v1/customlink';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';

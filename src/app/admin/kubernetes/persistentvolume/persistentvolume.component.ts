@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationMessage } from '../../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../../shared/shared.const';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { ListPersistentVolumeComponent } from './list-persistentvolume/list-persistentvolume.component';
 import { PersistentVolume } from '../../../shared/model/v1/kubernetes/persistentvolume';

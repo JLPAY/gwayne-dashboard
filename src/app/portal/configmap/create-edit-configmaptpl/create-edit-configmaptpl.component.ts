@@ -1,7 +1,5 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Location, DOCUMENT } from '@angular/common';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { ActionType, appLabelKey, namespaceLabelKey } from '../../../shared/shared.const';

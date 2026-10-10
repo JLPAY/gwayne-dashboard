@@ -6,7 +6,7 @@ import { CreateEditSecretComponent } from './create-edit-secret/create-edit-secr
 import { ConfirmationDialogService } from '../../shared/confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationMessage } from '../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../shared/shared.const';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { MessageHandlerService } from '../../shared/message-handler/message-handler.service';
 import { Secret } from '../../shared/model/v1/secret';
 import { SecretService } from '../../shared/client/v1/secret.service';

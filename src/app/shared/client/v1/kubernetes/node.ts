@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { KubeNode } from '../../../model/v1/kubernetes/node';
 import { HttpClient } from '@angular/common/http';
 @Injectable()

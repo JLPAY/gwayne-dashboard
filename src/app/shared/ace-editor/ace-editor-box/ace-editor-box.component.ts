@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { AceEditorService } from '../ace-editor.service';
 import { AceEditorMsg } from '../ace-editor';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import * as ace from 'brace';
 import 'brace/mode/json';
 import 'brace/mode/yaml';

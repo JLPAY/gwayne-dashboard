@@ -14,7 +14,7 @@ import {
 import { MessageHandlerService } from '../../shared/message-handler/message-handler.service';
 import { ListConfigMapComponent } from './list-configmap/list-configmap.component';
 import { CreateEditConfigMapComponent } from './create-edit-configmap/create-edit-configmap.component';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { AppService } from '../../shared/client/v1/app.service';
 import { ConfigMapService } from '../../shared/client/v1/configmap.service';
 import { ConfigMapTplService } from '../../shared/client/v1/configmaptpl.service';
@@ -27,7 +27,6 @@ import { PublishService } from '../../shared/client/v1/publish.service';
 import { PublishStatus } from '../../shared/model/v1/publish-status';
 import { ConfirmationMessage } from '../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationDialogService } from '../../shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
 import { PageState } from '../../shared/page/page-state';
 import { TabDragService } from '../../shared/client/v1/tab-drag.service';
 import { OrderItem } from '../../shared/model/v1/order';

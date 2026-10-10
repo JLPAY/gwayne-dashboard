@@ -5,7 +5,7 @@ import { AuthService } from '../../shared/auth/auth.service';
 import { PageState } from '../../shared/page/page-state';
 import { CacheService } from '../../shared/auth/cache.service';
 import { MessageHandlerService } from '../../shared/message-handler/message-handler.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Notification } from '../../shared/model/v1/notification';

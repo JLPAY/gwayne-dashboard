@@ -1,6 +1,4 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 import { DOCUMENT, Location } from '@angular/common';
 import { FormBuilder, NgForm } from '@angular/forms';
 import { EventManager } from '@angular/platform-browser';
@@ -23,7 +21,6 @@ import {
   StatefulSetUpdateStrategy,
   TCPSocketAction
 } from '../../../shared/model/v1/kubernetes/statefulset';
-import 'rxjs/add/observable/combineLatest';
 import { ActivatedRoute, Router } from '@angular/router';
 import { App } from '../../../shared/model/v1/app';
 import { StatefulsetService } from '../../../shared/client/v1/statefulset.service';

@@ -14,7 +14,7 @@ import {
 import { MessageHandlerService } from '../../../src/app/shared/message-handler/message-handler.service';
 import { ListServiceComponent } from './list-service/list-service.component';
 import { CreateEditServiceComponent } from './create-edit-service/create-edit-service.component';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { AppService } from '../../../src/app/shared/client/v1/app.service';
 import { App } from '../../../src/app/shared/model/v1/app';
 import { CacheService } from '../../../src/app/shared/auth/cache.service';
@@ -25,7 +25,6 @@ import { PublishService } from '../../../src/app/shared/client/v1/publish.servic
 import { PublishStatus } from '../../../src/app/shared/model/v1/publish-status';
 import { ConfirmationMessage } from '../../../src/app/shared/confirmation-dialog/confirmation-message';
 import { ConfirmationDialogService } from '../../../src/app/shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
 import { isArrayNotEmpty, isNotEmpty } from '../../../src/app/shared/utils';
 import { PageState } from '../../../src/app/shared/page/page-state';
 import { TabDragService } from '../../../src/app/shared/client/v1/tab-drag.service';

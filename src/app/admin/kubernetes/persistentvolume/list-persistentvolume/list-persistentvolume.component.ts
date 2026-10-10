@@ -1,7 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output , OnDestroy } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/observable/combineLatest';
 import { NameComparator, NameFilter, PvcFilter, RbdImageNameFilter, TimeComparator } from './inventory';
 import { ClrDatagridSortOrder } from '@clr/angular';
 import { PersistentVolume } from '../../../../shared/model/v1/kubernetes/persistentvolume';
@@ -9,7 +6,7 @@ import { isEmpty } from '../../../../shared/utils';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../../../shared/shared.const';
 import { ConfirmationMessage } from '../../../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationDialogService } from '../../../../shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { PersistentVolumeClient } from '../../../../shared/client/v1/kubernetes/persistentvolume';
 import { MessageHandlerService } from '../../../../shared/message-handler/message-handler.service';
 import { AuthService } from '../../../../shared/auth/auth.service';

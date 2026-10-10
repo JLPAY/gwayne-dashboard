@@ -4,7 +4,7 @@ import { ClrDatagridStateInterface } from '@clr/angular';
 import { ConfirmationDialogService } from '../../../src/app/shared/confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationMessage } from '../../../src/app/shared/confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../../src/app/shared/shared.const';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { MessageHandlerService } from '../../../src/app/shared/message-handler/message-handler.service';
 import { ListServiceComponent } from './list-service/list-service.component';
 import { CreateEditServiceComponent } from './create-edit-service/create-edit-service.component';

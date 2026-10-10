@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+import { Observable } from 'rxjs';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
 import { Statefulset } from 'app/shared/model/v1/statefulset';

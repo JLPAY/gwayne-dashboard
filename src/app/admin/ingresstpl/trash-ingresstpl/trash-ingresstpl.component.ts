@@ -4,7 +4,7 @@ import { MessageHandlerService } from '../../../shared/message-handler/message-h
 import { ConfirmationMessage } from '../../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../../shared/shared.const';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { IngressTpl } from '../../../shared/model/v1/ingresstpl';
 import { IngressTplService } from '../../../shared/client/v1/ingresstpl.service';
 import { AceEditorService } from '../../../shared/ace-editor/ace-editor.service';

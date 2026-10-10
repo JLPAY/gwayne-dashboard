@@ -1,6 +1,4 @@
 import { EventEmitter, OnInit, Output, ViewChild, Directive } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 import { NgForm } from '@angular/forms';
 import { ActionType } from '../../shared.const';
 import { App } from '../../model/v1/app';

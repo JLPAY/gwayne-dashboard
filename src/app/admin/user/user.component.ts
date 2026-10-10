@@ -6,7 +6,7 @@ import { CreateEditUserComponent } from './create-edit-user/create-edit-user.com
 import { ConfirmationDialogService } from '../../shared/confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationMessage } from '../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../shared/shared.const';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { MessageHandlerService } from '../../shared/message-handler/message-handler.service';
 import { User } from '../../shared/model/v1/user';
 import { UserService } from '../../shared/client/v1/user.service';

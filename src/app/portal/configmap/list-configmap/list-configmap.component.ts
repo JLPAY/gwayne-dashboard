@@ -3,7 +3,7 @@ import { ClrDatagridStateInterface } from '@clr/angular';
 import { ConfirmationMessage } from '../../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets, ResourcesActionType } from '../../../shared/shared.const';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { PublishConfigMapTplComponent } from '../publish-tpl/publish-tpl.component';
 import { ConfigMap } from '../../../shared/model/v1/configmap';

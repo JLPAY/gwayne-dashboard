@@ -13,7 +13,7 @@ import {
   TemplateState
 } from '../../../shared/shared.const';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, combineLatest } from 'rxjs';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { TplDetailService } from '../../../shared/tpl-detail/tpl-detail.service';
 import { AuthService } from '../../../shared/auth/auth.service';
@@ -25,7 +25,6 @@ import { PublishStatus } from '../../../shared/model/v1/publish-status';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersistentVolumeClaimService } from '../../../shared/client/v1/persistentvolumeclaim.service';
 import { AppService } from '../../../shared/client/v1/app.service';
-import { combineLatest } from 'rxjs';
 import { PageState } from '../../../shared/page/page-state';
 import { PublishService } from '../../../shared/client/v1/publish.service';
 import { isArrayEmpty, isArrayNotEmpty } from '../../../shared/utils';

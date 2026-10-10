@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';
 import { HttpClient, HttpParams } from '@angular/common/http';

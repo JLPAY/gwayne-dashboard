@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { ConfirmationDialogService } from './confirmation-dialog.service';
 import { ConfirmationMessage } from './confirmation-message';

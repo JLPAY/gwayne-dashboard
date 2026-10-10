@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ConfigService } from '../../../shared/client/v1/config.service';
 
 @Component({

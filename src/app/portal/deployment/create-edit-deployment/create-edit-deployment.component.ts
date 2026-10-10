@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
-import 'rxjs/add/observable/combineLatest';
 import { Deployment } from '../../../shared/model/v1/deployment';
 import { DeploymentService } from '../../../shared/client/v1/deployment.service';
 import { AuthService } from '../../../shared/auth/auth.service';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { ConfirmationMessage } from './confirmation-message';
 import { ConfirmationAcknowledgement } from './confirmation-state-message';

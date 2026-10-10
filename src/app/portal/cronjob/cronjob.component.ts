@@ -3,7 +3,7 @@ import { MessageHandlerService } from '../../shared/message-handler/message-hand
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListCronjobComponent } from './list-cronjob/list-cronjob.component';
 import { CreateEditCronjobComponent } from './create-edit-cronjob/create-edit-cronjob.component';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { CronjobStatus, CronjobTpl } from '../../shared/model/v1/cronjobtpl';
 import { App } from '../../shared/model/v1/app';
@@ -32,7 +32,6 @@ import { PublishService } from '../../shared/client/v1/publish.service';
 import { PublishStatus } from '../../shared/model/v1/publish-status';
 import { ConfirmationMessage } from '../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationDialogService } from '../../shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
 import { PageState } from '../../shared/page/page-state';
 import { TranslateService } from '@ngx-translate/core';
 import { KubernetesClient } from '../../shared/client/v1/kubernetes/kubernetes';

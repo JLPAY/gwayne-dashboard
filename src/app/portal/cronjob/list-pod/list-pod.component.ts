@@ -1,7 +1,4 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/observable/combineLatest';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { KubePod } from '../../../shared/model/v1/kubernetes/kubepod';

@@ -1,10 +1,6 @@
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { throwError } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { throwError, Observable } from 'rxjs';
 import { WebHook } from '../../model/v1/webhook';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';

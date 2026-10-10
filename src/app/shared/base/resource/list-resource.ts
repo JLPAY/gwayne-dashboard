@@ -6,7 +6,7 @@ import { AuthService } from '../../auth/auth.service';
 import { MessageHandlerService } from '../../message-handler/message-handler.service';
 import { Page } from '../../page/page-state';
 import { EventEmitter, Input, Output, Directive } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import {
   ConfirmationButtons,

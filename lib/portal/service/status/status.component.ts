@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 import { CacheService } from '../../../../src/app/shared/auth/cache.service';
 import { MessageHandlerService } from '../../../../src/app/shared/message-handler/message-handler.service';
 import { ActivatedRoute } from '@angular/router';

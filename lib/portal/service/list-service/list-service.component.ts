@@ -9,7 +9,7 @@ import {
   TemplateState
 } from '../../../../src/app/shared/shared.const';
 import { ConfirmationDialogService } from '../../../../src/app/shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { MessageHandlerService } from '../../../../src/app/shared/message-handler/message-handler.service';
 import { PublishServiceTplComponent } from '../publish-tpl/publish-tpl.component';
 import { ServiceStatusComponent } from '../status/status.component';

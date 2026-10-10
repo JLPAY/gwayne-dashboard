@@ -5,7 +5,7 @@ import { ClrDatagridStateInterface } from '@clr/angular';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationMessage } from '../../confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../shared.const';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { MessageHandlerService } from '../../message-handler/message-handler.service';
 import { PageState } from '../../page/page-state';
 import { CreateEditResourceTemplateComponent } from './create-edit-resource-template';

@@ -6,7 +6,7 @@ import { MessageHandlerService } from '../../../shared/message-handler/message-h
 import { CreateSnapshotComponent } from '../create-snapshot/create-snapshot.component';
 import { ConfirmationMessage } from '../../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { PersistentVolumeClaimRobinClient } from '../../../shared/client/v1/kubernetes/persistentvolumeclaims-robin';
 

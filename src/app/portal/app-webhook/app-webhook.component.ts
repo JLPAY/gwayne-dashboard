@@ -7,7 +7,7 @@ import { CreateEditAppWebHookComponent } from './create-edit-app-webhook/create-
 import { ConfirmationDialogService } from '../../shared/confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationMessage } from '../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../shared/shared.const';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { MessageHandlerService } from '../../shared/message-handler/message-handler.service';
 import { WebHook } from '../../shared/model/v1/webhook';
 import { WebHookService } from '../../shared/client/v1/webhook.service';

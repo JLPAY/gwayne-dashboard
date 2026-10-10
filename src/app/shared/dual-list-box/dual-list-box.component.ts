@@ -4,6 +4,7 @@ import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACC
 import * as _ from 'lodash';
 import { IItemsMovedEvent, IListBoxItem } from './models';
 import { TranslateService } from '@ngx-translate/core';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'ng2-dual-list-box',
@@ -97,16 +98,12 @@ export class DualListBoxComponent implements OnInit, ControlValueAccessor {
       .valueChanges
       .subscribe((items: Array<{}>) => this.selectedItemsSelected.emit(items));
     this.availableSearchInputControl
-      .valueChanges
-      .debounceTime(this.debounceTime)
-      .distinctUntilChanged()
+      .valueChanges.pipe(debounceTime(this.debounceTime), distinctUntilChanged())
       .subscribe((search: string) => {
         this.searchTermAvailable = search;
       });
     this.selectedSearchInputControl
-      .valueChanges
-      .debounceTime(this.debounceTime)
-      .distinctUntilChanged()
+      .valueChanges.pipe(debounceTime(this.debounceTime), distinctUntilChanged())
       .subscribe((search: string) => this.searchTermSelected = search);
   }
 

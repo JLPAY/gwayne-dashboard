@@ -4,7 +4,7 @@ import { MessageHandlerService } from '../../message-handler/message-handler.ser
 import { ConfirmationMessage } from '../../confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../shared.const';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { AceEditorService } from '../../ace-editor/ace-editor.service';
 import { AceEditorMsg } from '../../ace-editor/ace-editor';
 import { PageState } from '../../page/page-state';

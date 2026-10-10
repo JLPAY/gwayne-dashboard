@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/observable/combineLatest';
 import { Inventory, TimeComparator } from './inventory';
 import { Event } from '../model/v1/deploymenttpl';
 import { ClrDatagridSortOrder } from '@clr/angular';

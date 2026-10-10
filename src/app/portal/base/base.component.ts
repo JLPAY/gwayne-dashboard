@@ -1,6 +1,4 @@
 import { Component, OnInit, HostBinding, OnDestroy } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { AuthService } from '../../shared/auth/auth.service';

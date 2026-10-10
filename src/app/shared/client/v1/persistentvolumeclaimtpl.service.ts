@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
 import { PersistentVolumeClaimTpl } from '../../model/v1/persistentvolumeclaimtpl';
 import { PageState } from '../../page/page-state';
 import { isNotEmpty } from '../../utils';

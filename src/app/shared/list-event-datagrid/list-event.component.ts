@@ -1,7 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/observable/combineLatest';
 import { Event } from '../model/v1/deploymenttpl';
 import { EventClient } from '../client/v1/kubernetes/event';
 import { PageComponent } from '../base/page';

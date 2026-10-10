@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
 import { User } from '../model/v1/user';
 import { TypePermission } from '../model/v1/permission';
 import { CacheService } from './cache.service';

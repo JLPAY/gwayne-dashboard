@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { Message } from './message';
 import { MessageService } from './message.service';

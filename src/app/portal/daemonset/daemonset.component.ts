@@ -1,8 +1,7 @@
 import { AfterContentInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClrDatagridStateInterface } from '@clr/angular';
-import { combineLatest } from 'rxjs';
-import { Subscription } from 'rxjs/Subscription';
+import { combineLatest, Subscription } from 'rxjs';
 import { AuthService } from '../../shared/auth/auth.service';
 import { CacheService } from '../../shared/auth/cache.service';
 import { AppService } from '../../shared/client/v1/app.service';

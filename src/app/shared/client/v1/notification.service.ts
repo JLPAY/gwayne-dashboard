@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { PageState } from '../../page/page-state';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Notification } from '../../model/v1/notification';

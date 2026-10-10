@@ -1,8 +1,6 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable, from } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { from } from 'rxjs';
 import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import 'rxjs/add/observable/fromPromise';
 import { LoginTokenKey } from '../shared.const';
 import { resolve } from 'url';
 

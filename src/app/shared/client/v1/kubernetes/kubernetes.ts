@@ -1,7 +1,7 @@
 // Kubernetes common client
 // for all kubernetes resource proxy
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { KubeResourcesName } from '../../../shared.const';
 import { PageState } from '../../../page/page-state';

@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Output, ViewChild, OnInit } from '@angular/core';
 
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 import { NgForm } from '@angular/forms';
 import { MessageHandlerService } from 'app/shared/message-handler/message-handler.service';
 import { ActionType } from 'app/shared/shared.const';

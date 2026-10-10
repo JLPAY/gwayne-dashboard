@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
-import 'rxjs/add/observable/combineLatest';
 import { StatefulsetService } from '../../../shared/client/v1/statefulset.service';
 import { Statefulset } from '../../../shared/model/v1/statefulset';
 import { AuthService } from '../../../shared/auth/auth.service';

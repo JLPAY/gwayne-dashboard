@@ -1,6 +1,6 @@
 import { TabDragService } from '../../client/v1/tab-drag.service';
 import { OrderItem } from '../../model/v1/order';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef, ElementRef } from '@angular/core';
 import { Cluster } from '../../model/v1/cluster';
@@ -24,7 +24,6 @@ import {
   PublishType,
   TemplateState
 } from '../../shared.const';
-import { combineLatest } from 'rxjs';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { CreateEditResource } from './create-edit-resource';
 import { ListResource } from './list-resource';

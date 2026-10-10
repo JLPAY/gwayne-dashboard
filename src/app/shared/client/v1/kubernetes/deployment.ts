@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { PageState } from '../../../page/page-state';
 import { BaseClient } from './base-client';
 import { KubeDeployment, ObjectMeta } from '../../../model/v1/kubernetes/deployment';
-import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()

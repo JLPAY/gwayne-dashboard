@@ -2,7 +2,7 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets, PublishType } from '../../shared/shared.const';
 import { MessageHandlerService } from '../../shared/message-handler/message-handler.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { AppService } from '../../shared/client/v1/app.service';
 import { App } from '../../shared/model/v1/app';
 import { CacheService } from '../../shared/auth/cache.service';
@@ -16,7 +16,6 @@ import { PersistentVolumeClaimClient } from '../../shared/client/v1/kubernetes/p
 import { PublishService } from '../../shared/client/v1/publish.service';
 import { PublishStatus } from '../../shared/model/v1/publish-status';
 import { ConfirmationMessage } from '../../shared/confirmation-dialog/confirmation-message';
-import { Subscription } from 'rxjs/Subscription';
 import { ConfirmationDialogService } from '../../shared/confirmation-dialog/confirmation-dialog.service';
 import { PageState } from '../../shared/page/page-state';
 import { TabDragService } from '../../shared/client/v1/tab-drag.service';

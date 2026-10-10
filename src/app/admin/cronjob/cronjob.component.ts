@@ -4,7 +4,7 @@ import { ClrDatagridStateInterface } from '@clr/angular';
 import { ConfirmationDialogService } from '../../shared/confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationMessage } from '../../shared/confirmation-dialog/confirmation-message';
 import { ConfirmationButtons, ConfirmationState, ConfirmationTargets } from '../../shared/shared.const';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { MessageHandlerService } from '../../shared/message-handler/message-handler.service';
 import { CreateEditCronjobComponent } from './create-edit-cronjob/create-edit-cronjob.component';
 import { ListCronjobComponent } from './list-cronjob/list-cronjob.component';

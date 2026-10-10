@@ -50,7 +50,6 @@
     "particlesjs": "^2.2.3",
     "raven-js": "^3.21.0",
     "rxjs": "^6.5.2",
-    "rxjs-compat": "^6.2.1",
     "sockjs-client": "^1.1.4",
     "tslib": "^1.10.0",
     "xterm": "3.11.0",

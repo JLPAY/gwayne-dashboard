@@ -1,6 +1,4 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 import { DOCUMENT, Location } from '@angular/common';
 import { FormBuilder, NgForm } from '@angular/forms';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
@@ -17,7 +15,6 @@ import {
   SecretKeySelector,
 } from '../../../shared/model/v1/kubernetes/cronjob';
 import { EventManager } from '@angular/platform-browser';
-import 'rxjs/add/observable/combineLatest';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CronjobTpl } from '../../../shared/model/v1/cronjobtpl';
 import { App } from '../../../shared/model/v1/app';

@@ -1,7 +1,7 @@
 import { ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ClrDatagridStateInterface } from '@clr/angular';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { PageState } from '../../page/page-state';
 import { BreadcrumbService } from '../../client/v1/breadcrumb.service';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';

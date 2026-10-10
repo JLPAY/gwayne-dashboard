@@ -1,7 +1,4 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/observable/combineLatest';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { MessageHandlerService } from '../message-handler/message-handler.service';
 import { PublicService } from '../client/v1/public.service';
@@ -11,7 +8,7 @@ import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationMessage } from '../confirmation-dialog/confirmation-message';
 import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ClusterService } from '../client/v1/cluster.service';
 import { Cluster } from '../model/v1/cluster';
 import { CopyService } from '../client/v1/copy.service';
