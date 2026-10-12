@@ -325,3 +325,24 @@ a {
 .datagrid-table clr-dg-row:nth-child(odd):not(.datagrid-selected) .datagrid-row-sticky {
   background-color: #f5f7fb;
 }
+
+// Clarity 3 起 datagrid 行改为 flex 分栏：行内固定列（操作列 + 展开箭头，各 1.9rem）
+// 被移入左侧 .datagrid-row-sticky，而 *clrIfExpanded 的展开详情被投进其右侧的
+// .datagrid-row-scrollable。v2 时代详情是 .datagrid-row-flex 的直接子元素、sticky 为空，
+// 详情天然通栏；v4 下详情整体被顶右 3.8rem 且变窄 3.8rem（夹具实测：详情 left 0→76px、
+// 内容起点 50→126px、嵌套表 1038→962px），CRD/Service 子列表样式因此不对。
+// 修复：负 margin 抵消 sticky 宽度。详情是 scrollable（column flex）的 stretch 项，
+// 负左 margin 会自动把宽度撑回全行宽，无需再写 width。
+// 但 sticky 是 position:sticky + z-index:502 的不透明白底，且在行主容器里随行拉伸
+// 全高——通栏后的详情左缘 76px 会被它盖住（实测嵌套表首格 "demo-instance" 只剩
+// "o-Instance"）。故详情需 position:relative + z-index:503 抬到 sticky 之上；
+// 详情自身背景透明，sticky 白底仍透出来，该条带观感与 v2 的空白一致。
+// 3.8rem = 2 个固定列 × 1.9rem（Clarity 4 的 $clr-datagrid-fixed-column-size，根字号 20px
+// 时即 76px）；与受影响 4 个详情组件主行的"操作列 + 展开箭头 = 2 列"结构一一对应，
+// 若某表增删固定列需同步此倍数。仅命中带 .datagrid-container 的自定义详情，
+// 不影响 Clarity 自身的 replace 模式（全仓未使用 clrDgReplace）。
+.datagrid-row .datagrid-row-scrollable .datagrid-row-detail.datagrid-container {
+  margin-left: -3.8rem;
+  position: relative;
+  z-index: 503;
+}
