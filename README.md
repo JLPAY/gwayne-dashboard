@@ -12,15 +12,16 @@ Autoscale、K8sGPT、审计日志、权限与用户管理等。
 
 | 项 | 当前版本 |
 |---|---|
-| Angular | 10.2.5 |
-| Angular CLI / build-angular | 10.2.4 / 0.1002.4 |
-| Clarity（`@clr/angular` / `@clr/ui` / `@clr/icons` / `@clr/core`） | 4.0.16 / 4.0.16 / 4.0.16 / 4.0.15 |
-| TypeScript | 4.0.8（编译 `target: es5`） |
+| Angular | 11.2.14 |
+| Angular CLI / build-angular | 11.2.19 / 0.1102.19 |
+| Clarity（`@clr/angular` / `@clr/ui` / `@clr/icons`） | 5.5.3 |
+| Design System（`@cds/core`，Clarity 5 起取代已停发的 `@clr/core`） | 5.8.4 |
+| TypeScript | 4.1.6（编译 `target: es5`） |
 | RxJS / zone.js / tslib | 6.6.7 / 0.10.3 / 1.14.1 |
 | 打包 | webpack 4.47.0 |
 | ngx-markdown | 9.1.1 |
 
-> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **2a（Angular 10 + Clarity 4）**。
+> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **2b（Angular 11 + Clarity 5）**。
 > 方案与每跳明细见 [docs/Angular-8到21-升级方案.md](docs/Angular-8到21-升级方案.md)、
 > [docs/迁移进度.md](docs/迁移进度.md)。
 > 迁移期间**对外接口契约与 UI 模板契约必须零漂移**，改完代码务必跑一遍[质量门禁](#质量门禁)。
@@ -81,6 +82,10 @@ npm run build:aot   # 生产构建（--prod --aot）→ dist/
 - 各跳的生产产物体积随 Clarity / Angular 版本变化，逐跳记录见
   [docs/迁移进度.md](docs/迁移进度.md)；v9（2-pre 时期）可比口径为
   main 1.44MB / vendor 3.03MB / styles 527kB。
+- **dev 构建不一定产出独立的 `styles.css`**：v11 会产出（如 2b 实测 styles 670.78kB、
+  vendor 15.01MB、main 9.32MB），v10 则把样式打进 `styles.js`。
+  量测样式（例如展开行布局回归）时注意这点：v10 及以前必须取生产产物里的哈希名
+  `styles.<hash>.css`（见「构建注意事项」2）。
 - 当前 `target: es5`，因此生产构建会做 ES5 差分加载（见「构建注意事项」2）。
 
 ## npm 脚本
@@ -196,7 +201,8 @@ node tools/smoke-runtime.js      # 判据：渲染出应用 DOM 且无未捕获�
 | 2-pre | 清除 rxjs-compat 深路径导入（`ec82957`） | 已完成 |
 | 2a | Angular 9→10 + Clarity 3→4（`e678120`） | 已完成 |
 | 2aR | 2a 回归修复：展开行详情还原通栏顶左（`5f79753`） | 已完成 |
-| 2b / 2c / 2d | Angular 10→11→12→13 + Clarity 4→5→12→13 | 待做 |
+| 2b | Angular 10→11 + Clarity 4→5（`a85f260`） | 已完成 |
+| 2c / 2d | Angular 11→12→13 + Clarity 5→12→13 | 待做 |
 | 3 | Angular 13→17 + Clarity 13→17 | 待做 |
 | 4 | Angular 17→21 + Clarity 18.4（含 Angular 20 的 Clarity 空窗硬撑） | 待做 |
 | 5 | zoneless 评估 + 废弃依赖清理 | 待做 |

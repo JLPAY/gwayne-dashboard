@@ -43,3 +43,7 @@ Thumbs.db
 
 # 契约快照与重构验证产物（由 tools/ 下的脚本生成，含旧源码树副本，不入库）
 contract/
+
+# 运行时冒烟的截图产物与 WorkBuddy 会话数据（本地产物，不入库）
+.tmp-smoke/
+.workbuddy/
