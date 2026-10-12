@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CreateEditAutoscaletplComponent } from './create-edit-autoscaletpl.component';
 
@@ -6,7 +6,7 @@ describe('CreateEditAutoscaletplComponent', () => {
   const component: CreateEditAutoscaletplComponent;
   const fixture: ComponentFixture<CreateEditAutoscaletplComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CreateEditAutoscaletplComponent ]
     })

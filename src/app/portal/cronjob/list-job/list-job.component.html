@@ -88,7 +88,7 @@
                   最后调度时间
                 </div>
                 <div class="clr-col-sm-9">
-                  {{kubeObj.status.lastScheduleTime | date:'yyyy-MM-dd HH:mm:ss' }}
+                  {{$any(kubeObj.status.lastScheduleTime) | date:'yyyy-MM-dd HH:mm:ss' }}
                 </div>
               </div>
             </section>

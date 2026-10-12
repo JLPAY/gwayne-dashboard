@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TrashAutoscaletplComponent } from './trash-autoscaletpl.component';
 
@@ -6,7 +6,7 @@ describe('TrashAutoscaletplComponent', () => {
   let component: TrashAutoscaletplComponent;
   let fixture: ComponentFixture<TrashAutoscaletplComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TrashAutoscaletplComponent ]
     })

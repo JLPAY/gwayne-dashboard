@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CreateEditRoadmapComponent } from './create-edit-roadmap.component';
 
@@ -6,7 +6,7 @@ describe('CreateEditRoadmapComponent', () => {
   let component: CreateEditRoadmapComponent;
   let fixture: ComponentFixture<CreateEditRoadmapComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CreateEditRoadmapComponent ]
     })

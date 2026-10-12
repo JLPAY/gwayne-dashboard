@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CreateEditCustomlinkComponent } from './create-edit-customlink.component';
 
@@ -6,7 +6,7 @@ describe('CreateEditCustomlinkComponent', () => {
   let component: CreateEditCustomlinkComponent;
   let fixture: ComponentFixture<CreateEditCustomlinkComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CreateEditCustomlinkComponent ]
     })
