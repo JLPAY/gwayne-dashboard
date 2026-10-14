@@ -114,8 +114,20 @@ function scanTemplate(html) {
 
 // ---------------------------------------------------------------- AST 工具
 
+/**
+ * 兼容读取节点上的装饰器。
+ * TS 4.8 起 `Node.decorators` 属性已被移除（改用 ts.canHaveDecorators()/ts.getDecorators()），
+ * 继续读旧属性会恒得 undefined —— 曾使本工具静默输出 0 个组件（假绿）。
+ */
+function decoratorsOf(node) {
+  if (typeof ts.getDecorators === 'function') {
+    return ts.getDecorators(node) || [];
+  }
+  return node.decorators || [];
+}
+
 function decoratorCall(node, name) {
-  for (const d of (node.decorators || [])) {
+  for (const d of decoratorsOf(node)) {
     const e = d.expression;
     if (ts.isCallExpression(e) && ts.isIdentifier(e.expression) && e.expression.text === name) {
       return e;
@@ -166,10 +178,11 @@ function collectMemberIo(classDecl) {
   const inputs = new Set();
   const outputs = new Set();
   for (const member of classDecl.members) {
-    if (!member.decorators || !member.decorators.length) { continue; }
+    const memberDecorators = decoratorsOf(member);
+    if (!memberDecorators.length) { continue; }
     const name = nameOf(member.name);
     if (!name) { continue; }
-    for (const d of member.decorators) {
+    for (const d of memberDecorators) {
       const e = d.expression;
       if (!ts.isCallExpression(e) || !ts.isIdentifier(e.expression)) { continue; }
       if (e.expression.text === 'Input') { inputs.add(name); }
