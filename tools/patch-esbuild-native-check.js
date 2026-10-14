@@ -29,8 +29,10 @@
  *   替换前会校验方法体里确实含 `spawnSync`，否则拒绝写入（避免配错位置）。
  *
  * 注意：node_modules 不入库，**每次 `npm install` 后需要重新执行本脚本**。
+ *   —— 但 v14.2.x 起上游已自行把探测改成 `require('esbuild')`，本脚本会检测到并
+ *      优雅跳过（exit 0）。因此它现在等价于一个「环境自检 + 历史版本兜底」的工具。
  * 用法：
- *   node tools/patch-esbuild-native-check.js            # 应用补丁（幂等）
+ *   node tools/patch-esbuild-native-check.js            # 应用补丁（幂等；上游已修则跳过）
  *   node tools/patch-esbuild-native-check.js --revert   # 还原（依赖 .unpatched 备份）
  */
 'use strict';
@@ -46,7 +48,10 @@ const CANDIDATES = [
 ];
 
 const MARKER = '[local patch: spawn-sync-ebusy]';
-const SIGNATURE = 'static hasNativeSupport()';
+// 注意签名形态随版本变过：v12/v13 是 `static hasNativeSupport()`，
+// v14 起加了 `async`（`static async hasNativeSupport()`）。故用正则，别用确切字符串。
+const SIGNATURE = 'static [async] hasNativeSupport()';
+const SIGNATURE_RE = /\bstatic\s+(?:async\s+)?hasNativeSupport\s*\(\s*\)/;
 
 function resolveTarget() {
   for (const rel of CANDIDATES) {
@@ -59,14 +64,15 @@ function resolveTarget() {
 }
 
 /**
- * 在 src 中定位 `static hasNativeSupport()` 的方法体，返回 { open, close, indent }。
+ * 在 src 中定位 `static [async] hasNativeSupport()` 的方法体，返回 { open, close, indent }。
  * open/close 分别是 `{` 与配对 `}` 的下标。
  */
 function findMethodBody(src) {
-  const at = src.indexOf(SIGNATURE);
-  if (at < 0) {
+  const m = SIGNATURE_RE.exec(src);
+  if (!m) {
     return null;
   }
+  const at = m.index;
   const open = src.indexOf('{', at);
   if (open < 0) {
     return null;
@@ -131,8 +137,17 @@ if (!body) {
 }
 
 const originalBody = src.slice(body.open + 1, body.close);
+
+// v14.2.x 起上游自行修掉了这个坑：hasNativeSupport() 不再 spawnSync，
+// 而是直接 `require('esbuild')` + formatMessages 探测（与本补丁语义完全相同）。
+// 此时无需（也不应）打补丁 —— 优雅跳过，避免每跳流程硬失败。
 if (!originalBody.includes('spawnSync')) {
-  console.error('定位到的方法体里没有 spawnSync，位置可疑，拒绝写入。方法体片段:\n' + originalBody.slice(0, 400));
+  if (/require\(\s*['"]esbuild['"]\s*\)/.test(originalBody)) {
+    console.log('上游已自行改为 require(\'esbuild\') 探测，本补丁不再需要: ' + rel);
+    console.log('（v14.2.x 起 hasNativeSupport() 已不含 spawnSync，跳过即正确行为）');
+    process.exit(0);
+  }
+  console.error('定位到的方法体里既没有 spawnSync 也没有 require(\'esbuild\')，位置可疑，拒绝写入。方法体片段:\n' + originalBody.slice(0, 400));
   process.exit(3);
 }
 

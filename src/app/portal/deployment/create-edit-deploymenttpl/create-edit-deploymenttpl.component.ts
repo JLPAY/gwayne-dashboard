@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DOCUMENT, Location } from '@angular/common';
-import { FormBuilder, NgForm } from '@angular/forms';
+import { UntypedFormBuilder, NgForm } from '@angular/forms';
 import { EventManager } from '@angular/platform-browser';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import {
@@ -69,7 +69,7 @@ export class CreateEditDeploymentTplComponent extends ContainerTpl implements On
 
   constructor(private deploymentTplService: DeploymentTplService,
               private aceEditorService: AceEditorService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               private router: Router,
               private location: Location,
               private deploymentService: DeploymentService,

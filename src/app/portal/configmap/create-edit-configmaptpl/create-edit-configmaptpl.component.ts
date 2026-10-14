@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Location, DOCUMENT } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { ActionType, appLabelKey, namespaceLabelKey } from '../../../shared/shared.const';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,7 +26,7 @@ import { AuthService } from '../../../shared/auth/auth.service';
   styleUrls: ['create-edit-configmaptpl.scss']
 })
 export class CreateEditConfigMapTplComponent implements OnInit, AfterViewInit, OnDestroy {
-  currentForm: FormGroup;
+  currentForm: UntypedFormGroup;
   configMapTpl: ConfigMapTpl = new ConfigMapTpl();
   checkOnGoing = false;
   isSubmitOnGoing = false;
@@ -44,7 +44,7 @@ export class CreateEditConfigMapTplComponent implements OnInit, AfterViewInit, O
 
   constructor(private configMapTplService: ConfigMapTplService,
               private configMapService: ConfigMapService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               private aceEditorService: AceEditorService,
               public cacheService: CacheService,
               private clusterService: ClusterService,
@@ -88,8 +88,8 @@ export class CreateEditConfigMapTplComponent implements OnInit, AfterViewInit, O
     }
   }
 
-  get datas(): FormArray {
-    return this.currentForm.get('datas') as FormArray;
+  get datas(): UntypedFormArray {
+    return this.currentForm.get('datas') as UntypedFormArray;
   }
 
   initData() {
@@ -100,7 +100,7 @@ export class CreateEditConfigMapTplComponent implements OnInit, AfterViewInit, O
   }
 
   onAddData(index: number) {
-    const datas = this.currentForm.get(`datas`) as FormArray;
+    const datas = this.currentForm.get(`datas`) as UntypedFormArray;
     datas.push(this.initData());
   }
 
@@ -128,7 +128,7 @@ export class CreateEditConfigMapTplComponent implements OnInit, AfterViewInit, O
   }
 
   initClusterGroups() {
-    const clusters = Array<FormGroup>();
+    const clusters = Array<UntypedFormGroup>();
     this.clusters.forEach(cluster => {
       clusters.push(this.fb.group({
         checked: cluster.checked,
@@ -281,7 +281,7 @@ export class CreateEditConfigMapTplComponent implements OnInit, AfterViewInit, O
     this.removeUnused(kubeConfigMap);
     if (kubeConfigMap && kubeConfigMap.data) {
       this.kubeConfigMap = kubeConfigMap;
-      const datas = Array<FormGroup>();
+      const datas = Array<UntypedFormGroup>();
       Object.getOwnPropertyNames(kubeConfigMap.data).map(key => {
         datas.push(this.fb.group({
           dataName: key,

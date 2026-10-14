@@ -1,5 +1,5 @@
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 // import 'rxjs/Rx';
 import * as _ from 'lodash';
 import { IItemsMovedEvent, IListBoxItem } from './models';
@@ -24,11 +24,11 @@ export class DualListBoxComponent implements OnInit, ControlValueAccessor {
   availableItems: Array<IListBoxItem> = [];
   backupItems: Array<IListBoxItem> = [];
   selectedItems: Array<IListBoxItem> = [];
-  listBoxForm: FormGroup;
-  availableListBoxControl: FormControl = new FormControl();
-  selectedListBoxControl: FormControl = new FormControl();
-  availableSearchInputControl: FormControl = new FormControl();
-  selectedSearchInputControl: FormControl = new FormControl();
+  listBoxForm: UntypedFormGroup;
+  availableListBoxControl: UntypedFormControl = new UntypedFormControl();
+  selectedListBoxControl: UntypedFormControl = new UntypedFormControl();
+  availableSearchInputControl: UntypedFormControl = new UntypedFormControl();
+  selectedSearchInputControl: UntypedFormControl = new UntypedFormControl();
   // array of items to display in left box
   @Input() set data(items: Array<{}>) {
     this.availableItems = [...(items || []).map((item: {}, index: number) => ({
@@ -81,7 +81,7 @@ export class DualListBoxComponent implements OnInit, ControlValueAccessor {
   _onTouched = () => {
   }
 
-  constructor(public fb: FormBuilder, public translate: TranslateService) {
+  constructor(public fb: UntypedFormBuilder, public translate: TranslateService) {
     this.listBoxForm = this.fb.group({
       availableListBox: this.availableListBoxControl,
       selectedListBox: this.selectedListBoxControl,

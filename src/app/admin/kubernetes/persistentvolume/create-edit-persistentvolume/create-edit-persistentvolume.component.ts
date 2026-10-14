@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MessageHandlerService } from '../../../../shared/message-handler/message-handler.service';
 import { ActionType } from '../../../../shared/shared.const';
 import { CephFSVolumeSource, PersistentVolume, RBDVolumeSource } from '../../../../shared/model/v1/kubernetes/persistentvolume';
@@ -21,7 +21,7 @@ import { AceEditorService } from '../../../../shared/ace-editor/ace-editor.servi
 export class CreateEditPersistentVolumeComponent implements OnInit {
   cluster: Cluster;
 
-  currentForm: FormGroup;
+  currentForm: UntypedFormGroup;
 
   pv: PersistentVolume;
   checkOnGoing: boolean;
@@ -33,7 +33,7 @@ export class CreateEditPersistentVolumeComponent implements OnInit {
 
   constructor(private persistentVolumeClient: PersistentVolumeClient,
               private clusterService: ClusterService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               private location: Location,
               private aceEditorService: AceEditorService,
               private route: ActivatedRoute,
@@ -116,12 +116,12 @@ export class CreateEditPersistentVolumeComponent implements OnInit {
     });
   }
 
-  get labels(): FormArray {
-    return this.currentForm.get('labels') as FormArray;
+  get labels(): UntypedFormArray {
+    return this.currentForm.get('labels') as UntypedFormArray;
   }
 
   onAddLabel(index: number) {
-    const selectors = this.currentForm.get(`labels`) as FormArray;
+    const selectors = this.currentForm.get(`labels`) as UntypedFormArray;
     selectors.push(this.fb.group({
       key: '',
       value: '',
@@ -217,7 +217,7 @@ export class CreateEditPersistentVolumeComponent implements OnInit {
           }
         });
       }
-      const labels = Array<FormGroup>();
+      const labels = Array<UntypedFormGroup>();
       if (pv.metadata.labels) {
         Object.getOwnPropertyNames(pv.metadata.labels).map(key => {
           labels.push(this.fb.group({

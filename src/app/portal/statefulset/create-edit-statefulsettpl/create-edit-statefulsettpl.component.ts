@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DOCUMENT, Location } from '@angular/common';
-import { FormBuilder, NgForm } from '@angular/forms';
+import { UntypedFormBuilder, NgForm } from '@angular/forms';
 import { EventManager } from '@angular/platform-browser';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import {
@@ -61,7 +61,7 @@ export class CreateEditStatefulsettplComponent extends ContainerTpl implements O
   eventList: any[] = Array();
 
   constructor(private statefulsetTplService: StatefulsetTplService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               private router: Router,
               private aceEditorService: AceEditorService,
               public authService: AuthService,

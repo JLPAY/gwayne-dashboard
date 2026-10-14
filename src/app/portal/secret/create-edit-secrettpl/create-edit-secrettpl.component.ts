@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DOCUMENT, Location } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { ActionType, appLabelKey, namespaceLabelKey } from '../../../shared/shared.const';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,7 +27,7 @@ import { Base64 } from 'js-base64';
   styleUrls: ['create-edit-secrettpl.scss']
 })
 export class CreateEditSecretTplComponent implements OnInit, AfterViewInit, OnDestroy {
-  currentForm: FormGroup;
+  currentForm: UntypedFormGroup;
 
   secretTpl: SecretTpl = new SecretTpl();
   checkOnGoing = false;
@@ -44,7 +44,7 @@ export class CreateEditSecretTplComponent implements OnInit, AfterViewInit, OnDe
 
   constructor(private secretTplService: SecretTplService,
               private secretService: SecretService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               private aceEditorService: AceEditorService,
               public cacheService: CacheService,
               private location: Location,
@@ -89,8 +89,8 @@ export class CreateEditSecretTplComponent implements OnInit, AfterViewInit, OnDe
     }
   }
 
-  get datas(): FormArray {
-    return this.currentForm.get('datas') as FormArray;
+  get datas(): UntypedFormArray {
+    return this.currentForm.get('datas') as UntypedFormArray;
   }
 
   initData() {
@@ -101,7 +101,7 @@ export class CreateEditSecretTplComponent implements OnInit, AfterViewInit, OnDe
   }
 
   onAddData(index: number) {
-    const datas = this.currentForm.get(`datas`) as FormArray;
+    const datas = this.currentForm.get(`datas`) as UntypedFormArray;
     datas.push(this.initData());
   }
 
@@ -130,7 +130,7 @@ export class CreateEditSecretTplComponent implements OnInit, AfterViewInit, OnDe
   }
 
   initClusterGroups() {
-    const clusters = Array<FormGroup>();
+    const clusters = Array<UntypedFormGroup>();
     this.clusters.forEach(cluster => {
       clusters.push(this.fb.group({
         checked: cluster.checked,
@@ -287,7 +287,7 @@ export class CreateEditSecretTplComponent implements OnInit, AfterViewInit, OnDe
     this.removeUnused(kubeSecret);
     if (kubeSecret && kubeSecret.data) {
       this.kubeSecret = kubeSecret;
-      const datas = Array<FormGroup>();
+      const datas = Array<UntypedFormGroup>();
       Object.getOwnPropertyNames(kubeSecret.data).map(key => {
         datas.push(this.fb.group({
           dataName: key,

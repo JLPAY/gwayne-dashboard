@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DOCUMENT, Location } from '@angular/common';
 import { EventManager } from '@angular/platform-browser';
-import { FormBuilder, NgForm } from '@angular/forms';
+import { UntypedFormBuilder, NgForm } from '@angular/forms';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import {
   ConfigMapEnvSource,
@@ -62,7 +62,7 @@ export class CreateEditDaemonSetTplComponent extends ContainerTpl implements OnI
   eventList: any = Array();
 
   constructor(private daemonSetTplService: DaemonSetTplService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               private router: Router,
               private aceEditorService: AceEditorService,
               public authService: AuthService,

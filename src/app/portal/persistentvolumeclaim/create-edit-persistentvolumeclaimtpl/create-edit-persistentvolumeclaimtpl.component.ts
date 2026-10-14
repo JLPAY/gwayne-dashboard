@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DOCUMENT, Location } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { ActionType, appLabelKey, namespaceLabelKey } from '../../../shared/shared.const';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,7 +32,7 @@ import { AuthService } from '../../../shared/auth/auth.service';
   styleUrls: ['create-edit-persistentvolumeclaimtpl.scss']
 })
 export class CreateEditPersistentVolumeClaimTplComponent implements OnInit, AfterViewInit, OnDestroy {
-  currentForm: FormGroup;
+  currentForm: UntypedFormGroup;
   pvcTpl: PersistentVolumeClaimTpl = new PersistentVolumeClaimTpl();
   checkOnGoing = false;
   isSubmitOnGoing = false;
@@ -50,7 +50,7 @@ export class CreateEditPersistentVolumeClaimTplComponent implements OnInit, Afte
 
   constructor(private pvcTplService: PersistentVolumeClaimTplService,
               private pvcService: PersistentVolumeClaimService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               private clusterService: ClusterService,
               private location: Location,
               private router: Router,
@@ -95,12 +95,12 @@ export class CreateEditPersistentVolumeClaimTplComponent implements OnInit, Afte
     }
   }
 
-  get selectors(): FormArray {
-    return this.currentForm.get('selectors') as FormArray;
+  get selectors(): UntypedFormArray {
+    return this.currentForm.get('selectors') as UntypedFormArray;
   }
 
   onAddSelector() {
-    const selectors = this.currentForm.get(`selectors`) as FormArray;
+    const selectors = this.currentForm.get(`selectors`) as UntypedFormArray;
     selectors.push(this.initSelector());
   }
 
@@ -127,7 +127,7 @@ export class CreateEditPersistentVolumeClaimTplComponent implements OnInit, Afte
   }
 
   initClusterGroups() {
-    const clusters = Array<FormGroup>();
+    const clusters = Array<UntypedFormGroup>();
     this.clusters.forEach(cluster => {
       clusters.push(this.fb.group({
         checked: cluster.checked,
@@ -333,7 +333,7 @@ export class CreateEditPersistentVolumeClaimTplComponent implements OnInit, Afte
           }
         });
       }
-      const selectors = Array<FormGroup>();
+      const selectors = Array<UntypedFormGroup>();
       if (kubePvc.spec.selector && kubePvc.spec.selector.matchLabels) {
         Object.getOwnPropertyNames(kubePvc.spec.selector.matchLabels).map(key => {
           selectors.push(this.fb.group({
