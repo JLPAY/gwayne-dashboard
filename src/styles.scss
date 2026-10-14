@@ -384,3 +384,23 @@ a {
 .datagrid-outer-wrapper {
   overflow-y: hidden;
 }
+
+// ============================================================
+// 去掉表格单元格/表头列点击后的焦点黑框（Clarity 12）
+//   现象：点击数据单元格或表头列后，四周出现一圈黑色边框。
+//   根因：v12 三处新增（升级前都没有）——
+//     ① .datagrid-table .datagrid-cell:focus → outline；
+//     ② .datagrid-table .datagrid-column:focus → outline；
+//     ③ 全局 button:focus → outline:2px solid（v12 把表头标题包进
+//        <button class="datagrid-column-title">，点击表头命中的是它）。
+//   修法：在 datagrid 范围内去掉这三处 outline，还原升级前（Clarity 5）观感；
+//           只限定 .datagrid-table，不影响页面其他按钮的焦点环。
+//           ⚠️ 不能用 :focus:not(:focus-visible) 区分鼠标/键盘——
+//           Clarity 组件内部以脚本调用 focus()，Chromium 启发式下
+//           鼠标点击也会命中 :focus-visible，实测拦不住（2026-10-14）。
+// ============================================================
+.datagrid-table .datagrid-cell:focus,
+.datagrid-table .datagrid-column:focus,
+.datagrid-table .datagrid-column-title:focus {
+  outline: none;
+}

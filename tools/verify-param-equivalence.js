@@ -23,6 +23,23 @@
 const fs = require('fs');
 const path = require('path');
 const ts = require('typescript');
+
+// Angular 13 起 @angular/* 只发 ESM（UMD 被移除，exports 全指向 fesm2015/*.mjs），
+// 而 Node 22 的 require(ESM) 会真的把 ESM 链拉起来，途中 @angular/core 的
+// `import ... from 'rxjs/operators'` 是目录导入 → ESM 解析器报 ERR_UNSUPPORTED_DIR_IMPORT。
+// 注册一个只做「目录补 index.js」的解析钩子即可，不影响其它解析行为。
+const { register } = require('node:module');
+const { pathToFileURL } = require('node:url');
+register(pathToFileURL(path.join(__dirname, 'esm-dir-import-loader.mjs')).href);
+
+// Angular 12 起发布的包是「部分编译（partial compilation）」格式，运行时遇到
+// ɵɵngDeclareFactory 会去 global.ng.ɵcompilerFacade 找 JIT 编译器；
+// 该 facade 由 @angular/compiler 在加载时注册（compiler.mjs 末尾 ng.ɵcompilerFacade = ...）。
+// 故必须先加载它，否则 require('@angular/common/http') 当场抛
+// "needs to be compiled using the JIT compiler, but '@angular/compiler' is not available"。
+// 这一步只影响 DI 元数据的生成方式，不改变 HttpParams.toString() 的行为（比对对象不受影响）。
+require('@angular/compiler');
+
 const { HttpParams } = require('@angular/common/http');
 
 const ROOT = path.resolve(__dirname, '..');

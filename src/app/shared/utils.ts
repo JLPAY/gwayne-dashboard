@@ -2,6 +2,22 @@
 import { configKeyApiNameGenerateRule, defaultApiNameGenerateRule } from './shared.const';
 import { KubePod } from './model/v1/kubernetes/kubepod';
 
+/**
+ * 判断值是否为 undefined。
+ *
+ * 原实现是 `import { isUndefined } from 'util'`（Node 内置模块）。
+ * Angular 12 起构建切到 webpack 5，webpack 5 **不再自动 polyfill Node 内置模块**，
+ * 而 node_modules 里已没有 util 包，构建直接报
+ * `Module not found: Error: Can't resolve 'util'`（11 处）。
+ *
+ * 该 API 已被 Node 官方废弃（Node 23 移除），且语义就是 `value === undefined`
+ * —— 已对 browserify util shim（node_modules/path/node_modules/util@0.10.4）
+ * 逐值比对确认等价，故改为本地纯函数，彻底去掉这个 Node 内置依赖。
+ */
+export const isUndefined = function (value: any): boolean {
+  return value === undefined;
+};
+
 export const isEmpty = function (obj: any): boolean {
   if (obj === false) {
     return false;

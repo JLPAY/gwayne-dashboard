@@ -11,6 +11,7 @@ import * as Raven from 'raven-js';
 import { PodTerminalModule } from './portal/pod-terminal/pod-terminal.module';
 import { environment } from '../environments/environment';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { ClrCommonStringsService } from '@clr/angular';
 import { AuthInterceptor } from './shared/interceptor/auth-interceptor';
 // translate
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -106,4 +107,9 @@ export class WayneErrorHandler implements ErrorHandler {
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  // Clarity 12 起默认字符串过滤器的输入框会带 "Filter items" 占位提示（升级前没有）。
+  // 全局置空该文案；只影响占位显示，过滤功能与无障碍标签不受影响（该键仅用作 placeholder）。
+  constructor(clrStrings: ClrCommonStringsService) {
+    clrStrings.localize({ filterItems: '' });
+  }
 }

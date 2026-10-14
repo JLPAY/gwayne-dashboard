@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { NgForm } from '@angular/forms';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { ActionType } from '../../../shared/shared.const';
-import { isUndefined } from 'util';
+import { isUndefined } from '../../../shared/utils';
 import { App } from '../../../shared/model/v1/app';
 import { AppService } from '../../../shared/client/v1/app.service';
 import { Statefulset } from '../../../shared/model/v1/statefulset';

@@ -9,6 +9,10 @@
  * 文件清单由外部传入（因为 Windows 下 Node spawn git 会抛 EBUSY，
  * 不能自己调 git；清单从 Bash 侧生成）。
  *
+ * 范围：src|lib|tools|e2e|docs/ 下的源码与文档，加上**根目录的单层文本文件**
+ * （angular.json、README.md、.gitignore 等）—— 官方迁移工具会直接改写它们。
+ * 排除 contract/（生成物）与 package-lock.json / pnpm-lock.yaml（锁文件）。
+ *
  * 用法：
  *   node tools/normalize-eol.js contract/changed-files.txt
  */
@@ -29,11 +33,24 @@ const INCLUDE = /^(src|lib|tools|e2e|docs)\//;
 const EXCLUDE = /^(contract\/|package-lock\.json|pnpm-lock\.yaml)/;
 const EXT = /\.(ts|js|json|html|scss|css|md)$/;
 
+// 根目录里这批也要处理：官方迁移工具（如 v13 CLI）会直接改写它们。
+// 实测 v13 的 CLI 迁移往根目录 .gitignore 插入一行 `/.angular/cache`（LF），
+// 若不归一，该文件就变成 CRLF+LF 混行尾。
+// （根目录普通文本按「无子目录 + 已知扩展名」判定，避免误伤 dist/ 等产物目录）
+const ROOT_EXTRA = new Set(['.gitignore', '.npmrc', '.editorconfig']);
+const isTarget = (p) => {
+  if (EXCLUDE.test(p)) { return false; }
+  if (INCLUDE.test(p)) { return EXT.test(p); }
+  if (ROOT_EXTRA.has(p)) { return true; }
+  // 根目录下的单层文件（如 README.md、angular.json），路径里没有 /
+  return !p.includes('/') && EXT.test(p);
+};
+
 const targets = fs.readFileSync(listFile, 'utf8')
   .split('\n')
   .map(s => s.trim())
   .filter(Boolean)
-  .filter(p => INCLUDE.test(p) && !EXCLUDE.test(p) && EXT.test(p));
+  .filter(isTarget);
 
 let fixed = 0;
 let alreadyOk = 0;

@@ -3,7 +3,7 @@ import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '
 import { NgForm } from '@angular/forms';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { ActionType } from '../../../shared/shared.const';
-import { isUndefined } from 'util';
+import { isUndefined } from '../../../shared/utils';
 import { IngressTpl } from '../../../shared/model/v1/ingresstpl';
 import { Ingress } from '../../../shared/model/v1/ingress';
 import { IngressTplService } from '../../../shared/client/v1/ingresstpl.service';
