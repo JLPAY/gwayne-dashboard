@@ -12,19 +12,19 @@ Autoscale、K8sGPT、审计日志、权限与用户管理等。
 
 | 项 | 当前版本 |
 |---|---|
-| Angular | 14.2.12 |
-| Angular CLI / build-angular | 14.2.13 / 14.2.13 |
+| Angular | 15.2.10 |
+| Angular CLI / build-angular | 15.2.11 / 15.2.11 |
 | Clarity（`@clr/angular` / `@clr/ui`） | 13.18.3（peer 覆盖 Angular 13–15，本跳不动） |
 | Clarity 图标（`@clr/icons`，版本线比主包短） | 13.0.2 |
 | Design System（`@cds/core`，Clarity 5 起取代已停发的 `@clr/core`） | 5.8.4 |
-| TypeScript | 4.6.4（编译 `target: es2020`，v14 官方迁移改写） |
+| TypeScript | 4.8.4（编译 `target: ES2022`，v15 官方迁移改写） |
 | RxJS / zone.js / tslib | 6.6.7 / 0.11.8 / 2.8.1 |
 | 打包 | webpack 5.76.1（精确钉 = build-angular 的 pin，勿写 `^`） |
 | ngx-markdown | 9.1.1 |
 
-> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **3a（Angular 14 + Clarity 13）**；
-> 2c + 2d 提交为 `3ae53ec`、3a 提交为 `2363b0d`（均为本地提交，尚未推送远程）；
-> 验收结论见 [docs/迁移进度.md](docs/迁移进度.md) 2d / 3a 各节。
+> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **3b（Angular 15 + Clarity 13）**；
+> 2c + 2d 提交为 `3ae53ec`、3a 为 `2363b0d`、3b 为 `6cbf918`（均为本地提交，尚未推送远程）；
+> 验收结论见 [docs/迁移进度.md](docs/迁移进度.md) 2d / 3a / 3b 各节。
 > 方案与每跳明细见 [docs/Angular-8到21-升级方案.md](docs/Angular-8到21-升级方案.md)、
 > [docs/迁移进度.md](docs/迁移进度.md)。
 > 迁移期间**对外接口契约与 UI 模板契约必须零漂移**，改完代码务必跑一遍[质量门禁](#质量门禁)。
@@ -85,28 +85,32 @@ npm run build:aot   # 生产构建（--prod --aot）→ dist/
 - 各跳的生产产物体积随 Clarity / Angular 版本变化，逐跳记录见
   [docs/迁移进度.md](docs/迁移进度.md)；v9（2-pre 时期）可比口径为
   main 1.44MB / vendor 3.03MB / styles 527kB。
-- 生产构建参考产物体积（**3a / Angular 14 / `target: es2020`**）：
+- 生产构建参考产物体积（**3b / Angular 15 / `target: ES2022`**）：
 
   | 产物 | 大小 |
   |---|---|
   | `main.js` | ≈ 1.40 MB |
-  | `vendor.js` | ≈ 3.07 MB |
-  | `styles.css` | ≈ 487.94 kB |
-  | `polyfills.js` | ≈ 45.78 kB |
+  | `vendor.js` | ≈ 3.08 MB |
+  | `scripts.js` | ≈ 766.61 kB |
+  | `styles.css` | ≈ 480.30 kB |
+  | `polyfills.js` | ≈ 45.80 kB |
   | `runtime.js` | ≈ 1.20 kB |
-  | **Initial Total** | **≈ 5.73 MB** |
+  | **Initial Total** | **≈ 5.74 MB** |
 
-  `es2020` 起产物**不再包含 ES5 降级代码**（ES5/IE11 已不受支持，`browserslist` 的 IE 行本就已注释）。
-  产物中不含未被路由引用的 `portal/*` 组件树 —— 那是历史遗留死代码，会被正常 tree-shake 掉，属预期行为。
+  `target` 自 v15 起为 `ES2022`（Angular 15 官方 CLI 迁移的默认，并附 `useDefineForClassFields: false`
+  以保持与 v14 一致的类字段语义）；产物**不含 ES5 降级代码**（ES5/IE11 已不受支持，
+  `browserslist` 的 IE 行本就已注释）。产物中不含未被路由引用的 `portal/*` 组件树
+  —— 那是历史遗留死代码，会被正常 tree-shake 掉，属预期行为。
 - **dev 构建不一定产出独立的 `styles.css`**：**v11 起会产出**（v10 则把样式打进 `styles.js`）。
   实测 2b（v11）：styles 670.78kB / vendor 15.01MB / main 9.32MB；
   2c（v12）：styles 754.55kB / vendor 13.28MB / main 9.29MB / polyfills-es5 651.98kB；
   2d（v13）：styles 617.47kB / vendor 12.95MB / main 9.57MB / scripts 847.14kB；
-  3a（v14）：styles 643.20kB / vendor 12.22MB / main 8.49MB / scripts 847.14kB（Initial 22.33MB）。
+  3a（v14）：styles 643.20kB / vendor 12.22MB / main 8.49MB（Initial 22.33MB）；
+  3b（v15）：styles 638.84kB / vendor 12.12MB / main 8.40MB（Initial 22.13MB）。
   量测样式（例如展开行布局回归）时注意这点：v10 及以前必须取生产产物里的哈希名
   `styles.<hash>.css`（见「构建注意事项」）。
 - **v13 起移除差分加载**：不再产出 `polyfills-es5.*`，生产构建也不再走 babel
-  （「构建注意事项」里那条沙箱 EPERM 问题随之消失）；**`target` 自 v14 起为 `es2020`**。
+  （「构建注意事项」里那条沙箱 EPERM 问题随之消失）；**`target` 自 v15 起为 `ES2022`**。
 
 ## npm 脚本
 
@@ -116,7 +120,7 @@ npm run build:aot   # 生产构建（--prod --aot）→ dist/
 | `npm run build` | 开发构建 |
 | `npm run build:aot` | 生产构建 |
 | `npm test` | 单元测试（Karma + Jasmine） |
-| `npm run lint` | tslint 静态检查（`tslint -p src/tsconfig.app.json -c tslint.json`）。**Angular 13 起**官方迁移删掉了 `angular.json` 的 lint target（`ng lint` 不可用），故改为 tslint CLI 直跑；检出与旧 `ng lint` 逐条相同（84 错基线，本就是红的）。**eslint 迁移留作独立提交** |
+| `npm run lint` | tslint 静态检查（`tslint -p src/tsconfig.app.json -c tslint.json`）。**Angular 13 起**官方迁移删掉了 `angular.json` 的 lint target（`ng lint` 不可用），故改为 tslint CLI 直跑。⚠️ **TS ≥4.8 起 tslint 已失效**——少报错误、漏查文件（受控实验：TS 4.6.4 为 84 错/36 文件，TS 4.8.4 为 65 错/17 文件），输出仅供参考；**eslint 迁移已列为必做** |
 | `npm run e2e` | 端到端测试（Protractor） |
 
 ## 目录结构
@@ -225,7 +229,7 @@ node tools/smoke-runtime.js      # 判据：渲染出应用 DOM 且无未捕获�
 | 2c | Angular 11→12 + Clarity 5→12（复用历史产物 `f6dec50` 重新落地） | 已完成（`3ae53ec`，本地未推送） |
 | 2d | Angular 12→13 + Clarity 12→13（复用历史产物 `64f394c` 重新落地） | 已完成（`3ae53ec`，本地未推送） |
 | 3a | Angular 13→14 + Clarity 13（不动 Clarity，复用历史产物 `f669f58` 重新落地） | 已完成（`2363b0d`，本地未推送） |
-| 3b | Angular 14→15 + Clarity 13（不动 Clarity） | 待做 |
+| 3b | Angular 14→15 + Clarity 13（不动 Clarity，复用历史产物 `e3636fd` 重新落地） | 已完成（`6cbf918`，本地未推送） |
 | 3c | Angular 15→16 + Clarity 13→16.6.0 | 待做 |
 | 3d | Angular 16→17 + Clarity →17.13.0 | 待做 |
 | 4 | Angular 17→21 + Clarity 18.4（含 Angular 20 的 Clarity 空窗硬撑） | 待做 |
@@ -275,11 +279,17 @@ node tools/smoke-runtime.js      # 判据：渲染出应用 DOM 且无未捕获�
 9. **Angular 13 移除了 UMD 包**，`@angular/*` 的入口全是 ESM（`fesm2015/*.mjs`，无 CJS）。
    因此任何**用 `require()` 加载 Angular 的 Node 侧脚本/夹具**都会踩两个坑：ESM 不支持
    目录导入（`rxjs/operators` 抛 `ERR_UNSUPPORTED_DIR_IMPORT`）、部分编译格式需要 JIT facade。
-   现成解法见 `tools/esm-dir-import-loader.mjs` 与 `tools/verify-param-equivalence.js` 头部注释。
-10. **SCSS 弃用警告会随 Angular 升版突然变多**：Angular 14 把内置 `sass` 从 1.49 抬到 1.54，
-    于是 `:host > > > .selector` 这类「伪组合器」开始报
-    `DEPRECATION WARNING: … is invalid CSS. It will be omitted from the generated CSS.`（3a 实测 6 条）。
-    **判据**：若该组件在 `dist/main*.js` 里搜不到（已被 tree-shake），则影响面为零；否则需改成 `::ng-deep`。
+   现成解法见 `tools/esm-dir-import-loader.mjs` 与 `tools/verify-param-equivalence.js` 头部注释，
+   新写这类脚本直接照抄即可。
+10. **SCSS 弃用警告会随 Angular 升版突然变多**：内置 `sass` 随 Angular 逐跳抬高
+    （1.49 → **1.54**（v14）→ **1.58**（v15））。当前链上实测 **6 条**，全部是
+    `:host > > > .selector` 这类「伪组合器」报 `… is invalid CSS. It will be omitted from the generated CSS.`，
+    来源为**死代码** `src/app/portal/persistentvolumeclaim/snapshot-persistentvolumeclaim/`（未进产物）。
+    > 历史 3b 落地时还曾出现 v15 新增的 `Using / for division outside of calc()` 警告
+    > （来源 `admin/sidenav/sidenav.component.scss`）；本链的 `ee40ae7`（2b 回归修复）已把那处
+    > 侧栏滚动条覆盖删掉、统一继承全局规则，故该警告在本链**不再出现**。
+    两类警告在 **Sass 2.0 都会升级为硬错误**。**判据**：若该组件名在 `dist/main*.js` 里搜不到
+    （已被 tree-shake），则影响面为零；当前 6 条均属此列，**留痕不改**。
 11. **浏览器自动化用 Playwright 自带的 Chromium**：本机 Edge 被安全策略静默拦截
     （`--headless` / `--dump-dom` / `--screenshot` 全部无输出，连 `--version` 都是空的）。
     冒烟脚本按 `NODE_PATH=<playwright workspace>/node_modules node tools/smoke-runtime.js` 的方式运行。
