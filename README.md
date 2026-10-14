@@ -12,18 +12,19 @@ Autoscale、K8sGPT、审计日志、权限与用户管理等。
 
 | 项 | 当前版本 |
 |---|---|
-| Angular | 12.2.17 |
-| Angular CLI / build-angular | 12.2.18 / 12.2.18 |
-| Clarity（`@clr/angular` / `@clr/ui`） | 12.4.4 |
-| Clarity 图标（`@clr/icons`，版本线比主包短） | 12.0.12 |
+| Angular | 13.3.12 |
+| Angular CLI / build-angular | 13.3.11 / 13.3.11 |
+| Clarity（`@clr/angular` / `@clr/ui`） | 13.18.3 |
+| Clarity 图标（`@clr/icons`，版本线比主包短） | 13.0.2 |
 | Design System（`@cds/core`，Clarity 5 起取代已停发的 `@clr/core`） | 5.8.4 |
-| TypeScript | 4.3.5（编译 `target: es5`） |
+| TypeScript | 4.6.4（编译 `target: es5`） |
 | RxJS / zone.js / tslib | 6.6.7 / 0.11.8 / 2.8.1 |
-| 打包 | webpack 5.50.0（精确钉 = build-angular 的 pin，勿写 `^`） |
+| 打包 | webpack 5.76.1（精确钉 = build-angular 的 pin，勿写 `^`） |
 | ngx-markdown | 9.1.1 |
 
-> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **2c（Angular 12 + Clarity 12）**，
-> 该跳的改动已落地工作区、尚未提交（验收结论见 [docs/迁移进度.md](docs/迁移进度.md) 2c 一节）。
+> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **2d（Angular 13 + Clarity 13）**，
+> 2c + 2d 已通过全套验收并**本地提交为 `3ae53ec`（尚未推送远程）**；
+> 验收结论见 [docs/迁移进度.md](docs/迁移进度.md) 2d 一节。
 > 方案与每跳明细见 [docs/Angular-8到21-升级方案.md](docs/Angular-8到21-升级方案.md)、
 > [docs/迁移进度.md](docs/迁移进度.md)。
 > 迁移期间**对外接口契约与 UI 模板契约必须零漂移**，改完代码务必跑一遍[质量门禁](#质量门禁)。
@@ -86,10 +87,13 @@ npm run build:aot   # 生产构建（--prod --aot）→ dist/
   main 1.44MB / vendor 3.03MB / styles 527kB。
 - **dev 构建不一定产出独立的 `styles.css`**：**v11 起会产出**（v10 则把样式打进 `styles.js`）。
   实测 2b（v11）：styles 670.78kB / vendor 15.01MB / main 9.32MB；
-  2c（v12）：styles 754.55kB / vendor 13.28MB / main 9.29MB / polyfills-es5 651.98kB。
+  2c（v12）：styles 754.55kB / vendor 13.28MB / main 9.29MB / polyfills-es5 651.98kB；
+  2d（v13）：styles 617.47kB / vendor 12.95MB / main 9.57MB / scripts 847.14kB。
   量测样式（例如展开行布局回归）时注意这点：v10 及以前必须取生产产物里的哈希名
   `styles.<hash>.css`（见「构建注意事项」2）。
-- 当前 `target: es5`，因此生产构建会做 ES5 差分加载（见「构建注意事项」2）。
+- **v13 起移除差分加载**：不再产出 `polyfills-es5.*`，`browserslist` 的 IE 项已注释，
+  生产构建也不再走 babel（「构建注意事项」里那条沙箱 EPERM 问题随之消失）。
+  当前 `target` 仍是 `es5`（v14 迁移才会改成 `es2020`）。
 
 ## npm 脚本
 
@@ -99,7 +103,7 @@ npm run build:aot   # 生产构建（--prod --aot）→ dist/
 | `npm run build` | 开发构建 |
 | `npm run build:aot` | 生产构建 |
 | `npm test` | 单元测试（Karma + Jasmine） |
-| `npm run lint` | tslint 静态检查。**Angular 13 起**官方迁移会删掉 `angular.json` 的 lint target（`ng lint` 不可用），**最迟需在 2d（12→13）前定下 tslint → eslint 策略** |
+| `npm run lint` | tslint 静态检查（`tslint -p src/tsconfig.app.json -c tslint.json`）。**Angular 13 起**官方迁移删掉了 `angular.json` 的 lint target（`ng lint` 不可用），故改为 tslint CLI 直跑；检出与旧 `ng lint` 逐条相同（84 错基线，本就是红的）。**eslint 迁移留作独立提交** |
 | `npm run e2e` | 端到端测试（Protractor） |
 
 ## 目录结构
@@ -205,8 +209,8 @@ node tools/smoke-runtime.js      # 判据：渲染出应用 DOM 且无未捕获�
 | 2a | Angular 9→10 + Clarity 3→4（`e678120`） | 已完成 |
 | 2aR | 2a 回归修复：展开行详情还原通栏顶左（`5f79753`） | 已完成 |
 | 2b | Angular 10→11 + Clarity 4→5（`a85f260`） | 已完成 |
-| 2c | Angular 11→12 + Clarity 5→12（复用历史产物 `f6dec50` 重新落地） | 已完成（工作区，未提交） |
-| 2d | Angular 12→13 + Clarity 12→13 | 待做 |
+| 2c | Angular 11→12 + Clarity 5→12（复用历史产物 `f6dec50` 重新落地） | 已完成（`3ae53ec`，本地未推送） |
+| 2d | Angular 12→13 + Clarity 12→13（复用历史产物 `64f394c` 重新落地） | 已完成（`3ae53ec`，本地未推送） |
 | 3 | Angular 13→17 + Clarity 13→17 | 待做 |
 | 4 | Angular 17→21 + Clarity 18.4（含 Angular 20 的 Clarity 空窗硬撑） | 待做 |
 | 5 | zoneless 评估 + 废弃依赖清理 | 待做 |
@@ -218,10 +222,12 @@ node tools/smoke-runtime.js      # 判据：渲染出应用 DOM 且无未捕获�
 1. **`npm install` 前先停掉 dev server**：webpack watcher 会占用 `node_modules/@clr/*` 下的文件，
    导致 npm 删除失败（报 `[safe-delete] ... trash operation ... aborted`）。
    查端口占用 `netstat -ano | findstr :4200`，杀进程 `taskkill /F /PID <pid>`。
-2. **生产构建（`npm run build:aot`）必须在普通权限终端跑**：当前 `target: es5`，
-   v10+ 的 ES5 差分加载会通过 babel-loader 写 `babel-webpack/*.json` 缓存，
+2. **生产构建（`npm run build:aot`）的沙箱坑（v13 起已消失）**：`target: es5` +
+   **v10–v12 的** ES5 差分加载会通过 babel-loader 写 `babel-webpack/*.json` 缓存，
    在受限权限/沙箱环境下被拦成 `EPERM: operation not permitted, open '...json'`
-   （换 `NG_BUILD_CACHE` 到别处同样失败，是写入策略而非路径问题）。开发构建不受影响。
+   （换 `NG_BUILD_CACHE` 到别处同样失败，是写入策略而非路径问题）。
+   **v13 起移除差分加载 → 该链路消失**，沙箱内已实测可直接跑通（v12 时也未再复现）；
+   万一仍遇到该 EPERM，换普通终端即可。开发构建一直不受影响。
 3. **`@angular/*` 的版本前缀一律写 `~` 不要写 `^`**：npm 上 `@angular/core` 常比 `@angular/cli`
    多出一个小版本（如 core 有 14.3.0 而 cli 没有），写 `^` 会造成 core / cli 错配，
    出现「根目录一份 + 嵌套一份」的双实例安装。
