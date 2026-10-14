@@ -12,19 +12,20 @@ Autoscale、K8sGPT、审计日志、权限与用户管理等。
 
 | 项 | 当前版本 |
 |---|---|
-| Angular | 15.2.10 |
-| Angular CLI / build-angular | 15.2.11 / 15.2.11 |
-| Clarity（`@clr/angular` / `@clr/ui`） | 13.18.3（peer 覆盖 Angular 13–15，本跳不动） |
-| Clarity 图标（`@clr/icons`，版本线比主包短） | 13.0.2 |
-| Design System（`@cds/core`，Clarity 5 起取代已停发的 `@clr/core`） | 5.8.4 |
-| TypeScript | 4.8.4（编译 `target: ES2022`，v15 官方迁移改写） |
-| RxJS / zone.js / tslib | 6.6.7 / 0.11.8 / 2.8.1 |
-| 打包 | webpack 5.76.1（精确钉 = build-angular 的 pin，勿写 `^`） |
-| ngx-markdown | 9.1.1 |
+| Angular | 16.2.12 |
+| Angular CLI / build-angular | 16.2.16 / 16.2.16 |
+| Clarity（`@clr/angular` / `@clr/ui`） | 16.6.0（peer 覆盖 Angular 15–17） |
+| Clarity 图标（`@clr/icons`，版本线比主包短） | 13.0.2（npm 上无 16.x，不动） |
+| Design System（`@cds/core`，Clarity 5 起取代已停发的 `@clr/core`） | 6.17.0 |
+| Angular CDK（Clarity 15 起 datagrid 的必需 peer） | 16.2.14 |
+| TypeScript | 4.9.5（编译 `target: ES2022`） |
+| RxJS / zone.js / tslib | 6.6.7 / 0.13.3 / 2.8.1 |
+| 打包 | webpack 5.94.0（精确钉 = build-angular 的 pin，v16 起由 5.76.1 变更，勿写 `^`） |
+| ngx-markdown | 16.0.0（v16 移除 ngcc，改用纯 Ivy 版） |
 
-> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **3b（Angular 15 + Clarity 13）**；
-> 2c + 2d 提交为 `3ae53ec`、3a 为 `2363b0d`、3b 为 `6cbf918`（均为本地提交，尚未推送远程）；
-> 验收结论见 [docs/迁移进度.md](docs/迁移进度.md) 2d / 3a / 3b 各节。
+> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **3c（Angular 16 + Clarity 16.6.0）**；
+> 2c + 2d 提交为 `3ae53ec`、3a 为 `2363b0d`、3b 为 `6cbf918`、3c 为 `5ff451a`（均为本地提交，尚未推送远程）；
+> 验收结论见 [docs/迁移进度.md](docs/迁移进度.md) 2d / 3a / 3b / 3c 各节。
 > 方案与每跳明细见 [docs/Angular-8到21-升级方案.md](docs/Angular-8到21-升级方案.md)、
 > [docs/迁移进度.md](docs/迁移进度.md)。
 > 迁移期间**对外接口契约与 UI 模板契约必须零漂移**，改完代码务必跑一遍[质量门禁](#质量门禁)。
@@ -85,32 +86,38 @@ npm run build:aot   # 生产构建（--prod --aot）→ dist/
 - 各跳的生产产物体积随 Clarity / Angular 版本变化，逐跳记录见
   [docs/迁移进度.md](docs/迁移进度.md)；v9（2-pre 时期）可比口径为
   main 1.44MB / vendor 3.03MB / styles 527kB。
-- 生产构建参考产物体积（**3b / Angular 15 / `target: ES2022`**）：
+- 生产构建参考产物体积（**3c / Angular 16 / `target: ES2022`**）：
 
   | 产物 | 大小 |
   |---|---|
-  | `main.js` | ≈ 1.40 MB |
-  | `vendor.js` | ≈ 3.08 MB |
-  | `scripts.js` | ≈ 766.61 kB |
-  | `styles.css` | ≈ 480.30 kB |
-  | `polyfills.js` | ≈ 45.80 kB |
+  | `main.js` | ≈ 1.41 MB |
+  | `vendor.js` | ≈ 3.17 MB |
+  | `scripts.js` | ≈ 730.88 kB |
+  | `styles.css` | ≈ 612.22 kB |
+  | `polyfills.js` | ≈ 45.75 kB |
   | `runtime.js` | ≈ 1.20 kB |
-  | **Initial Total** | **≈ 5.74 MB** |
+  | **Initial Total** | **≈ 5.94 MB** |
 
   `target` 自 v15 起为 `ES2022`（Angular 15 官方 CLI 迁移的默认，并附 `useDefineForClassFields: false`
   以保持与 v14 一致的类字段语义）；产物**不含 ES5 降级代码**（ES5/IE11 已不受支持，
   `browserslist` 的 IE 行本就已注释）。产物中不含未被路由引用的 `portal/*` 组件树
   —— 那是历史遗留死代码，会被正常 tree-shake 掉，属预期行为。
+  `styles.css` 由 v15 的 ≈480 kB 涨到 ≈612 kB，是 Clarity 从 13 跨到 16
+  （**Clarity 没有 v14**，实为 13→15→16）三代的样式累积，属预期。
 - **dev 构建不一定产出独立的 `styles.css`**：**v11 起会产出**（v10 则把样式打进 `styles.js`）。
   实测 2b（v11）：styles 670.78kB / vendor 15.01MB / main 9.32MB；
   2c（v12）：styles 754.55kB / vendor 13.28MB / main 9.29MB / polyfills-es5 651.98kB；
   2d（v13）：styles 617.47kB / vendor 12.95MB / main 9.57MB / scripts 847.14kB；
   3a（v14）：styles 643.20kB / vendor 12.22MB / main 8.49MB（Initial 22.33MB）；
-  3b（v15）：styles 638.84kB / vendor 12.12MB / main 8.40MB（Initial 22.13MB）。
+  3b（v15）：styles 638.84kB / vendor 12.12MB / main 8.40MB（Initial 22.13MB）；
+  3c（v16）：styles 946.12kB / vendor 12.95MB / main 8.39MB（Initial 23.18MB）。
   量测样式（例如展开行布局回归）时注意这点：v10 及以前必须取生产产物里的哈希名
   `styles.<hash>.css`（见「构建注意事项」）。
 - **v13 起移除差分加载**：不再产出 `polyfills-es5.*`，生产构建也不再走 babel
   （「构建注意事项」里那条沙箱 EPERM 问题随之消失）；**`target` 自 v15 起为 `ES2022`**。
+- **依赖中不应出现 `__ivy_ngcc__/` 目录**（那是 View Engine 库靠 ngcc 续命的痕迹）。
+  v16 移除 ngcc，此类库会在运行时白屏。自检：
+  `ls -d node_modules/*/__ivy_ngcc__ node_modules/@*/*/__ivy_ngcc__ 2>/dev/null`（须无输出）。
 
 ## npm 脚本
 
@@ -120,7 +127,7 @@ npm run build:aot   # 生产构建（--prod --aot）→ dist/
 | `npm run build` | 开发构建 |
 | `npm run build:aot` | 生产构建 |
 | `npm test` | 单元测试（Karma + Jasmine） |
-| `npm run lint` | tslint 静态检查（`tslint -p src/tsconfig.app.json -c tslint.json`）。**Angular 13 起**官方迁移删掉了 `angular.json` 的 lint target（`ng lint` 不可用），故改为 tslint CLI 直跑。⚠️ **TS ≥4.8 起 tslint 已失效**——少报错误、漏查文件（受控实验：TS 4.6.4 为 84 错/36 文件，TS 4.8.4 为 65 错/17 文件），输出仅供参考；**eslint 迁移已列为必做** |
+| `npm run lint` | tslint 静态检查（v13 移除了 `ng lint` 的 tslint builder，改为 `tslint -p src/tsconfig.app.json -c tslint.json` 直跑）。⚠️ **TS ≥4.8 起 tslint 已失效**——少报错误、漏查文件（受控实验：TS 4.6.4 为 84 错/36 文件，TS 4.8.4 与 4.9.5 均为 65 错/17 文件），输出仅供参考；**eslint 迁移已列为必做** |
 | `npm run e2e` | 端到端测试（Protractor） |
 
 ## 目录结构
@@ -180,12 +187,14 @@ node tools/verify-param-equivalence.js
 ```bash
 npm start &                      # 先起 dev server
 node tools/smoke-runtime.js      # 判据：渲染出应用 DOM 且无未捕获异常
+node tools/check-clr-tokens.js   # Clarity CSS 变量的「计算值」断言（防样式覆盖静默失效）
 ```
 
 > 后端不可达导致的 401 / 连接失败**不算**冒烟失败。
 >
 > **构建全绿 ≠ 能跑**：冒烟是三层静态门禁的补集，只验证 bootstrap + 无未捕获异常，
-> 但它抓到过静态门禁完全看不见的问题。每跳都必须做。
+> 但已经抓到过两次静态门禁完全看不见的问题（2c 的生产产物组件定义缺失、3c 的 ngcc 移除导致白屏）。
+> 每跳都必须做，dev 与生产产物各一次。
 
 `tools/` 脚本一览（完整用法见各脚本头注释）：
 
@@ -230,8 +239,8 @@ node tools/smoke-runtime.js      # 判据：渲染出应用 DOM 且无未捕获�
 | 2d | Angular 12→13 + Clarity 12→13（复用历史产物 `64f394c` 重新落地） | 已完成（`3ae53ec`，本地未推送） |
 | 3a | Angular 13→14 + Clarity 13（不动 Clarity，复用历史产物 `f669f58` 重新落地） | 已完成（`2363b0d`，本地未推送） |
 | 3b | Angular 14→15 + Clarity 13（不动 Clarity，复用历史产物 `e3636fd` 重新落地） | 已完成（`6cbf918`，本地未推送） |
-| 3c | Angular 15→16 + Clarity 13→16.6.0 | 待做 |
-| 3d | Angular 16→17 + Clarity →17.13.0 | 待做 |
+| 3c | Angular 15→16 + Clarity 13→16.6.0（复用历史产物 `7640300` 重新落地） | 已完成（`5ff451a`，本地未推送） |
+| 3d | Angular 16→17 + Clarity 16（不动 Clarity） | 待做 |
 | 4 | Angular 17→21 + Clarity 18.4（含 Angular 20 的 Clarity 空窗硬撑） | 待做 |
 | 5 | zoneless 评估 + 废弃依赖清理 | 待做 |
 
@@ -282,8 +291,8 @@ node tools/smoke-runtime.js      # 判据：渲染出应用 DOM 且无未捕获�
    现成解法见 `tools/esm-dir-import-loader.mjs` 与 `tools/verify-param-equivalence.js` 头部注释，
    新写这类脚本直接照抄即可。
 10. **SCSS 弃用警告会随 Angular 升版突然变多**：内置 `sass` 随 Angular 逐跳抬高
-    （1.49 → **1.54**（v14）→ **1.58**（v15））。当前链上实测 **6 条**，全部是
-    `:host > > > .selector` 这类「伪组合器」报 `… is invalid CSS. It will be omitted from the generated CSS.`，
+    （1.49 → **1.54**（v14）→ **1.58**（v15））。当前链上实测 **6 条**（3c/v16 复核：仍为 6 条、同源），
+    全部是 `:host > > > .selector` 这类「伪组合器」报 `… is invalid CSS. It will be omitted from the generated CSS.`，
     来源为**死代码** `src/app/portal/persistentvolumeclaim/snapshot-persistentvolumeclaim/`（未进产物）。
     > 历史 3b 落地时还曾出现 v15 新增的 `Using / for division outside of calc()` 警告
     > （来源 `admin/sidenav/sidenav.component.scss`）；本链的 `ee40ae7`（2b 回归修复）已把那处
