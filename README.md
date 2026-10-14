@@ -12,19 +12,19 @@ Autoscale、K8sGPT、审计日志、权限与用户管理等。
 
 | 项 | 当前版本 |
 |---|---|
-| Angular | 13.3.12 |
-| Angular CLI / build-angular | 13.3.11 / 13.3.11 |
-| Clarity（`@clr/angular` / `@clr/ui`） | 13.18.3 |
+| Angular | 14.2.12 |
+| Angular CLI / build-angular | 14.2.13 / 14.2.13 |
+| Clarity（`@clr/angular` / `@clr/ui`） | 13.18.3（peer 覆盖 Angular 13–15，本跳不动） |
 | Clarity 图标（`@clr/icons`，版本线比主包短） | 13.0.2 |
 | Design System（`@cds/core`，Clarity 5 起取代已停发的 `@clr/core`） | 5.8.4 |
-| TypeScript | 4.6.4（编译 `target: es5`） |
+| TypeScript | 4.6.4（编译 `target: es2020`，v14 官方迁移改写） |
 | RxJS / zone.js / tslib | 6.6.7 / 0.11.8 / 2.8.1 |
 | 打包 | webpack 5.76.1（精确钉 = build-angular 的 pin，勿写 `^`） |
 | ngx-markdown | 9.1.1 |
 
-> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **2d（Angular 13 + Clarity 13）**，
-> 2c + 2d 已通过全套验收并**本地提交为 `3ae53ec`（尚未推送远程）**；
-> 验收结论见 [docs/迁移进度.md](docs/迁移进度.md) 2d 一节。
+> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **3a（Angular 14 + Clarity 13）**；
+> 2c + 2d 提交为 `3ae53ec`、3a 提交为 `2363b0d`（均为本地提交，尚未推送远程）；
+> 验收结论见 [docs/迁移进度.md](docs/迁移进度.md) 2d / 3a 各节。
 > 方案与每跳明细见 [docs/Angular-8到21-升级方案.md](docs/Angular-8到21-升级方案.md)、
 > [docs/迁移进度.md](docs/迁移进度.md)。
 > 迁移期间**对外接口契约与 UI 模板契约必须零漂移**，改完代码务必跑一遍[质量门禁](#质量门禁)。
@@ -85,15 +85,28 @@ npm run build:aot   # 生产构建（--prod --aot）→ dist/
 - 各跳的生产产物体积随 Clarity / Angular 版本变化，逐跳记录见
   [docs/迁移进度.md](docs/迁移进度.md)；v9（2-pre 时期）可比口径为
   main 1.44MB / vendor 3.03MB / styles 527kB。
+- 生产构建参考产物体积（**3a / Angular 14 / `target: es2020`**）：
+
+  | 产物 | 大小 |
+  |---|---|
+  | `main.js` | ≈ 1.40 MB |
+  | `vendor.js` | ≈ 3.07 MB |
+  | `styles.css` | ≈ 487.94 kB |
+  | `polyfills.js` | ≈ 45.78 kB |
+  | `runtime.js` | ≈ 1.20 kB |
+  | **Initial Total** | **≈ 5.73 MB** |
+
+  `es2020` 起产物**不再包含 ES5 降级代码**（ES5/IE11 已不受支持，`browserslist` 的 IE 行本就已注释）。
+  产物中不含未被路由引用的 `portal/*` 组件树 —— 那是历史遗留死代码，会被正常 tree-shake 掉，属预期行为。
 - **dev 构建不一定产出独立的 `styles.css`**：**v11 起会产出**（v10 则把样式打进 `styles.js`）。
   实测 2b（v11）：styles 670.78kB / vendor 15.01MB / main 9.32MB；
   2c（v12）：styles 754.55kB / vendor 13.28MB / main 9.29MB / polyfills-es5 651.98kB；
-  2d（v13）：styles 617.47kB / vendor 12.95MB / main 9.57MB / scripts 847.14kB。
+  2d（v13）：styles 617.47kB / vendor 12.95MB / main 9.57MB / scripts 847.14kB；
+  3a（v14）：styles 643.20kB / vendor 12.22MB / main 8.49MB / scripts 847.14kB（Initial 22.33MB）。
   量测样式（例如展开行布局回归）时注意这点：v10 及以前必须取生产产物里的哈希名
-  `styles.<hash>.css`（见「构建注意事项」2）。
-- **v13 起移除差分加载**：不再产出 `polyfills-es5.*`，`browserslist` 的 IE 项已注释，
-  生产构建也不再走 babel（「构建注意事项」里那条沙箱 EPERM 问题随之消失）。
-  当前 `target` 仍是 `es5`（v14 迁移才会改成 `es2020`）。
+  `styles.<hash>.css`（见「构建注意事项」）。
+- **v13 起移除差分加载**：不再产出 `polyfills-es5.*`，生产构建也不再走 babel
+  （「构建注意事项」里那条沙箱 EPERM 问题随之消失）；**`target` 自 v14 起为 `es2020`**。
 
 ## npm 脚本
 
@@ -211,7 +224,10 @@ node tools/smoke-runtime.js      # 判据：渲染出应用 DOM 且无未捕获�
 | 2b | Angular 10→11 + Clarity 4→5（`a85f260`） | 已完成 |
 | 2c | Angular 11→12 + Clarity 5→12（复用历史产物 `f6dec50` 重新落地） | 已完成（`3ae53ec`，本地未推送） |
 | 2d | Angular 12→13 + Clarity 12→13（复用历史产物 `64f394c` 重新落地） | 已完成（`3ae53ec`，本地未推送） |
-| 3 | Angular 13→17 + Clarity 13→17 | 待做 |
+| 3a | Angular 13→14 + Clarity 13（不动 Clarity，复用历史产物 `f669f58` 重新落地） | 已完成（`2363b0d`，本地未推送） |
+| 3b | Angular 14→15 + Clarity 13（不动 Clarity） | 待做 |
+| 3c | Angular 15→16 + Clarity 13→16.6.0 | 待做 |
+| 3d | Angular 16→17 + Clarity →17.13.0 | 待做 |
 | 4 | Angular 17→21 + Clarity 18.4（含 Angular 20 的 Clarity 空窗硬撑） | 待做 |
 | 5 | zoneless 评估 + 废弃依赖清理 | 待做 |
 
@@ -221,31 +237,52 @@ node tools/smoke-runtime.js      # 判据：渲染出应用 DOM 且无未捕获�
 
 1. **`npm install` 前先停掉 dev server**：webpack watcher 会占用 `node_modules/@clr/*` 下的文件，
    导致 npm 删除失败（报 `[safe-delete] ... trash operation ... aborted`）。
-   查端口占用 `netstat -ano | findstr :4200`，杀进程 `taskkill /F /PID <pid>`。
-2. **生产构建（`npm run build:aot`）的沙箱坑（v13 起已消失）**：`target: es5` +
-   **v10–v12 的** ES5 差分加载会通过 babel-loader 写 `babel-webpack/*.json` 缓存，
-   在受限权限/沙箱环境下被拦成 `EPERM: operation not permitted, open '...json'`
-   （换 `NG_BUILD_CACHE` 到别处同样失败，是写入策略而非路径问题）。
-   **v13 起移除差分加载 → 该链路消失**，沙箱内已实测可直接跑通（v12 时也未再复现）；
-   万一仍遇到该 EPERM，换普通终端即可。开发构建一直不受影响。
-3. **`@angular/*` 的版本前缀一律写 `~` 不要写 `^`**：npm 上 `@angular/core` 常比 `@angular/cli`
-   多出一个小版本（如 core 有 14.3.0 而 cli 没有），写 `^` 会造成 core / cli 错配，
-   出现「根目录一份 + 嵌套一份」的双实例安装。
-4. **本机 `ng update` 不可用**：它要装「临时 CLI」，走到 `spawnSync cmd.exe` 就稳定报 `EBUSY`
+   查端口占用 `netstat -ano | grep :4200`，杀进程 `MSYS_NO_PATHCONV=1 taskkill /F /PID <pid>`。
+2. **webpack 写精确版本、`@angular/*` 前缀写 `~`**：`@angular-devkit/build-angular`
+   自身钉死一个精确的 webpack 版本（Angular 12/13 为 `5.50.0`，v14/v15 为 `5.76.1`），
+   且 `@angular-devkit/build-webpack` 会直接 `require('webpack')`（因此不能删）。
+   根依赖必须写**精确版本**，否则会出现「根目录一份 + 嵌套一份」的双实例安装。
+   同理 `@angular/*` 一律写 `~` 不写 `^`：npm 上 `@angular/core` 常比 `@angular/cli`
+   多出一个小版本（如 core 有 14.3.0 而 cli 止于 14.2.13），写 `^` 会造成 core / cli 错配。
+   ⚠️ **Angular 14 的 CLI 迁移会主动把前缀改成 `^`**（迁移名 `update-angular-packages-version-prefix`），
+   跑完必须改回 `~`，并用 `npm install --package-lock-only` 同步锁文件里的规格串。
+3. **`--max_old_space_size` 不要调太大；但段错误也可能是间歇性的**：webpack 5 + 完整优化的
+   组合下，过大的堆上限（如 8000）在部分机器上会**稳定**触发 V8 段错误
+   （`Segmentation fault`，exit 139），当前脚本统一用 `4096`。
+   但实测 4096 下仍**偶发**（8 次里 1 次），且与堆上限**无单调关系**（2048/3072/4096 都能通过）
+   → **看到 `Segmentation fault` 且无任何 webpack/TS 报错时，先原样重跑**，不要急着改配置或查代码。
+4. **生产构建报 `EPERM: operation not permitted, open '...json'`** —— 受限沙箱拦截了 babel-loader
+   的缓存写入（v10–v12 的 ES5 差分加载链路），**换普通终端执行即可**。
+   **v13 起移除差分加载、v14 起编译目标改 `es2020`（babel 版 build-optimizer 不再参与）→ 该链路彻底消失**，
+   沙箱内已实测可直接构建。开发构建一直不受影响。
+5. **Windows 等 `spawnSync` 受限环境**：Angular 12 的 esbuild 原生探测会因 `EBUSY` 失败并回落
+   `esbuild-wasm`，导致生产构建无法完成。执行 `node tools/patch-esbuild-native-check.js`
+   （幂等，支持 `--revert`；`npm install` 后跑一次）。
+   **Angular 14 起上游已自行改用 `require('esbuild')` 探测，该脚本会检测到并直接跳过（exit 0），属正常输出**。
+6. **本机 `ng update` 不可用**：它要装「临时 CLI」，走到 `spawnSync cmd.exe` 就稳定报 `EBUSY`
    （脱沙箱重试同样失败，非偶发）。等效流程：**手工改 `package.json` 版本 + `npm install`**，
-   再用已装好的新 CLI 跑
-   `ng update <pkg>@N --migrate-only --from=<N-1> --to=N --allow-dirty`
-   （注意 v10 CLI 的开关是 `--migrate-only`，写成 `--migrations-only` 会被当成包名报错）。
-5. **`npm ci` 可能长时间无输出**：实测曾挂在 `idealTree buildDeps` 阶段不再前进，改用 `npm install`。
+   再用已装好的新 CLI 跑 `ng update <pkg> --migrate-only --from=<N-1> --to=N --allow-dirty`。
+   ⚠️ 两点：v10 CLI 的开关是 `--migrate-only`（写成 `--migrations-only` 会被当成包名报错）；
+   **v14 起要加 `NG_DISABLE_VERSION_CHECK=1` 并用裸包名**（带版本号的 spec 会被当成包名查依赖，
+   报 `Package is not installed.`）。
+7. **`npm ci` 可能长时间无输出**：实测曾挂在 `idealTree buildDeps` 阶段不再前进，改用 `npm install`。
    另注意 npm 的汇总行（`changed N packages`）与实际结果并不总是相符，
    **版本判定请以 `node -p "require('./node_modules/<pkg>/package.json').version"` 实测为准**。
-6. **行尾统一 CRLF**：仓库无 `.gitattributes`（`core.autocrlf=true`）。
+8. **行尾统一 CRLF**：仓库无 `.gitattributes`（`core.autocrlf=true`）。
    用脚本批量改文件后，先用 `git diff --name-only` 导出清单，
    再执行 `node tools/normalize-eol.js <清单文件>` 归一，
    否则 diff 会被行尾噪声淹没，真正的内容改动反而看不见。
-7. **浏览器自动化用 Playwright 自带的 Chromium**：本机 Edge 被安全策略静默拦截
-   （`--headless` / `--dump-dom` / `--screenshot` 全部无输出，连 `--version` 都是空的）。
-   冒烟脚本按 `NODE_PATH=<playwright workspace>/node_modules node tools/smoke-runtime.js` 的方式运行。
+9. **Angular 13 移除了 UMD 包**，`@angular/*` 的入口全是 ESM（`fesm2015/*.mjs`，无 CJS）。
+   因此任何**用 `require()` 加载 Angular 的 Node 侧脚本/夹具**都会踩两个坑：ESM 不支持
+   目录导入（`rxjs/operators` 抛 `ERR_UNSUPPORTED_DIR_IMPORT`）、部分编译格式需要 JIT facade。
+   现成解法见 `tools/esm-dir-import-loader.mjs` 与 `tools/verify-param-equivalence.js` 头部注释。
+10. **SCSS 弃用警告会随 Angular 升版突然变多**：Angular 14 把内置 `sass` 从 1.49 抬到 1.54，
+    于是 `:host > > > .selector` 这类「伪组合器」开始报
+    `DEPRECATION WARNING: … is invalid CSS. It will be omitted from the generated CSS.`（3a 实测 6 条）。
+    **判据**：若该组件在 `dist/main*.js` 里搜不到（已被 tree-shake），则影响面为零；否则需改成 `::ng-deep`。
+11. **浏览器自动化用 Playwright 自带的 Chromium**：本机 Edge 被安全策略静默拦截
+    （`--headless` / `--dump-dom` / `--screenshot` 全部无输出，连 `--version` 都是空的）。
+    冒烟脚本按 `NODE_PATH=<playwright workspace>/node_modules node tools/smoke-runtime.js` 的方式运行。
 
 ## 常见问题
 
