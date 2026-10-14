@@ -11,3 +11,10 @@
 .card-block {
   overflow-y: auto;
 }
+
+/* Clarity 16 起新增 .card-text { color: hsl(198,0%,40%) }（灰字），
+   会盖掉 card-block 内联继承的白色，导致黑底灰字不可读，这里显式压回浅灰
+   （纯白在黑底上过亮刺眼，取 VS Code 暗色编辑器前景色 #d4d4d4） */
+.card-block .card-text {
+  color: #d4d4d4;
+}
