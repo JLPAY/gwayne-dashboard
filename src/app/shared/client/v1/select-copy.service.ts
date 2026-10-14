@@ -53,8 +53,8 @@ export class SelectCopyService implements OnDestroy, AfterViewInit {
   init() {
     if (window) {
       this.globalEventList.push(
-        this.eventManage.addGlobalEventListener('document', 'mouseup', this.mouseUpEvent.bind(this)),
-        this.eventManage.addGlobalEventListener('document', 'mousedown', this.mouseDownEvent.bind(this))
+        this.eventManage.addEventListener(document as any, 'mouseup', this.mouseUpEvent.bind(this)),
+        this.eventManage.addEventListener(document as any, 'mousedown', this.mouseDownEvent.bind(this))
       );
     }
   }

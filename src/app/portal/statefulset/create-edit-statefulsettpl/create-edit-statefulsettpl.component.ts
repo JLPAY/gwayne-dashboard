@@ -81,7 +81,7 @@ export class CreateEditStatefulsettplComponent extends ContainerTpl implements O
     this.box.style.paddingBottom = '60px';
     this.eventList.push(
       this.eventManager.addEventListener(this.box, 'scroll', this.scrollEvent.bind(this, true)),
-      this.eventManager.addGlobalEventListener('window', 'resize', this.scrollEvent.bind(this, false))
+      this.eventManager.addEventListener(window as any, 'resize', this.scrollEvent.bind(this, false))
     );
     this.scrollEvent(false);
   }

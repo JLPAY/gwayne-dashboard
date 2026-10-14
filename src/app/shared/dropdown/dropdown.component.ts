@@ -132,8 +132,8 @@ export class DropDownComponent implements OnInit {
     const target = evt.target;
     this.barTopCache = this.barStyle.top;
     this.eventList.push(
-      this.eventManager.addGlobalEventListener('document', 'mousemove', this.moveEvent.bind(this, target)),
-      this.eventManager.addGlobalEventListener('document', 'mouseup', this.upEvent.bind(this))
+      this.eventManager.addEventListener(document as any, 'mousemove', this.moveEvent.bind(this, target)),
+      this.eventManager.addEventListener(document as any, 'mouseup', this.upEvent.bind(this))
     );
     this.document.onselectstart = () => false;
   }

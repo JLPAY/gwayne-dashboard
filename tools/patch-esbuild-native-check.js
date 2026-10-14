@@ -43,7 +43,9 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 
 // 不同版本可能挪窝，按顺序找第一个存在的。
+// v12~v15 在 src/webpack/plugins/；v16 起多了 tools/ 中间层（src/tools/webpack/plugins/）。
 const CANDIDATES = [
+  'node_modules/@angular-devkit/build-angular/src/tools/webpack/plugins/esbuild-executor.js',
   'node_modules/@angular-devkit/build-angular/src/webpack/plugins/esbuild-executor.js',
 ];
 

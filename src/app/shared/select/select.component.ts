@@ -165,7 +165,7 @@ export class SelectComponent implements OnInit, AfterViewInit, ControlValueAcces
       this.resizeEvent();
       setTimeout(() => {
         this.globalEventList.push(
-          this.eventManager.addGlobalEventListener('window', 'resize', this.resizeEvent.bind(this)),
+          this.eventManager.addEventListener(window as any, 'resize', this.resizeEvent.bind(this)),
           this.eventManager.addEventListener(this.document.querySelector('.content-area'), 'scroll', this.resizeEvent.bind(this))
         );
       }, 100);
@@ -446,7 +446,7 @@ export class SelectComponent implements OnInit, AfterViewInit, ControlValueAcces
     // 添加focus，防止滚动无效情况；
     this.wrap.focus();
     this.inputEventList.push(
-      this.eventManager.addGlobalEventListener('document', 'click', this.docuMouseDown.bind(this))
+      this.eventManager.addEventListener(document as any, 'click', this.docuMouseDown.bind(this))
     );
     this.top = 0;
     if (this.wrap.clientHeight < this.wrap.scrollHeight) {
@@ -477,8 +477,8 @@ export class SelectComponent implements OnInit, AfterViewInit, ControlValueAcces
     this.clickStart = event.pageY;
     this.barTopCache = this.top;
     this.barEventList.push(
-      this.eventManager.addGlobalEventListener('document', 'mousemove', this.mouseMoveEvent.bind(this)),
-      this.eventManager.addGlobalEventListener('document', 'mouseup', this.mouseUpEvent.bind(this))
+      this.eventManager.addEventListener(document as any, 'mousemove', this.mouseMoveEvent.bind(this)),
+      this.eventManager.addEventListener(document as any, 'mouseup', this.mouseUpEvent.bind(this))
     );
     // 这里使用addGlobalEventListener 挂载不上方法；防止滑动时候仍选择文本
     this.document.onselectstart = () => false;

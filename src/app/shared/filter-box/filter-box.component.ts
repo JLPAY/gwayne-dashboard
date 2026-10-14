@@ -24,7 +24,7 @@ export class FilterBoxComponent implements OnInit {
 
   open() {
     this.show = true;
-    this.eventTarget = this.eventManage.addGlobalEventListener('document', 'click', this.clickEvent.bind(this));
+    this.eventTarget = this.eventManage.addEventListener(document as any, 'click', this.clickEvent.bind(this));
   }
 
   clickEvent(event) {

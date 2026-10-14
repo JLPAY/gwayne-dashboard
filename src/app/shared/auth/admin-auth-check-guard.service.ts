@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { MessageHandlerService } from '../message-handler/message-handler.service';
 import { AuthService } from './auth.service';
 import { defaultRoutingUrl } from '../shared.const';
 
 @Injectable()
-export class AdminAuthCheckGuard implements CanActivate, CanActivateChild {
+export class AdminAuthCheckGuard  {
 
   constructor(public authService: AuthService,
               private router: Router,

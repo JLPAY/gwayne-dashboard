@@ -71,7 +71,7 @@ export class FloatWindowComponent implements AfterViewInit, OnDestroy {
       }, 0);
     }
     this.globalList.push(
-      this.eventManager.addGlobalEventListener('window', 'resize', this.windowResize.bind(this))
+      this.eventManager.addEventListener(window as any, 'resize', this.windowResize.bind(this))
     );
   }
   ngOnDestroy() {
@@ -96,8 +96,8 @@ export class FloatWindowComponent implements AfterViewInit, OnDestroy {
     shadow.style.cssText = 'position: fixed;width: 100%; height:100vh; z-index: 2; top: 0;';
     this.document.body.appendChild(shadow);
     this.eventList.push(
-      this.eventManager.addGlobalEventListener('document', 'mousemove', this.moveEvent.bind(this, target, pos)),
-      this.eventManager.addGlobalEventListener('document', 'mouseup', this.upEvent.bind(this, target, shadow))
+      this.eventManager.addEventListener(document as any, 'mousemove', this.moveEvent.bind(this, target, pos)),
+      this.eventManager.addEventListener(document as any, 'mouseup', this.upEvent.bind(this, target, shadow))
     );
   }
 
