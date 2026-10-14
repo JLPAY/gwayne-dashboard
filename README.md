@@ -12,20 +12,22 @@ Autoscale、K8sGPT、审计日志、权限与用户管理等。
 
 | 项 | 当前版本 |
 |---|---|
-| Angular | 16.2.12 |
-| Angular CLI / build-angular | 16.2.16 / 16.2.16 |
-| Clarity（`@clr/angular` / `@clr/ui`） | 16.6.0（peer 覆盖 Angular 15–17） |
+| Angular | 17.3.12 |
+| Angular CLI / build-angular | 17.3.17 / 17.3.17 |
+| Clarity（`@clr/angular` / `@clr/ui`） | 16.6.0（peer 覆盖 Angular 15–17，17 无需换） |
 | Clarity 图标（`@clr/icons`，版本线比主包短） | 13.0.2（npm 上无 16.x，不动） |
 | Design System（`@cds/core`，Clarity 5 起取代已停发的 `@clr/core`） | 6.17.0 |
-| Angular CDK（Clarity 15 起 datagrid 的必需 peer） | 16.2.14 |
-| TypeScript | 4.9.5（编译 `target: ES2022`） |
-| RxJS / zone.js / tslib | 6.6.7 / 0.13.3 / 2.8.1 |
-| 打包 | webpack 5.94.0（精确钉 = build-angular 的 pin，v16 起由 5.76.1 变更，勿写 `^`） |
+| Angular CDK（Clarity 15 起 datagrid 的必需 peer，**版本线比 core 短**） | 17.3.10 |
+| TypeScript | 5.2.2（编译 `target: ES2022`） |
+| RxJS / zone.js / tslib | 6.6.7 / 0.14.10 / 2.8.1 |
+| 打包 | webpack 5.94.0（精确钉 = build-angular 的 pin，v16 起为 5.94.0，勿写 `^`） |
 | ngx-markdown | 16.0.0（v16 移除 ngcc，改用纯 Ivy 版） |
 
-> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **3c（Angular 16 + Clarity 16.6.0）**；
-> 2c + 2d 提交为 `3ae53ec`、3a 为 `2363b0d`、3b 为 `6cbf918`、3c 为 `5ff451a`（均为本地提交，尚未推送远程）；
-> 验收结论见 [docs/迁移进度.md](docs/迁移进度.md) 2d / 3a / 3b / 3c 各节。
+> **迁移进行中**：正从 Angular 8 逐级升级到 Angular 21 + Clarity 18.4，当前停在 **3d（Angular 17 + Clarity 16.6.0）**；
+> 2c + 2d 提交为 `3ae53ec`、3a 为 `2363b0d`、3b 为 `6cbf918`、3c 为 `5ff451a`、
+> 3cR（视觉回归修复）为 `8c203b4`、3d 为 `a3a3405`；
+> 其中 3cR 及以前已推送远程（`ee40ae7..94816b7`），3d 为本地提交待推送；
+> 验收结论见 [docs/迁移进度.md](docs/迁移进度.md) 2d / 3a / 3b / 3c / 3cR / 3d 各节。
 > 方案与每跳明细见 [docs/Angular-8到21-升级方案.md](docs/Angular-8到21-升级方案.md)、
 > [docs/迁移进度.md](docs/迁移进度.md)。
 > 迁移期间**对外接口契约与 UI 模板契约必须零漂移**，改完代码务必跑一遍[质量门禁](#质量门禁)。
@@ -86,17 +88,17 @@ npm run build:aot   # 生产构建（--prod --aot）→ dist/
 - 各跳的生产产物体积随 Clarity / Angular 版本变化，逐跳记录见
   [docs/迁移进度.md](docs/迁移进度.md)；v9（2-pre 时期）可比口径为
   main 1.44MB / vendor 3.03MB / styles 527kB。
-- 生产构建参考产物体积（**3c / Angular 16 / `target: ES2022`**）：
+- 生产构建参考产物体积（**3d / Angular 17 / `target: ES2022`**）：
 
   | 产物 | 大小 |
   |---|---|
-  | `main.js` | ≈ 1.41 MB |
-  | `vendor.js` | ≈ 3.17 MB |
-  | `scripts.js` | ≈ 730.88 kB |
-  | `styles.css` | ≈ 612.22 kB |
-  | `polyfills.js` | ≈ 45.75 kB |
+  | `main.js` | ≈ 1.42 MB |
+  | `vendor.js` | ≈ 3.19 MB |
+  | `scripts.js` | ≈ 730.90 kB |
+  | `styles.css` | ≈ 611.64 kB |
+  | `polyfills.js` | ≈ 46.74 kB |
   | `runtime.js` | ≈ 1.20 kB |
-  | **Initial Total** | **≈ 5.94 MB** |
+  | **Initial Total** | **≈ 5.97 MB** |
 
   `target` 自 v15 起为 `ES2022`（Angular 15 官方 CLI 迁移的默认，并附 `useDefineForClassFields: false`
   以保持与 v14 一致的类字段语义）；产物**不含 ES5 降级代码**（ES5/IE11 已不受支持，
@@ -110,7 +112,8 @@ npm run build:aot   # 生产构建（--prod --aot）→ dist/
   2d（v13）：styles 617.47kB / vendor 12.95MB / main 9.57MB / scripts 847.14kB；
   3a（v14）：styles 643.20kB / vendor 12.22MB / main 8.49MB（Initial 22.33MB）；
   3b（v15）：styles 638.84kB / vendor 12.12MB / main 8.40MB（Initial 22.13MB）；
-  3c（v16）：styles 946.12kB / vendor 12.95MB / main 8.39MB（Initial 23.18MB）。
+  3c（v16）：styles 946.12kB / vendor 12.95MB / main 8.39MB（Initial 23.18MB）；
+  **3d（v17）：styles 946.57kB / vendor 13.22MB / main 8.58MB / scripts 770.76kB / polyfills 166.43kB**。
   量测样式（例如展开行布局回归）时注意这点：v10 及以前必须取生产产物里的哈希名
   `styles.<hash>.css`（见「构建注意事项」）。
 - **v13 起移除差分加载**：不再产出 `polyfills-es5.*`，生产构建也不再走 babel
@@ -235,12 +238,13 @@ node tools/check-clr-tokens.js   # Clarity CSS 变量的「计算值」断言（
 | 2a | Angular 9→10 + Clarity 3→4（`e678120`） | 已完成 |
 | 2aR | 2a 回归修复：展开行详情还原通栏顶左（`5f79753`） | 已完成 |
 | 2b | Angular 10→11 + Clarity 4→5（`a85f260`） | 已完成 |
-| 2c | Angular 11→12 + Clarity 5→12（复用历史产物 `f6dec50` 重新落地） | 已完成（`3ae53ec`，本地未推送） |
-| 2d | Angular 12→13 + Clarity 12→13（复用历史产物 `64f394c` 重新落地） | 已完成（`3ae53ec`，本地未推送） |
-| 3a | Angular 13→14 + Clarity 13（不动 Clarity，复用历史产物 `f669f58` 重新落地） | 已完成（`2363b0d`，本地未推送） |
-| 3b | Angular 14→15 + Clarity 13（不动 Clarity，复用历史产物 `e3636fd` 重新落地） | 已完成（`6cbf918`，本地未推送） |
-| 3c | Angular 15→16 + Clarity 13→16.6.0（复用历史产物 `7640300` 重新落地） | 已完成（`5ff451a`，本地未推送） |
-| 3d | Angular 16→17 + Clarity 16（不动 Clarity） | 待做 |
+| 2c | Angular 11→12 + Clarity 5→12（复用历史产物 `f6dec50` 重新落地） | 已完成（`3ae53ec`） |
+| 2d | Angular 12→13 + Clarity 12→13（复用历史产物 `64f394c` 重新落地） | 已完成（`3ae53ec`） |
+| 3a | Angular 13→14 + Clarity 13（不动 Clarity，复用历史产物 `f669f58` 重新落地） | 已完成（`2363b0d`） |
+| 3b | Angular 14→15 + Clarity 13（不动 Clarity，复用历史产物 `e3636fd` 重新落地） | 已完成（`6cbf918`） |
+| 3c | Angular 15→16 + Clarity 13→16.6.0（复用历史产物 `7640300` 重新落地） | 已完成（`5ff451a`） |
+| 3cR | 3c 视觉回归修复（日志页黑底灰字 + 头部下拉箭头错位） | 已完成（`8c203b4`） |
+| 3d | Angular 16→17 + Clarity 16（不动 Clarity，复用历史产物 `9f334aa` 重新落地） | 已完成（`a3a3405`，本地未推送） |
 | 4 | Angular 17→21 + Clarity 18.4（含 Angular 20 的 Clarity 空窗硬撑） | 待做 |
 | 5 | zoneless 评估 + 废弃依赖清理 | 待做 |
 
