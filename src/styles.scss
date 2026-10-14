@@ -34,15 +34,17 @@ textarea {
   border-radius: 8px;
 }
 
-/* 滚动条滑块 */
+/* 滚动条滑块：浅蓝灰细条 + 2px 透明边距（与左侧菜单滚动条一致） */
 ::-webkit-scrollbar-thumb {
-  border-radius: 8px;
-  background: rgba(127, 127, 127, 1);
-  /*-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.5);*/
+  border-radius: 5px;
+  width: 8px;
+  background-color: #adbbc4;
+  background-clip: padding-box;
+  border: 2px solid transparent;
 }
 
 ::-webkit-scrollbar-thumb:window-inactive {
-  background: rgba(127, 127, 127, 1);
+  background-color: #adbbc4;
 }
 
 /* copy-svg */
@@ -345,4 +347,40 @@ a {
   margin-left: -3.8rem;
   position: relative;
   z-index: 503;
+}
+
+// ============================================================
+// 折叠态分组箭头还原（Clarity 5）
+//   现象：侧栏收缩后，分组右侧的朝右 `>` 箭头完全不可见。
+//   根因：① @cds/core 给 cds-icon 钉了 min-width:16px，官方折叠尺寸 width:0.5rem
+//           被顶成 16px；② Clarity 的 margin-left:0.15rem 把旋转后的箭头 bbox
+//           推到 28~58，图形落在右段（48~58），而 .nav-group-trigger 是
+//           overflow:hidden、.nav-content 也裁剪 → 整个 chevron 被裁掉。
+//   修法：解除 min-width 锁定，恢复官方 10px 宽，并用负 margin 把图形拉回
+//           48px 栏内（bbox 14~44，图形约 37~44，紧贴图标右侧、距右缘 4px）。
+//         Clarity 官方折叠规则的特异度是 (0,7,0)（含两个 :not()），margin 必须用
+//           同款前缀才能盖过它的 margin-left:0.15rem；展开态不受影响。
+// ============================================================
+.main-container:not([class*='open-overflow-menu']):not([class*='open-hamburger-menu'])
+  .clr-vertical-nav.is-collapsed
+  .nav-group-trigger
+  .nav-group-trigger-icon {
+  min-width: 0;
+  width: 0.5rem;
+  margin-left: -8px;
+}
+
+// ============================================================
+// 去掉内容区第二个滚动条（Clarity 5）
+//   现象：列表页内容区右侧并排出现两条竖向滚动条。
+//   根因：v5 给 .datagrid-inner-wrapper / .datagrid-outer-wrapper 新增了
+//           overflow:auto（v2.4.11 没有，默认 visible）；表格内容因边框/外边距
+//           亚像素累积高出容器约 2px → overflow-y:auto 便多出一条竖向滚动条，
+//           与真正承担页面滚动的 .content-area 滚动条并排。
+//   修法：wrapper 只保留横向滚动（overflow-x），纵向交还给 .content-area ——
+//           与 v2 行为一致（v2 里纵向滚动从来只发生在 content-area）。
+// ============================================================
+.datagrid-inner-wrapper,
+.datagrid-outer-wrapper {
+  overflow-y: hidden;
 }

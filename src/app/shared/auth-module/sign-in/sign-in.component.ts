@@ -73,7 +73,18 @@ export class SignInComponent implements OnInit {
       },
       error => {
         this.isSubmitOnGoing = false;
-        this.errMsg = error.error;
+        const body = error.error;
+        if (typeof body === 'string' && body.trim() !== '') {
+          this.errMsg = body;
+        } else if (body && typeof body.msg === 'string' && body.msg.trim() !== '') {
+          this.errMsg = body.msg;
+        } else if (body && typeof body.message === 'string' && body.message.trim() !== '') {
+          this.errMsg = body.message;
+        } else if (!error.status) {
+          this.errMsg = '无法连接到服务器，请检查网络连接或后端服务是否正常';
+        } else {
+          this.errMsg = '登录失败（HTTP 状态码 ' + error.status + '）';
+        }
       }
     );
 

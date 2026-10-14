@@ -1,30 +1,9 @@
 .clr-vertical-nav {
-  $scroll-bar-width: 8px;
-  $scroll-margin-width: 2px;
-  $scrollbar-bg: #373b41;
-  $scrollbar-color: #adbbc4;
-
   &.has-nav-groups.has-icons.is-collapsed {
     width: 2.3rem;
   }
 
-  ::ng-deep {
-    .nav-content {
-      &::-webkit-scrollbar {
-        width: $scroll-bar-width;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: $scrollbar-bg;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        border-radius: ($scroll-bar-width + $scroll-margin-width) / 2;
-        width: $scroll-bar-width;
-        background-color: $scrollbar-color;
-        background-clip: padding-box;
-        border: $scroll-margin-width solid transparent;
-      }
-    }
-  }
+  /* 侧栏 .nav-content 滚动条不再单独覆盖：宽 8px、滚动槽、滑块
+     全部继承 styles.scss 的全局 ::-webkit-scrollbar 规则，
+     与右侧内容区滚动条保持完全一致（改一处即两边同步）。 */
 }

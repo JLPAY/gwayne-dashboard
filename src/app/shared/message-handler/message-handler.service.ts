@@ -24,8 +24,31 @@ export class MessageHandlerService {
         this.injector.get(Router).navigateByUrl(`sign-in?ref=${document.location.pathname}`);
       }
     } else {
-      this.msgService.announceMessage(code, err.error ? err.error.msg : err.error, AlertType.DANGER);
+      this.msgService.announceMessage(code, this.resolveErrorMessage(err, code), AlertType.DANGER);
     }
+  }
+
+  /**
+   * 提取可读的错误信息；取不到时按状态码给出兜底文案。
+   * 背景：网络不可达时 HttpErrorResponse.error 是 ProgressEvent（无 msg 字段）、
+   * 网关/代理返回纯文本时 error 是字符串 —— 原实现统一取 err.error.msg 得到
+   * undefined，弹窗只剩「错误」标题、正文空白。
+   */
+  private resolveErrorMessage(err: any, code: number): string {
+    const body = err && err.error;
+    if (typeof body === 'string' && body.trim() !== '' && !body.trim().startsWith('<')) {
+      return body;
+    }
+    if (body && typeof body.msg === 'string' && body.msg.trim() !== '') {
+      return body.msg;
+    }
+    if (body && typeof body.message === 'string' && body.message.trim() !== '') {
+      return body.message;
+    }
+    if (!code) {
+      return '无法连接到服务器，请检查网络连接或后端服务是否正常';
+    }
+    return '请求失败（HTTP 状态码 ' + code + '）';
   }
 
 
