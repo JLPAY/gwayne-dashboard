@@ -350,16 +350,20 @@ a {
 }
 
 // ============================================================
-// 折叠态分组箭头还原（Clarity 5）
-//   现象：侧栏收缩后，分组右侧的朝右 `>` 箭头完全不可见。
+// 折叠态分组箭头还原（Clarity 5 → 13 按栈实测校准）
+//   现象：侧栏收缩后，分组图标右侧的朝右 `>` 箭头不可见 / 与图标重叠。
 //   根因：① @cds/core 给 cds-icon 钉了 min-width:16px，官方折叠尺寸 width:0.5rem
-//           被顶成 16px；② Clarity 的 margin-left:0.15rem 把旋转后的箭头 bbox
-//           推到 28~58，图形落在右段（48~58），而 .nav-group-trigger 是
-//           overflow:hidden、.nav-content 也裁剪 → 整个 chevron 被裁掉。
-//   修法：解除 min-width 锁定，恢复官方 10px 宽，并用负 margin 把图形拉回
-//           48px 栏内（bbox 14~44，图形约 37~44，紧贴图标右侧、距右缘 4px）。
-//         Clarity 官方折叠规则的特异度是 (0,7,0)（含两个 :not()），margin 必须用
-//           同款前缀才能盖过它的 margin-left:0.15rem；展开态不受影响。
+//           被顶成 16px；② Clarity 折叠规则 margin-left:0.15rem 把旋转后的
+//           chevron 推向栏外，而 .nav-group-trigger 是 overflow:hidden → 被裁掉。
+//   修法：解除 min-width 锁定、恢复官方 10px 宽，并按各栈实测把图形拉回
+//           48px 栏内。⚠️ margin 值依赖 Clarity 版本的 svg/旋转布局，换栈必须
+//           复测（探针量 .nav-group-trigger-icon 内 svg 的屏幕投影 bbox）：
+//           - Clarity 5（2b 栈）：margin-left:-8px → 图形 37~44；
+//           - Clarity 13（2d 栈）：-8px 会把图形拉到 29.9~34.1，与分组图标
+//             （16~32）重叠 2px，视觉上"贴住图标、基本看不到"；
+//             改 margin-left:0 → 图形约 37.9~42.1（距图标 6px、距栏右缘 6px）。
+//         Clarity 官方折叠规则的特异度是 (0,7,0)（含两个 :not()），本规则
+//           用同款前缀压过其 margin-left:0.15rem；展开态不受影响。
 // ============================================================
 .main-container:not([class*='open-overflow-menu']):not([class*='open-hamburger-menu'])
   .clr-vertical-nav.is-collapsed
@@ -367,7 +371,7 @@ a {
   .nav-group-trigger-icon {
   min-width: 0;
   width: 0.5rem;
-  margin-left: -8px;
+  margin-left: 0;
 }
 
 // ============================================================
