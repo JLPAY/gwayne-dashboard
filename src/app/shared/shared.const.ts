@@ -187,7 +187,7 @@ export const enum ConfirmationTargets {
   NODE,
   HPA,
   ENDPOINT,
-  AI_BACKEND,
+  LLM_MODEL,
   TERMINAL_COMMAND_RULE
 }
 

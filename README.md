@@ -4,7 +4,7 @@ Kubernetes 可视化管理面板前端 —— 基于 [Qihoo360/wayne](https://gi
 
 覆盖集群资源的全生命周期管理：创建 / 编辑 / 删除 / 回滚 / 伸缩 / 日志 / Web 终端 / 模板化发布。
 资源类型包含 Deployment、StatefulSet、DaemonSet、CronJob、ConfigMap、Secret、Ingress、PVC、
-Autoscale、K8sGPT、审计日志、权限与用户管理等。
+Autoscale、审计日志、权限与用户管理等。
 
 ## 技术栈
 

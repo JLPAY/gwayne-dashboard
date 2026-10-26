@@ -17,33 +17,11 @@ $clr-tablerow-bordercolor: $table-color;
 $clr-table-bordercolor: $table-color;
 $clr-table-borderstyle: $table-color;
 
-// nav
-$hover-color: #4a87ee;
-$bg-color: #31344c;
-$clr-vertical-nav-item-height: 1.5rem;
-$clr-vertical-nav-item-color: $clr-white;
-$clr-vertical-nav-item-active-color: $clr-white;
-$clr-vertical-nav-bg-color: $bg-color;
-$clr-vertical-nav-hover-bg-color: $bg-color;
-$clr-vertical-nav-icon-active-color: $clr-white;
-$clr-vertical-nav-toggle-icon-color: #adbbc4;
-.clr-vertical-nav .nav-link.active {
-  background: $hover-color !important;
-  // Clarity 5 浅色导航主题默认选中文字 #666 / 图标 fill #0072a3，
-  // 蓝底上不可读 —— 选中态图标与文字统一为白色。
-  color: $clr-white !important;
-
-  .nav-icon {
-    fill: $clr-white !important;
-  }
-}
-
-.clr-vertical-nav .nav-link:not(.active):hover {
-  .nav-icon {
-    fill: $hover-color !important;
-  }
-
-  .nav-text {
-    color: $hover-color;
-  }
-}
+// nav（白底侧边栏）
+// ⚠️ 这里【不要】再用 $clr-vertical-nav-* 覆盖：Clarity 16 的
+// _vertical-nav.clarity.scss 用 `@use './variables.vertical-nav'` 加载
+// 自己的变量模块，而本文件是经 @import 进入全局作用域的 —— Sass 的
+// 模块作用域下，全局赋值对 @use 模块变量无效，写在这里等于没写。
+// （实测：编译产物 :root 里 --clr-vertical-nav-bg-color 仍是
+//  var(--clr-color-neutral-200) 的默认灰底。）
+// 侧栏配色统一收敛到 src/styles.scss 的 :root 块 + 末尾选择器段。

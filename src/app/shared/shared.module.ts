@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DualListBoxModule } from './dual-list-box';
 import { ClarityModule } from '@clr/angular';
+import { MarkdownModule } from 'ngx-markdown';
 import { PublishService } from './client/v1/publish.service';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { StorageService } from './client/v1/storage.service';
@@ -51,6 +52,7 @@ import { ResourceLimitModule } from './component/resource-limit/resource-limit.m
 import { EchartsModule } from './echarts/echars.module';
 import { ListPodComponent } from './list-pod/list-pod.component';
 import { ListEventComponent } from './list-event/list-event.component';
+import { PodDiagnosisReportComponent } from './pod-diagnosis-report/pod-diagnosis-report.component';
 import { SideNavService } from './client/v1/sidenav.service';
 import { SearchSectionComponent } from './tabs/search-section/search-section.component';
 import { CollapseModule } from './collapse/collapse.module';
@@ -68,7 +70,8 @@ import { ModalService } from './modal/modal.service';
     HttpClientModule,
     EchartsModule,
     ClarityModule,
-    CollapseModule
+    CollapseModule,
+    MarkdownModule
   ],
   declarations: [
     PageNotFoundComponent,
@@ -101,7 +104,8 @@ import { ModalService } from './modal/modal.service';
     ListPodComponent,
     ListEventComponent,
     SearchSectionComponent,
-    ModalComponent
+    ModalComponent,
+    PodDiagnosisReportComponent
   ],
   exports: [
     BrowserAnimationsModule,
@@ -143,7 +147,8 @@ import { ModalService } from './modal/modal.service';
     ListPodComponent,
     ListEventComponent,
     SearchSectionComponent,
-    CollapseModule
+    CollapseModule,
+    PodDiagnosisReportComponent
   ],
   providers: [
     SideNavService,

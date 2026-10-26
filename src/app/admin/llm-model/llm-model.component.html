@@ -1,0 +1,151 @@
+<div class="content-area">
+  <div class="clr-row">
+    <div class="clr-col-12">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">LLM 模型管理</span>
+          <button class="btn btn-primary btn-sm" (click)="openModal()">添加模型</button>
+        </div>
+        <div class="card-block">
+          <p class="agent-tip">
+            平台内的 AI 能力（如 Pod 异常 AI 排查等）统一通过此处配置的 LLM 模型提供。
+            支持任意 OpenAI 兼容接口的服务（DeepSeek、OpenAI、Moonshot、智谱、Ollama 等），
+            标记为「默认」的模型将被 AI 功能优先使用。
+          </p>
+          <clr-datagrid>
+            <clr-dg-column>名称</clr-dg-column>
+            <clr-dg-column>提供商</clr-dg-column>
+            <clr-dg-column>模型</clr-dg-column>
+            <clr-dg-column>API 地址</clr-dg-column>
+            <clr-dg-column>状态</clr-dg-column>
+            <clr-dg-column>描述</clr-dg-column>
+            <clr-dg-column>操作</clr-dg-column>
+
+            <clr-dg-row *ngFor="let model of models">
+              <clr-dg-cell>
+                <span class="model-name">{{ model.name }}</span>
+                <span class="badge badge-info" *ngIf="model.isDefault">默认</span>
+              </clr-dg-cell>
+              <clr-dg-cell>{{ getProviderLabel(model.provider) }}</clr-dg-cell>
+              <clr-dg-cell>{{ model.model }}</clr-dg-cell>
+              <clr-dg-cell>
+                <span [title]="model.baseURL || '使用提供商默认地址'">
+                  {{ model.baseURL || '默认地址' }}
+                </span>
+              </clr-dg-cell>
+              <clr-dg-cell>
+                <span class="badge" [class.badge-success]="model.enabled" [class.badge-danger]="!model.enabled">
+                  {{ model.enabled ? '启用' : '禁用' }}
+                </span>
+              </clr-dg-cell>
+              <clr-dg-cell>{{ model.description || '-' }}</clr-dg-cell>
+              <clr-dg-cell>
+                <button class="btn btn-sm btn-link" (click)="testModel(model)" [disabled]="testingId === model.id">
+                  {{ testingId === model.id ? '测试中...' : '测试' }}
+                </button>
+                <button class="btn btn-sm btn-link" (click)="openModal(model)">编辑</button>
+                <button class="btn btn-sm btn-link" (click)="setDefault(model)" [disabled]="model.isDefault">设为默认</button>
+                <button class="btn btn-sm btn-link" (click)="toggleEnabled(model)">
+                  {{ model.enabled ? '禁用' : '启用' }}
+                </button>
+                <button class="btn btn-sm btn-link" (click)="confirmDelete(model)">删除</button>
+              </clr-dg-cell>
+            </clr-dg-row>
+
+            <clr-dg-footer>
+              <clr-dg-pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50]">模型每页</clr-dg-page-size>
+                <span *ngIf="models.length > 0">{{ models.length }} 个模型</span>
+              </clr-dg-pagination>
+            </clr-dg-footer>
+          </clr-datagrid>
+
+          <div class="test-result" *ngIf="testResult">
+            <h6>连通性测试结果 · {{ testResult.modelName }}（{{ testResult.result.model }}，耗时 {{ testResult.result.durationMs }}ms）</h6>
+            <p *ngIf="testResult.result.success" class="test-reply">{{ testResult.result.reply }}</p>
+            <p *ngIf="!testResult.result.success" class="test-error">{{ testResult.result.error }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<clr-modal [(clrModalOpen)]="modalOpened" [clrModalSize]="'lg'">
+  <h3 class="modal-title">{{ isCreateMode ? '添加' : '编辑' }} LLM 模型</h3>
+  <div class="modal-body">
+    <form clrForm>
+      <clr-input-container>
+        <label>名称</label>
+        <input clrInput [(ngModel)]="currentModel.name" name="name" placeholder="例如: deepseek-chat" required />
+      </clr-input-container>
+
+      <clr-select-container>
+        <label>提供商</label>
+        <select clrSelect [(ngModel)]="currentModel.provider" name="provider" required>
+          <option *ngFor="let p of providers" [value]="p.value">{{ p.label }}</option>
+        </select>
+        <clr-control-helper>
+          选择后会自动使用该提供商的默认 API 地址，也可在下方自定义。
+        </clr-control-helper>
+      </clr-select-container>
+
+      <clr-input-container>
+        <label>API 地址（可选）</label>
+        <input clrInput [(ngModel)]="currentModel.baseURL" name="baseURL"
+               placeholder="例如: https://api.deepseek.com 或 http://172.20.x.x:11434/v1" />
+        <clr-control-helper>
+          留空使用提供商默认地址；内网自建服务（如内网 Ollama / OneAPI 网关）请填写完整地址。
+        </clr-control-helper>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>API Key</label>
+        <input clrInput type="password" [(ngModel)]="currentModel.apiKey" name="apiKey"
+               placeholder="提供商的 API 密钥，本地服务可留空" />
+        <clr-control-helper *ngIf="!isCreateMode">编辑时已配置密钥会保留不变，留空即不修改</clr-control-helper>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>模型名称</label>
+        <input clrInput [(ngModel)]="currentModel.model" name="model" placeholder="例如: deepseek-chat / deepseek-reasoner" required />
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>温度参数（0-2）</label>
+        <input clrInput type="number" step="0.1" min="0" max="2" [(ngModel)]="currentModel.temperature" name="temperature" />
+        <clr-control-helper>值越低回答越确定，排查类场景建议 0.3 以下。</clr-control-helper>
+      </clr-input-container>
+
+      <clr-textarea-container>
+        <label>描述</label>
+        <textarea clrTextarea [(ngModel)]="currentModel.description" name="description" rows="2"></textarea>
+      </clr-textarea-container>
+
+      <clr-checkbox-container>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox [(ngModel)]="currentModel.enabled" name="enabled" />
+          <label>启用</label>
+        </clr-checkbox-wrapper>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox [(ngModel)]="currentModel.isDefault" name="isDefault" />
+          <label>设为默认模型（AI 功能优先使用）</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+
+      <div class="modal-test-result" *ngIf="modalTestResult" [class.test-ok]="modalTestResult.success" [class.test-fail]="!modalTestResult.success">
+        <span class="test-status">{{ modalTestResult.success ? '✓ 测试成功' : '✗ 测试失败' }}</span>
+        <span class="test-duration">耗时 {{ modalTestResult.durationMs }}ms · {{ modalTestResult.model }}</span>
+        <p *ngIf="modalTestResult.success" class="test-reply">{{ modalTestResult.reply }}</p>
+        <p *ngIf="!modalTestResult.success" class="test-error">{{ modalTestResult.error }}</p>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="testModalConfig()" [disabled]="testingModal">
+      {{ testingModal ? '测试中...' : '测试连接' }}
+    </button>
+    <button type="button" class="btn btn-outline" (click)="closeModal()">取消</button>
+    <button type="button" class="btn btn-primary" (click)="save()">保存</button>
+  </div>
+</clr-modal>

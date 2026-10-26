@@ -1,0 +1,79 @@
+<clr-modal [(clrModalOpen)]="opened" [clrModalSize]="'xl'" (clrModalOpenChange)="opened ? null : close()">
+  <h3 class="modal-title">
+    <span class="title-text">Pod AI 排查报告</span>
+    <span class="pod-name">{{ podName }}</span>
+    <span class="pod-loc">{{ cluster }} / {{ namespace }}</span>
+  </h3>
+  <div class="modal-body">
+    <div *ngIf="loading && reports.length === 0" class="report-loading">
+      <span class="spinner spinner-inline"></span>
+      <span>加载排查报告...</span>
+    </div>
+
+    <div *ngIf="!loading && reports.length === 0" class="report-empty">
+      该 Pod 暂无排查报告。点击下方「发起排查」提交后台任务，完成后报告会自动出现在这里。
+    </div>
+
+    <div class="report-layout" *ngIf="reports.length > 0">
+      <div class="report-list">
+        <div class="report-item"
+             *ngFor="let r of reports"
+             [class.active]="selected && selected.id === r.id"
+             (click)="select(r)">
+          <div class="report-item-head">
+            <span class="status-chip"
+                  [class.st-success]="r.status === 'success'"
+                  [class.st-failed]="r.status === 'failed'"
+                  [class.st-running]="r.status === 'running'">
+              {{ statusLabel(r.status) }}
+            </span>
+            <span class="report-time">{{ r.createTime | date: 'MM-dd HH:mm' }}</span>
+            <span class="report-del" title="删除报告" (click)="remove(r); $event.stopPropagation()">
+              <clr-icon shape="trash"></clr-icon>
+            </span>
+          </div>
+          <div class="report-item-sub">
+            {{ r.modelName || '-' }}<span *ngIf="r.durationMs"> · 共{{ r.durationMs / 1000 | number: '1.0-0' }}s</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="report-main">
+        <div *ngIf="!selected" class="report-empty report-empty-pane">选择左侧报告查看详情</div>
+
+        <div *ngIf="selected && selected.status === 'running'" class="report-running report-empty-pane">
+          <span class="spinner spinner-inline"></span>
+          <span>后台排查进行中，完成后自动刷新...</span>
+        </div>
+
+        <div *ngIf="selected && selected.status === 'failed'" class="report-failed">
+          <div class="alert alert-danger" role="alert">
+            <span class="alert-icon-wrapper"><clr-icon shape="exclamation-circle"></clr-icon></span>
+            <span class="alert-text">{{ selected.error || '排查失败' }}</span>
+          </div>
+        </div>
+
+        <div class="report-card" *ngIf="selected && selected.status === 'success'">
+          <div class="report-card-head">
+            <span class="meta-item meta-model" *ngIf="selected.model">{{ selected.model }}</span>
+            <span class="meta-item" *ngIf="selected.collectMs">采集 {{ selected.collectMs / 1000 | number: '1.0-0' }}s</span>
+            <span class="meta-item" *ngIf="selected.llmMs">AI 生成 {{ selected.llmMs / 1000 | number: '1.0-0' }}s</span>
+            <span class="meta-item" *ngIf="selected.durationMs">总耗时 {{ selected.durationMs / 1000 | number: '1.0-0' }}s</span>
+            <span class="meta-item meta-time" *ngIf="selected.createTime">生成于 {{ selected.createTime | date: 'yyyy-MM-dd HH:mm' }}</span>
+          </div>
+          <div class="report-card-body">
+            <div class="report-markdown">
+              <markdown [data]="selected.content"></markdown>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" [disabled]="submitting" (click)="restart()">
+      {{ submitting ? '提交中...' : '发起排查' }}
+    </button>
+    <button type="button" class="btn" (click)="close()">关闭</button>
+  </div>
+</clr-modal>

@@ -1,0 +1,83 @@
+.agent-tip {
+  color: #575757;
+  font-size: 12px;
+  margin: 0 0 12px 0;
+}
+
+.model-name {
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.badge-info {
+  margin-left: 4px;
+}
+
+.test-result {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  background: #fafafa;
+
+  h6 {
+    margin: 0 0 6px 0;
+    color: #313131;
+  }
+
+  .test-reply {
+    margin: 0;
+    color: #0f6b4f;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .test-error {
+    margin: 0;
+    color: #a32121;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+}
+
+// 弹窗内保存前测试结果
+.modal-test-result {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #cccccc;
+
+  &.test-ok {
+    border-color: #0f6b4f;
+    background: #eef7f3;
+  }
+
+  &.test-fail {
+    border-color: #a32121;
+    background: #fdf0f0;
+  }
+
+  .test-status {
+    font-weight: 600;
+    margin-right: 8px;
+  }
+
+  .test-duration {
+    color: #575757;
+    font-size: 12px;
+  }
+
+  .test-reply {
+    margin: 4px 0 0 0;
+    color: #0f6b4f;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .test-error {
+    margin: 4px 0 0 0;
+    color: #a32121;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+}

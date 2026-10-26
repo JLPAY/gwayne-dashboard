@@ -48,6 +48,10 @@
 
   <clr-dg-row *ngFor="let obj of resources" [clrDgItem]="obj">
     <clr-dg-action-overflow>
+      <button class="action-item" *ngIf="aiAvailable && isPodAbnormal(obj)" (click)="startDiagnosis(obj)" [disabled]="submittingPod === obj.metadata.name">
+        {{ submittingPod === obj.metadata.name ? '提交中...' : 'AI 排查' }}
+      </button>
+      <button class="action-item" *ngIf="reportCount(obj) > 0" (click)="openReports(obj)">报告({{ reportCount(obj) }})</button>
       <button class="action-item" *ngIf="!authService.currentUser.admin" (click)="onViewEvent(obj)">{{'ACTION.LOOK_UP' | translate}}</button>
       <button class="action-item" *ngIf="!authService.currentUser.admin" (click)="podLog(obj)">{{'ADMIN.KUBERNETES.ACTION.LOG' | translate}}</button>
       <button class="action-item" *ngIf="!authService.currentUser.admin" (click)="onDeleteEvent(obj)">{{'ADMIN.KUBERNETES.ACTION.DELETE' | translate}}</button>
@@ -100,4 +104,5 @@
     </wayne-paginate>
   </clr-dg-footer>
 </clr-datagrid>
+<app-pod-diagnosis-report #podReport (submitted)="refreshReports()"></app-pod-diagnosis-report>
 

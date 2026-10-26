@@ -320,6 +320,30 @@ a {
   --clr-table-footer-border-top-color: transparent;
   /* 普通表格行边框 */
   --clr-tablerow-bordercolor: transparent;
+
+  /* ========== 垂直导航（白底侧栏）==========
+     为什么必须写在这里、而不是 custom.scss 里的 $clr-vertical-nav-*：
+     Clarity 16 的 _vertical-nav.clarity.scss 用 `@use './variables.vertical-nav'`
+     加载自己的变量模块，而 `@import` 进来的全局 SCSS 赋值【不会】写进 @use
+     模块的作用域（Sass 模块系统规则）。custom.scss 里那批 $clr-vertical-nav-*
+     因此全部被忽略，编译产物仍是 Clarity 默认值（实测 :root 里
+     --clr-vertical-nav-bg-color 仍是 var(--clr-color-neutral-200)）。
+     唯一可靠的覆盖点就是 Clarity 导入之后的 :root 自定义属性。 */
+  --clr-vertical-nav-bg-color: #ffffff;
+  --clr-vertical-nav-item-color: #57575c;
+  /* hover / 按下的文字色（选中态文字由下方规则单独置白） */
+  --clr-vertical-nav-item-active-color: #4a87ee;
+  --clr-vertical-nav-active-color: #ffffff;
+  --clr-vertical-nav-hover-bg-color: #f0f4fb;
+  /* 选中项：蓝底白字 */
+  --clr-vertical-nav-selected-bg-color: #4a87ee;
+  --clr-vertical-nav-active-bg-color: #3f7ad9;
+  --clr-vertical-nav-icon-active-color: #4a87ee;
+  --clr-vertical-nav-divider-color: #e3e8ef;
+  --clr-vertical-nav-trigger-divider-border-color: #e3e8ef;
+  --clr-vertical-nav-toggle-icon-color: #adbbc4;
+  /* 选中项左侧 3px 强调边（蓝底上不可见，去掉以免色差） */
+  --clr-nav-active-border-color: transparent;
 }
 
 // Clarity 3 为行内固定列新增 .datagrid-row-sticky 容器，自带不透明白底
@@ -417,4 +441,60 @@ a {
 .datagrid-table .datagrid-column:focus,
 .datagrid-table .datagrid-column-title:focus {
   outline: none;
+}
+
+// ============================================================
+// 白底侧栏：选中态 / 悬停态的文字与图标
+//   变量只能表达"选中和 hover 用同一个色"，而这两处需要不同色
+//   （选中=白、hover=蓝），因此在变量之外显式落地。
+//   Clarity 16 的 .nav-link:hover 特异性只有 (0,3,0)，这里的
+//   .clr-vertical-nav .nav-link.active(…:hover) 是 (0,4,0)，稳定压过；
+//   仍保留 !important —— 该视觉点此前反复被 Clarity 内部规则吃掉。
+// ============================================================
+.clr-vertical-nav {
+  .nav-link.active,
+  .nav-link.active:hover,
+  .nav-link.active:active {
+    background-color: #4a87ee !important;
+    color: #fff !important;
+
+    .nav-icon {
+      fill: #fff !important;
+    }
+  }
+
+  // 折叠后的分组父项（.nav-group.active:not(.is-expanded)）同样是蓝底
+  .nav-group.active:not(.is-expanded) {
+    background-color: #4a87ee;
+
+    .nav-group-trigger {
+      color: #fff !important;
+
+      .nav-icon,
+      .nav-group-trigger-icon {
+        fill: #fff !important;
+      }
+    }
+  }
+
+  .nav-link:not(.active):hover,
+  .nav-link:not(.active):active {
+    .nav-icon {
+      fill: #4a87ee;
+    }
+  }
+
+  // 分组标题悬停/展开时文字与图标跟随主色
+  .nav-group-trigger:hover {
+    .nav-icon,
+    .nav-group-trigger-icon {
+      fill: #4a87ee;
+    }
+  }
+
+  .nav-group.active.is-expanded {
+    > .nav-group-trigger .nav-icon {
+      fill: #4a87ee;
+    }
+  }
 }

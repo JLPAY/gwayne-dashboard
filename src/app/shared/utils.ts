@@ -134,6 +134,15 @@ export class ResourceUnitConvertor {
 }
 
 export class KubePodUtil {
+  // isPodAbnormal 判断 Pod 是否处于异常状态，需要 AI 排查。
+  // Running 与 Succeeded（Job 正常完成）视为正常；Terminating（正在删除）属于正常生命周期，
+  // 也视为非异常，不展示「AI 排查」入口。其余（Pending/Failed/Unknown/
+  // CrashLoopBackOff/ContainerCreating/Error 等）均视为异常。
+  static isPodAbnormal(pod: KubePod): boolean {
+    const status = KubePodUtil.getPodStatus(pod);
+    return status !== 'Running' && status !== 'Succeeded' && status !== 'Terminating';
+  }
+
   // getPodStatus returns the pod state
   static getPodStatus(pod: KubePod): string {
     // Terminating

@@ -1,0 +1,348 @@
+// ============================================================
+// Pod AI 排查报告弹窗
+//   字号体系（全部显式 px 声明，防止被全局样式按标签覆盖）：
+//     标题 15 / Pod 名 13 / 徽标与元信息 12 / 正文 13.5 /
+//     章节标题 14.5 / 表格·代码 12.5
+//   对齐原则：左右两栏等高（grid 拉伸）；元信息条与正文左内边距
+//   统一 16/20px；正文单滚动（外层 modal-body-wrapper 由
+//   report-layout 的高度约束住，不再出现第二根滚动条）。
+// ============================================================
+
+// ===== 标题区：主标题 / Pod 名 / 位置徽标，同一基线 =====
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  font-size: 15px;
+  line-height: 1.4;
+
+  .title-text {
+    flex-shrink: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #25313c;
+  }
+
+  .pod-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #57575c;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pod-loc {
+    flex-shrink: 0;
+    font-size: 12px;
+    line-height: 1;
+    color: #2160c3;
+    background: #e9f1fc;
+    border: 1px solid #c8ddf8;
+    border-radius: 3px;
+    padding: 4px 8px;
+    white-space: nowrap;
+  }
+}
+
+// ===== 状态提示（加载 / 空态 / 进行中）=====
+.report-loading,
+.report-empty,
+.report-running {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #98a0a8;
+  font-size: 13px;
+  padding: 32px 0;
+
+  span:last-child {
+    margin-left: 8px;
+  }
+}
+
+// 右侧整栏的占位（空态 / 进行中）：虚线框铺满，与左栏顶齐
+.report-empty-pane {
+  flex: 1;
+  border: 1px dashed #d8dee6;
+  border-radius: 6px;
+}
+
+// ===== 双栏布局 =====
+.report-layout {
+  display: grid;
+  // 70vh 是 Clarity modal-body-wrapper 的滚动上限，减去头部/底部留白，
+  // 保证内容区本身不触发外层第二根滚动条
+  height: calc(70vh - 200px);
+  min-height: 380px;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 14px;
+}
+
+// ===== 左栏：报告列表 =====
+.report-list {
+  overflow-y: auto;
+  padding-right: 4px;
+  border-right: 1px solid #e8ecf2;
+}
+
+.report-item {
+  padding: 9px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 4px;
+
+  &:hover {
+    background: #f3f6fb;
+  }
+
+  &.active {
+    background: #e8f0fb;
+  }
+}
+
+.report-item-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// 状态徽标：统一 11px，色彩按状态
+.status-chip {
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 7px;
+  border-radius: 3px;
+
+  &.st-success {
+    color: #26732d;
+    background: #e2f2e5;
+  }
+
+  &.st-failed {
+    color: #a32121;
+    background: #fdeaea;
+  }
+
+  &.st-running {
+    color: #9a6a00;
+    background: #fff2d9;
+  }
+}
+
+.report-time {
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #6b7480;
+}
+
+.report-del {
+  flex-shrink: 0;
+  display: inline-flex;
+  color: #b3bcc5;
+  cursor: pointer;
+
+  clr-icon {
+    width: 13px;
+    height: 13px;
+  }
+
+  &:hover {
+    color: #a32121;
+  }
+}
+
+.report-item-sub {
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #98a0a8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ===== 右栏 =====
+.report-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.report-failed .alert {
+  margin: 0;
+}
+
+// 报告卡片：头部元信息条 + 正文，等高于左栏
+.report-card {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e2e7ef;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.report-card-head {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background: #f7f9fc;
+  border-bottom: 1px solid #e8ecf2;
+}
+
+.meta-item {
+  font-size: 12px;
+  line-height: 1;
+  color: #57575c;
+  background: #eef2f8;
+  border-radius: 3px;
+  padding: 4px 8px;
+
+  &.meta-model {
+    color: #2160c3;
+    background: #e9f1fc;
+    font-weight: 500;
+  }
+
+  &.meta-time {
+    margin-left: auto;
+    color: #98a0a8;
+    background: transparent;
+  }
+}
+
+.report-card-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+// ===== Markdown 正文 =====
+.report-markdown {
+  padding: 16px 20px 20px;
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: #33393f;
+  word-break: break-word;
+
+  ::ng-deep {
+    h1, h2, h3, h4, h5, h6 {
+      margin: 18px 0 8px;
+      line-height: 1.45;
+      font-weight: 600;
+      color: #25313c;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    // 报告章节标题（模板固定用 h1）：左侧蓝色竖条替代下划线，层级更清晰
+    h1 {
+      font-size: 14.5px;
+      padding-left: 9px;
+      border-left: 3px solid #4a87ee;
+    }
+
+    h2 { font-size: 14px; }
+    h3 { font-size: 13.5px; }
+    h4, h5, h6 { font-size: 13.5px; color: #3d4750; }
+
+    // 显式声明字号，避免被全局 p/li 的 14px 覆盖导致与容器字号不一致
+    p {
+      margin: 8px 0;
+      font-size: 13.5px;
+    }
+
+    ul, ol {
+      margin: 6px 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin: 3px 0;
+      font-size: 13.5px;
+    }
+
+    li > p {
+      margin: 2px 0;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 10px 0;
+      width: 100%;
+      font-size: 12.5px;
+
+      th, td {
+        border: 1px solid #dde2ea;
+        padding: 6px 10px;
+        text-align: left;
+        line-height: 1.6;
+      }
+
+      th {
+        background: #f5f7fa;
+        font-weight: 600;
+        color: #3d4750;
+      }
+
+      tr:nth-child(even) td {
+        background: #fafbfd;
+      }
+    }
+
+    code {
+      background: #f0f2f5;
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-family: Menlo, Consolas, monospace;
+      font-size: 12.5px;
+      color: #b93d5e;
+    }
+
+    pre {
+      background: #f6f8fa;
+      border: 1px solid #e2e7ef;
+      border-radius: 4px;
+      padding: 10px 12px;
+      overflow: auto;
+      margin: 10px 0;
+
+      code {
+        background: none;
+        padding: 0;
+        color: inherit;
+        font-size: 12.5px;
+      }
+    }
+
+    blockquote {
+      border-left: 3px solid #ccd3dc;
+      margin: 10px 0;
+      padding: 4px 12px;
+      color: #6b7480;
+      background: #f9fafc;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e2e7ef;
+      margin: 14px 0;
+    }
+
+    a {
+      color: #2160c3;
+    }
+  }
+}

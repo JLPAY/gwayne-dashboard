@@ -71,9 +71,8 @@ import { KubeCrdModule } from './kubernetes/crd/kube-crd.module';
 import { KubeEventModule } from './kubernetes/event/kube-event.module';
 import { RoadMapModule } from './roadmap/roadmap.module';
 import { CustomlinkModule } from './customlink/customlink.module';
-import { AIBackendModule } from './k8sgpt/aibackend/aibackend.module';
-import { DiagnosisModule } from './k8sgpt/diagnosis/diagnosis.module';
 import { TerminalCommandRuleModule } from './terminal-command-rule/terminal-command-rule.module';
+import { LLMModelModule } from './llm-model/llm-model.module';
 
 @NgModule({
   imports: [
@@ -138,9 +137,8 @@ import { TerminalCommandRuleModule } from './terminal-command-rule/terminal-comm
     KubeEventModule,
     RoadMapModule,
     CustomlinkModule,
-    AIBackendModule,
-    DiagnosisModule,
-    TerminalCommandRuleModule
+    TerminalCommandRuleModule,
+    LLMModelModule
   ],
   providers: [
     AdminAuthCheckGuard,

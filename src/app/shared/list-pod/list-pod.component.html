@@ -66,6 +66,10 @@
         </clr-dg-cell>
         <clr-dg-cell>{{pod.metadata.creationTimestamp | relativeTime}}</clr-dg-cell>
         <clr-dg-cell>
+          <button *ngIf="aiAvailable && isPodAbnormal(pod)" class="wayne-button text" (click)="startDiagnosis(pod)" [disabled]="submittingPod === pod.metadata.name">
+            {{ submittingPod === pod.metadata.name ? '提交中...' : 'AI 排查' }}
+          </button>
+          <button *ngIf="reportCount(pod) > 0" class="wayne-button text" (click)="openReports(pod)">报告({{ reportCount(pod) }})</button>
           <button *ngIf="authService.currentAppPermission.kubePod.read || authService.currentUser.admin" class="wayne-button text" (click)="enterContainer(pod)"> {{'POD.ENTER_CONTAINER' | translate}}</button>
           <button *ngIf="logSource" class="wayne-button text" (click)="copyLogCommand(pod)">{{'POD.LOG_COMMAND' | translate}}</button>
           <button *ngIf="authService.currentAppPermission.kubePod.read || authService.currentUser.admin" class="wayne-button text" (click)="podLog(pod)"> {{'POD.LOG' | translate}}</button>
@@ -81,6 +85,8 @@
         </wayne-paginate>
       </clr-dg-footer>
     </clr-datagrid>
+
+    <app-pod-diagnosis-report #podReport (submitted)="refreshReports()"></app-pod-diagnosis-report>
 
     <!--<clr-tabs>
       <clr-tab>
