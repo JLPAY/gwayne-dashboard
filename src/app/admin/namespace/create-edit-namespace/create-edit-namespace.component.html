@@ -2,148 +2,221 @@
   <h3 class="modal-title">{{nsTitle}}
     <wayne-modal-operate [modal]="modal" *ngIf="opened"></wayne-modal-operate>
   </h3>
+
   <div class="modal-body">
-    <form #namespaceForm="ngForm"  clrForm clrLayout="horizontal">
-      <clr-input-container>
-        <label class="required">{{'TITLE.NAME' | translate}}</label>
-        <input type="text" clrInput id="ns_name" [(ngModel)]="ns.name" name="ns_name" size="36" required
-          pattern="[a-z]([-a-z0-9]*[a-z0-9])?" maxlength="24" (keyup)='handleValidation()'>
-          <clr-control-error>命名空间名称不符合规范，验证规则[a-z]([-a-z0-9]*[a-z0-9])?</clr-control-error>
-      </clr-input-container>
+    <form #namespaceForm="ngForm" clrForm clrLayout="horizontal" class="ns-form">
+
+      <!-- 基本信息 -->
+      <section class="ns-block">
+        <div class="ns-block-head">
+          <span class="ns-block-title">基本信息</span>
+        </div>
+
         <clr-input-container>
-          <label class="required">K8S命名空间</label>
-          <input type="text" clrInput id="kubernetes_namespace" [(ngModel)]="ns.kubeNamespace" name="kubernetes_namespace" size="36" required pattern="[a-z]([-a-z0-9]*[a-z0-9])?" maxlength="36">
+          <label class="required" for="ns_name">{{'TITLE.NAME' | translate}}</label>
+          <input clrInput class="ns-input" type="text" id="ns_name" [(ngModel)]="ns.name" name="ns_name" required
+                 pattern="[a-z]([-a-z0-9]*[a-z0-9])?" maxlength="24" (keyup)="handleValidation()">
+          <clr-control-helper>平台内唯一标识，小写字母开头，可含数字与短横线，最长 24 位</clr-control-helper>
+          <clr-control-error>命名空间名称不符合规范，验证规则 [a-z]([-a-z0-9]*[a-z0-9])?</clr-control-error>
         </clr-input-container>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle id="toggle_1" [(ngModel)]="autoCreate" [ngModelOptions]="{standalone: true}">
-          <label>自动创建</label>
-        </clr-toggle-wrapper>
-       
-        <div class="clr-form-control clr-row"  *ngIf="!showACE">
-          <label class="clr-control-label required">可用机房</label>
-          <div class="clr-control-container clr-col-md-10 clr-col-12">
-            <div class="clr-input-wrapper clr-checkbox-wrapper" style="margin-bottom: 15px;" *ngFor="let cluster of clusters;let i=index">
-              <input [(ngModel)]="clusterMetas[cluster.name].checked" class="clr-checkbox" type="checkbox" id="{{cluster.name}}-check"
-                name="{{cluster.name}}-check">
-              <label style="width: 100px" for="{{cluster.name}}-check">{{cluster.name}}</label>
-              <input class="clr-input" style="width: 175px" placeholder="CPU限制(核)0代表无限制" [(ngModel)]="clusterMetas[cluster.name].cpu" id="{{cluster.name}}-cpu" name="{{cluster.name}}-cpu" type="number">
-              <input class="clr-input" style="width: 175px; margin-left: 15px;" placeholder="内存限制(G)0代表无限制" [(ngModel)]="clusterMetas[cluster.name].memory" id="{{cluster.name}}-memory" name="{{cluster.name}}-memory" type="number">
-            </div>
+
+        <clr-input-container>
+          <label class="required" for="kubernetes_namespace">K8S 命名空间</label>
+          <input clrInput class="ns-input" type="text" id="kubernetes_namespace" [(ngModel)]="ns.kubeNamespace"
+                 name="kubernetes_namespace" required pattern="[a-z]([-a-z0-9]*[a-z0-9])?" maxlength="36">
+          <clr-control-helper>对应 Kubernetes 集群中实际使用的 namespace 名称</clr-control-helper>
+          <clr-control-error>K8S 命名空间名称不符合规范，验证规则 [a-z]([-a-z0-9]*[a-z0-9])?</clr-control-error>
+        </clr-input-container>
+
+        <div class="ns-row">
+          <span class="ns-row-label">自动创建</span>
+          <div class="ns-row-body">
+            <clr-toggle-wrapper>
+              <input type="checkbox" clrToggle id="toggle_1" [(ngModel)]="autoCreate"
+                     [ngModelOptions]="{standalone: true}">
+              <label for="toggle_1">保存时同步创建</label>
+            </clr-toggle-wrapper>
+            <span class="ns-hint">在下文勾选的机房中创建对应的 K8S 命名空间，已存在则跳过</span>
           </div>
         </div>
-       
-        <div *ngIf="!showACE" class="container-box">
-          <label style="padding-left: 10px;color: #000;font-size: 0.65rem;padding-bottom: 20px;"
-                 class="form-group-label-override">环境变量配置
-            <button (click)="onAddEnv()" style="margin-left: 10px;" class="wayne-button primary">
-              <clr-icon shape="add"></clr-icon>
-              添加
+      </section>
+
+      <!-- 可用机房 -->
+      <section class="ns-block" *ngIf="!showACE">
+        <div class="ns-block-head">
+          <span class="ns-block-title">可用机房</span>
+          <span class="ns-badge" *ngIf="checkedClusterCount() > 0">已选 {{ checkedClusterCount() }}</span>
+        </div>
+        <p class="ns-block-desc">勾选后该命名空间才能部署到对应机房；CPU 与内存填 0 表示不限制</p>
+
+        <div class="ns-table ns-table-cluster" *ngIf="clusters && clusters.length > 0; else noCluster">
+          <div class="ns-tr ns-tr-head">
+            <span>机房</span>
+            <span>CPU 限制（核）</span>
+            <span>内存限制（G）</span>
+          </div>
+          <div class="ns-tr" *ngFor="let cluster of clusters">
+            <label class="ns-cluster-name" [for]="cluster.name + '-check'">
+              <input class="ns-checkbox" type="checkbox" [(ngModel)]="clusterMetas[cluster.name].checked"
+                     id="{{cluster.name}}-check" name="{{cluster.name}}-check">
+              <span>{{cluster.name}}</span>
+            </label>
+            <input class="clr-input ns-input" type="number" min="0" placeholder="0 = 不限制"
+                   [(ngModel)]="clusterMetas[cluster.name].cpu" id="{{cluster.name}}-cpu" name="{{cluster.name}}-cpu">
+            <input class="clr-input ns-input" type="number" min="0" placeholder="0 = 不限制"
+                   [(ngModel)]="clusterMetas[cluster.name].memory" id="{{cluster.name}}-memory"
+                   name="{{cluster.name}}-memory">
+          </div>
+        </div>
+        <ng-template #noCluster>
+          <p class="ns-empty">暂无可配置的机房</p>
+        </ng-template>
+      </section>
+
+      <!-- 环境变量 -->
+      <section class="ns-block" *ngIf="!showACE">
+        <div class="ns-block-head">
+          <span class="ns-block-title">环境变量</span>
+          <span class="ns-badge" *ngIf="ns.metaDataObj.env?.length">{{ ns.metaDataObj.env.length }}</span>
+          <button type="button" class="ns-add" (click)="onAddEnv()">
+            <clr-icon shape="add"></clr-icon>添加
+          </button>
+        </div>
+        <p class="ns-block-desc">注入到该命名空间下所有工作负载容器的环境变量</p>
+
+        <div class="ns-table ns-table-kv" *ngIf="ns.metaDataObj.env?.length; else noEnv">
+          <div class="ns-tr ns-tr-head">
+            <span>变量名</span>
+            <span>变量值</span>
+            <span></span>
+          </div>
+          <div class="ns-tr" *ngFor="let env of ns.metaDataObj.env; let i = index">
+            <input class="clr-input ns-input" type="text" placeholder="如 LOG_LEVEL"
+                   [(ngModel)]="env.name" name="kubernetes_env_name_{{i}}">
+            <input class="clr-input ns-input" type="text" placeholder="如 info"
+                   [(ngModel)]="env.value" name="kubernetes_env_value_{{i}}">
+            <button type="button" class="ns-del" (click)="onDeleteEnv(i)" title="删除该环境变量">
+              <clr-icon shape="trash" class="is-solid"></clr-icon>
             </button>
-          </label>
-          <div *ngFor="let env of ns.metaDataObj.env; let i = index" class="form-group" style="padding-left: 135px;margin-top: 10px;margin-bottom: 5px;">
-            <label class="clr-col-md-3 form-group-label-override clr-control-label">Env</label>
-            <input [(ngModel)]="env.name"
-                   style="width: 200px"
-                   type="text"
-                   class="clr-input"
-                   placeholder="环境变量名称"
-                   name="kubernetes_env_name_{{i}}">
-            <input [(ngModel)]="env.value"
-                   style="margin-left:30px;width: 200px"
-                   type="text"
-                   class="clr-input"
-                   placeholder="环境变量值"
-                   name="kubernetes_env_value_{{i}}">
-            <clr-icon style="margin-top: 10px" (click)="onDeleteEnv(i)" shape="trash" title="删除环境变量"
-                      class="is-solid"></clr-icon>
           </div>
         </div>
-        <div *ngIf="!showACE" class="container-box">
-          <label style="padding-left: 10px;color: #000;font-size: 0.65rem;padding-bottom: 20px;"
-                 class="form-group-label-override">Service 注解配置
-            <button (click)="onAddServiceAnnotations()" style="margin-left: 10px;" class="wayne-button primary">
-              <clr-icon shape="add"></clr-icon>
-              添加
+        <ng-template #noEnv>
+          <p class="ns-empty">暂无环境变量</p>
+        </ng-template>
+      </section>
+
+      <!-- Service 注解 -->
+      <section class="ns-block" *ngIf="!showACE">
+        <div class="ns-block-head">
+          <span class="ns-block-title">Service 注解</span>
+          <span class="ns-badge" *ngIf="serviceAnnotations?.length">{{ serviceAnnotations.length }}</span>
+          <button type="button" class="ns-add" (click)="onAddServiceAnnotations()">
+            <clr-icon shape="add"></clr-icon>添加
+          </button>
+        </div>
+        <p class="ns-block-desc">自动附加到该命名空间下所有 Service 的注解</p>
+
+        <div class="ns-table ns-table-kv" *ngIf="serviceAnnotations?.length; else noService">
+          <div class="ns-tr ns-tr-head">
+            <span>注解名称</span>
+            <span>注解值</span>
+            <span></span>
+          </div>
+          <div class="ns-tr" *ngFor="let svc of serviceAnnotations; let i = index">
+            <input class="clr-input ns-input" type="text" placeholder="如 service.beta.kubernetes.io/xxx"
+                   [(ngModel)]="serviceAnnotations[i].key" name="kubernetes_service_annotation_key_{{i}}">
+            <input class="clr-input ns-input" type="text" placeholder="注解值"
+                   [(ngModel)]="serviceAnnotations[i].value" name="kubernetes_service_annotation_value_{{i}}">
+            <button type="button" class="ns-del" (click)="onDeleteServiceAnnotations(i)" title="删除该注解">
+              <clr-icon shape="trash" class="is-solid"></clr-icon>
             </button>
-          </label>
-          <div *ngFor="let svc of serviceAnnotations; let i = index" class="form-group" style="padding-left: 135px;margin-top: 10px;margin-bottom: 5px;">
-            <label class="clr-col-md-3 form-group-label-override">注解</label>
-            <input [(ngModel)]="serviceAnnotations[i].key"
-                   style="width: 200px"
-                   type="text"
-                   class="clr-input"
-                   placeholder="Service 注解名字"
-                   name="kubernetes_service_annotation_key_{{i}}">
-            <input [(ngModel)]="serviceAnnotations[i].value"
-                   style="margin-left:30px;width: 200px"
-                   type="text"
-                   class="clr-input"
-                   placeholder="Service 注解值"
-                   name="kubernetes_service_annotation_value_{{i}}">
-            <clr-icon style="margin-top: 10px" (click)="onDeleteServiceAnnotations(i)" shape="trash" title="删除 Service 注解"
-                      class="is-solid"></clr-icon>
           </div>
         </div>
-        <div *ngIf="!showACE" class="container-box">
-          <label style="padding-left: 10px;color: #000;font-size: 0.65rem;padding-bottom: 20px;"
-                 class="form-group-label-override">Ingress 注解配置
-            <button (click)="onAddIngressAnnotations()" style="margin-left: 10px;" class="wayne-button primary">
-              <clr-icon shape="add"></clr-icon>
-              添加
+        <ng-template #noService>
+          <p class="ns-empty">暂无 Service 注解</p>
+        </ng-template>
+      </section>
+
+      <!-- Ingress 注解 -->
+      <section class="ns-block" *ngIf="!showACE">
+        <div class="ns-block-head">
+          <span class="ns-block-title">Ingress 注解</span>
+          <span class="ns-badge" *ngIf="ingressAnnotations?.length">{{ ingressAnnotations.length }}</span>
+          <button type="button" class="ns-add" (click)="onAddIngressAnnotations()">
+            <clr-icon shape="add"></clr-icon>添加
+          </button>
+        </div>
+        <p class="ns-block-desc">自动附加到该命名空间下所有 Ingress 的注解</p>
+
+        <div class="ns-table ns-table-kv" *ngIf="ingressAnnotations?.length; else noIngress">
+          <div class="ns-tr ns-tr-head">
+            <span>注解名称</span>
+            <span>注解值</span>
+            <span></span>
+          </div>
+          <div class="ns-tr" *ngFor="let ing of ingressAnnotations; let i = index">
+            <input class="clr-input ns-input" type="text" placeholder="如 nginx.ingress.kubernetes.io/xxx"
+                   [(ngModel)]="ingressAnnotations[i].key" name="kubernetes_ingress_annotation_key_{{i}}">
+            <input class="clr-input ns-input" type="text" placeholder="注解值"
+                   [(ngModel)]="ingressAnnotations[i].value" name="kubernetes_ingress_annotation_value_{{i}}">
+            <button type="button" class="ns-del" (click)="onDeleteIngressAnnotations(i)" title="删除该注解">
+              <clr-icon shape="trash" class="is-solid"></clr-icon>
             </button>
-          </label>
-          <div *ngFor="let ing of ingressAnnotations; let i = index" class="form-group" style="padding-left: 135px;;margin-top: 10px;margin-bottom: 5px;">
-            <label class="clr-col-md-3 form-group-label-override">注解</label>
-            <input [(ngModel)]="ingressAnnotations[i].key"
-                   style="width: 200px"
-                   type="text"
-                   class="clr-input"
-                   placeholder="Ingress 注解名称"
-                   name="kubernetes_ingress_annotation_key_{{i}}">
-            <input [(ngModel)]="ingressAnnotations[i].value"
-                   style="margin-left:30px;width: 200px"
-                   type="text"
-                   class="clr-input"
-                   placeholder="Ingress 注解值"
-                   name="kubernetes_ingress_annotation_value_{{i}}">
-            <clr-icon style="margin-top: 10px" (click)="onDeleteIngressAnnotations(i)" shape="trash" title="删除注解"
-                      class="is-solid"></clr-icon>
           </div>
         </div>
-        <div *ngIf="!showACE" class="container-box">
-          <label style="padding-left: 10px;color: #000;font-size: 0.65rem;padding-bottom: 20px;"
-                 class="form-group-label-override">ImagePullSecrets
-            <button (click)="onAddSecret()" style="margin-left: 10px;" class="wayne-button primary">
-              <clr-icon shape="add"></clr-icon>
-              添加
+        <ng-template #noIngress>
+          <p class="ns-empty">暂无 Ingress 注解</p>
+        </ng-template>
+      </section>
+
+      <!-- ImagePullSecrets -->
+      <section class="ns-block" *ngIf="!showACE">
+        <div class="ns-block-head">
+          <span class="ns-block-title">ImagePullSecrets</span>
+          <span class="ns-badge" *ngIf="ns.metaDataObj.imagePullSecrets?.length">
+            {{ ns.metaDataObj.imagePullSecrets.length }}
+          </span>
+          <button type="button" class="ns-add" (click)="onAddSecret()">
+            <clr-icon shape="add"></clr-icon>添加
+          </button>
+        </div>
+        <p class="ns-block-desc">拉取私有镜像仓库所需的 Secret，需与目标集群中的 Secret 同名</p>
+
+        <div class="ns-table ns-table-single" *ngIf="ns.metaDataObj.imagePullSecrets?.length; else noSecret">
+          <div class="ns-tr ns-tr-head">
+            <span>Secret 名称</span>
+            <span></span>
+          </div>
+          <div class="ns-tr" *ngFor="let secret of ns.metaDataObj.imagePullSecrets; let i = index">
+            <input class="clr-input ns-input" type="text" placeholder="如 registry-jlpay"
+                   [(ngModel)]="secret.name" name="kubernetes_imagepullsecrets_{{i}}">
+            <button type="button" class="ns-del" (click)="onDeleteSecret(i)" title="删除该 Secret">
+              <clr-icon shape="trash" class="is-solid"></clr-icon>
             </button>
-          </label>
-          <div *ngFor="let imagePullSecret of ns.metaDataObj.imagePullSecrets; let i = index" class="form-group"
-               style="padding-left: 135px;;margin-top: 10px;margin-bottom: 5px;">
-            <label class="clr-col-md-3 form-group-label-override">Secret</label>
-            <input [(ngModel)]="imagePullSecret.name"
-                   type="text"
-                   style="width: 500px"
-                   class="clr-input"
-                   placeholder="Secret名称"
-                   name="kubernetes_imagepullsecrets_{{i}}">
-            <clr-icon style="margin-top: 10px" (click)="onDeleteSecret(i)" shape="trash" title="删除Secret"
-                      class="is-solid"></clr-icon>
           </div>
         </div>
-        <div [style.display]="showACE ? 'block' : 'none'" class="container-box">
-          <div class="form-group" style="padding-left: 135px;">
-            <label class="clr-col-md-3 form-group-label-override">元数据</label>
-            <wayne-ace-editor-box></wayne-ace-editor-box>
-          </div>
+        <ng-template #noSecret>
+          <p class="ns-empty">暂无 ImagePullSecrets</p>
+        </ng-template>
+      </section>
+
+      <!-- 元数据（JSON 模式） -->
+      <section class="ns-block" [style.display]="showACE ? 'block' : 'none'">
+        <div class="ns-block-head">
+          <span class="ns-block-title">元数据</span>
         </div>
+        <p class="ns-block-desc">直接编辑完整元数据，可配置机房资源限制、环境变量、注解等全部字段</p>
+        <wayne-ace-editor-box></wayne-ace-editor-box>
+      </section>
     </form>
   </div>
+
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="onCancel()">{{'BUTTON.CANCEL' | translate}}</button>
-    <button type="button" class="btn btn-primary" (click)="onEditMetadata()">{{'BUTTON.EXCHANGE_EDIT_MODE' | translate}}</button>
-    <button type="button" class="btn btn-primary" [disabled]="!isValid" (click)="onSubmit()">{{'BUTTON.SUBMIT' | translate}}</button>
+    <button type="button" class="btn btn-outline" (click)="onEditMetadata()">
+      {{ showACE ? '返回表单模式' : '编辑元数据' }}
+    </button>
+    <button type="button" class="btn btn-primary" [disabled]="!isValid"
+            (click)="onSubmit()">{{'BUTTON.SUBMIT' | translate}}</button>
   </div>
 </clr-modal>
-
-

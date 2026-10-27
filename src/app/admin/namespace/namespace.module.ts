@@ -5,6 +5,7 @@ import { ListNamespaceComponent } from './list-namespace/list-namespace.componen
 import { TrashNamespaceComponent } from './trash-namespace/trash-namespace.component';
 import { SharedModule } from '../../shared/shared.module';
 import { NamespaceService } from '../../shared/client/v1/namespace.service';
+import { NamespaceClient } from '../../shared/client/v1/kubernetes/namespace';
 import { MigrateNamespaceComponent } from './migrate-namespace/migrate-namespace.component';
 
 @NgModule({
@@ -12,7 +13,8 @@ import { MigrateNamespaceComponent } from './migrate-namespace/migrate-namespace
     SharedModule
   ],
   providers: [
-    NamespaceService
+    NamespaceService,
+    NamespaceClient
   ],
   exports: [
     NamespaceComponent,

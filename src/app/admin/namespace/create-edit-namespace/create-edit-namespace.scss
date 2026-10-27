@@ -1,13 +1,258 @@
-.form-group-label-override {
-  font-size: 14px;
-  font-weight: 400;
+/**
+ * 创建 / 编辑命名空间弹窗
+ *
+ * 布局约定（唯一来源，改这里就够了）：
+ * - 表单 label 栏宽 = 9.6rem，与 Clarity 水平表单 `.clr-form-horizontal .clr-form-control > .clr-control-label`
+ *   的宽度完全一致，因此「自动创建」这类自定义行不需要任何 magic padding 就能和上面的输入框左边界对齐。
+ * - 分区卡片 = 标题 +（右上角）添加按钮 + 说明 + 表格，所有列表区共用同一套表格栅格与字号。
+ * - 字号全部显式声明，避免被全局样式按标签覆盖（正文 .65rem / 说明 .6rem / 标题 .7rem）。
+ */
+
+$ns-label-width: 9.6rem;
+$ns-border: #dfe3e8;
+$ns-border-soft: #eaedf1;
+$ns-text: #1b1b1b;
+$ns-text-weak: #73797f;
+$ns-primary: #4a87ee;
+$ns-danger: #e0483f;
+$ns-input-height: 1.2rem;
+
+:host {
+  display: block;
 }
 
-.access-level-label {
-  font-size: 14px;
-  font-weight: 400;
-  margin-left: -4px;
-  margin-right: 12px;
-  top: -6px;
-  position: relative;
+.ns-form {
+  padding-bottom: 0.2rem;
+
+  /* 项目全局把 Clarity 表单 label 改成了 width:auto（.clr-form-compact），导致「名称」和
+     「K8S 命名空间」两个输入框起点不一致；这里统一拉回 9.6rem，与下方自定义行完全对齐。
+     注意：Clarity 水平布局会给 form 内 label 注入 clr-col-md-2（max-width:16.67%），
+     必须一并解除 max-width，否则 width 不生效。 */
+  ::ng-deep .clr-form-control.clr-row > .clr-control-label {
+    flex: 0 0 $ns-label-width;
+    width: $ns-label-width;
+    min-width: $ns-label-width;
+    max-width: $ns-label-width;
+  }
+}
+
+/* ---------------- 分区卡片 ---------------- */
+.ns-block {
+  padding: 0.85rem 1rem 0.9rem;
+  border: 1px solid $ns-border;
+  border-radius: 0.2rem;
+  background: #fff;
+
+  & + .ns-block {
+    margin-top: 0.7rem;
+  }
+}
+
+.ns-block-head {
+  display: flex;
+  align-items: center;
+  min-height: 1.3rem;
+}
+
+.ns-block-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.1rem;
+  color: $ns-text;
+}
+
+.ns-badge {
+  margin-left: 0.4rem;
+  padding: 0 0.4rem;
+  border-radius: 0.55rem;
+  background: #eef3fd;
+  color: $ns-primary;
+  font-size: 0.55rem;
+  line-height: 1.1rem;
+  white-space: nowrap;
+}
+
+.ns-block-desc {
+  margin: 0.15rem 0 0.5rem;
+  font-size: 0.6rem;
+  line-height: 1rem;
+  color: $ns-text-weak;
+}
+
+.ns-hint {
+  font-size: 0.6rem;
+  line-height: 1rem;
+  color: $ns-text-weak;
+}
+
+/* ---------------- 自定义行（非 Clarity 容器） ---------------- */
+.ns-row {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 0.55rem;
+}
+
+.ns-row-label {
+  flex: 0 0 $ns-label-width;
+  width: $ns-label-width;
+  margin-top: 0.15rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 0.9rem;
+  color: #454545;
+}
+
+.ns-row-body {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  min-width: 0;
+}
+
+/* ---------------- 输入框 ---------------- */
+.ns-input {
+  width: 100%;
+  max-width: 26rem;
+}
+
+/* 数字输入去掉上下箭头，避免在 1.2rem 行高里挤成一团 */
+.ns-input[type='number'] {
+  -moz-appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+/* ---------------- 列表表格 ---------------- */
+.ns-table {
+  margin-top: 0.15rem;
+}
+
+.ns-tr {
+  display: grid;
+  align-items: center;
+  column-gap: 0.7rem;
+  padding: 0.25rem 0.3rem;
+
+  &:not(.ns-tr-head):hover {
+    background: #fafbfd;
+  }
+}
+
+.ns-table-cluster .ns-tr {
+  grid-template-columns: minmax(7rem, 1fr) 9rem 9rem;
+}
+
+.ns-table-kv .ns-tr {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) 1.4rem;
+}
+
+.ns-table-single .ns-tr {
+  grid-template-columns: minmax(0, 1fr) 1.4rem;
+}
+
+.ns-tr-head {
+  padding-bottom: 0.15rem;
+  border-bottom: 1px dashed $ns-border-soft;
+
+  > span {
+    font-size: 0.6rem;
+    line-height: 1rem;
+    font-weight: 500;
+    color: #8a9299;
+  }
+}
+
+.ns-table .ns-input {
+  max-width: none;
+}
+
+/* 机房勾选：原生 checkbox 加主色，不需要 Clarity 容器的额外 DOM。
+   注意：Clarity 水平表单会给 form 内所有 label 注入 clr-col-md-2（max-width:16.67%，
+   约 58px），机房名就是被它裁成单字符的 —— 这里必须显式解除。 */
+.ns-cluster-name {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: none;
+  min-height: $ns-input-height;
+  font-size: 0.65rem;
+  line-height: $ns-input-height;
+  color: #333;
+  cursor: pointer;
+
+  > span {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.ns-checkbox {
+  flex: 0 0 auto;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin: 0 0.4rem 0 0;
+  accent-color: $ns-primary;
+  cursor: pointer;
+}
+
+/* ---------------- 添加 / 删除 ---------------- */
+.ns-add {
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+  padding: 0 0.25rem;
+  border: 0;
+  border-radius: 0.15rem;
+  background: transparent;
+  color: $ns-primary;
+  font-size: 0.6rem;
+  line-height: 1.1rem;
+  cursor: pointer;
+
+  clr-icon {
+    margin-right: 0.1rem;
+  }
+
+  &:hover {
+    background: #eef3fd;
+    color: #1164f1;
+  }
+}
+
+.ns-del {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: $ns-input-height;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #9aa4ad;
+  cursor: pointer;
+
+  clr-icon {
+    width: 0.7rem;
+    height: 0.7rem;
+  }
+
+  &:hover {
+    color: $ns-danger;
+  }
+}
+
+/* ---------------- 空状态 ---------------- */
+.ns-empty {
+  margin: 0.2rem 0 0;
+  padding: 0.4rem 0.3rem;
+  font-size: 0.6rem;
+  line-height: 1rem;
+  color: #98a2aa;
 }
