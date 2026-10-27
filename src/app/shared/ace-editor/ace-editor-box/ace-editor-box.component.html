@@ -1,11 +1,12 @@
 <div class="aceeditor">
   <div class="aceeditor-menu">
-    <button style="margin-left: 10px" type="button" (click)="format()">
-      <clr-icon shape="view-list"></clr-icon>
+    <button style="margin-left: 10px" type="button" title="格式化当前内容" aria-label="格式化当前内容" (click)="format()">
+      <cds-icon shape="view-list"></cds-icon>
     </button>
     <div class="select-box">
-      <select class="ace-select" [disabled]="!isValid" name="aceMode" (change)="aceModeChange()" [(ngModel)]="aceMode">
-        <option value="ace/mode/json" selected>JSON</option>
+      <select class="ace-select" [disabled]="!isValid" name="aceMode" title="语法模式"
+              [ngModel]="aceMode" (ngModelChange)="aceModeChange($event)">
+        <option value="ace/mode/json">JSON</option>
         <option value="ace/mode/yaml">YAML</option>
       </select>
       <div class="select-mask" *ngIf="!isValid" (click)="clickEvent()"></div>
