@@ -38,7 +38,7 @@ export class ClusterService {
 
   update(cluster: Cluster): Observable<any> {
     return this.http
-      .put(`/api/v1/clusters/${cluster.name}`, cluster, this.options);
+      .put(`/api/v1/clusters/${encodeURIComponent(cluster.name)}`, cluster, this.options);
   }
 
   deleteByName(name: string, logical?: boolean): Observable<any> {
@@ -50,12 +50,12 @@ export class ClusterService {
     }
 
     return this.http
-      .delete(`/api/v1/clusters/${name}`, options);
+      .delete(`/api/v1/clusters/${encodeURIComponent(name)}`, options);
   }
 
   getByName(name: string): Observable<any> {
     return this.http
-      .get(`/api/v1/clusters/${name}`);
+      .get(`/api/v1/clusters/${encodeURIComponent(name)}`);
   }
 
   addLabels(name: string, cluster: string, label: Object) {
