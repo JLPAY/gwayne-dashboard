@@ -31,7 +31,7 @@
   </div>
 </div>
 <deletion-dialog (outputObj)="confirmDeleteEvent($event)"></deletion-dialog>
-<create-namespace-form (create)="onCreateResourceEvent($event)"></create-namespace-form>
+<create-namespace-form (create)="onCreateResourceEvent($event)" (save)="onSaveResourceEvent($event)"></create-namespace-form>
 <wayne-ace-editor (createOutputObj)="onCreateResourceEvent($event)" (outputObj)="onSaveResourceEvent($event)"></wayne-ace-editor>
 <wayne-float-window value="{{ cluster }}">
   <wayne-float-window-item *ngFor="let cluster of clusters" [value]="cluster"

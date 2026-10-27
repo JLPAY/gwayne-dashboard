@@ -1,5 +1,5 @@
 <clr-modal [clrModalSize]="'lg'" [(clrModalOpen)]="opened" #modal>
-  <h3 class="modal-title">创建 namespace
+  <h3 class="modal-title">{{ editObj ? '查看/编辑 namespace' : '创建 namespace' }}
     <wayne-modal-operate [modal]="modal" *ngIf="opened"></wayne-modal-operate>
   </h3>
 
@@ -15,19 +15,23 @@
 
     <div class="mode-tip">
       <clr-icon shape="info-circle"></clr-icon>
-      <span *ngIf="mode === 'form'">填写名称、标签与注解即可创建；命名空间名称需符合 K8s DNS 规范（小写字母、数字、中划线，最长 63 字符）。</span>
-      <span *ngIf="mode === 'yaml'">直接编辑 Namespace 资源 YAML，支持 JSON / YAML 切换；点击「填入示例」可恢复示例模板。</span>
+      <span *ngIf="mode === 'form' && !editObj">先填写基本信息（名称、标签、注解，均属 metadata）即可创建；命名空间名称需符合 K8s DNS 规范（小写字母、数字、中划线，最长 63 字符）。</span>
+      <span *ngIf="mode === 'form' && editObj">名称不可修改，可编辑标签与注解（metadata）；如需修改其他字段请切换到 YAML 模式。</span>
+      <span *ngIf="mode === 'yaml' && !editObj">直接编辑 Namespace 资源 YAML，支持 JSON / YAML 切换；点击「填入示例」可恢复示例模板。</span>
+      <span *ngIf="mode === 'yaml' && editObj">直接编辑 Namespace 资源 YAML，支持 JSON / YAML 切换；点击「恢复原对象」可丢弃当前修改。</span>
     </div>
 
     <!-- 表单模式 -->
     <div class="form-pane" *ngIf="mode === 'form'">
+      <div class="section-title">基本信息<span class="section-sub">metadata</span></div>
+
       <div class="form-row">
         <label class="form-label required">名称</label>
         <div class="form-control-wrap">
           <input type="text" class="clr-input" [(ngModel)]="name" name="nsName"
-                 placeholder="例如：demo-namespace" autocomplete="off">
-          <div class="field-hint">小写字母、数字和中划线组成，以字母或数字开头与结尾，最长 63 字符</div>
-          <div class="field-error" *ngIf="name && !isNameValid()">
+                 placeholder="例如：demo-namespace" autocomplete="off" [readonly]="!!editObj">
+          <div class="field-hint" *ngIf="!editObj">小写字母、数字和中划线组成，以字母或数字开头与结尾，最长 63 字符</div>
+          <div class="field-error" *ngIf="!editObj && name && !isNameValid()">
             不符合 K8s 命名规范，请检查名称格式
           </div>
         </div>
@@ -77,10 +81,14 @@
     <!-- YAML 模式 -->
     <div class="yaml-pane" *ngIf="mode === 'yaml'">
       <div class="yaml-toolbar">
-        <button type="button" class="btn btn-sm btn-outline" (click)="fillExample()">
+        <button type="button" class="btn btn-sm btn-outline" *ngIf="!editObj" (click)="fillExample()">
           <clr-icon shape="file"></clr-icon>填入示例
         </button>
-        <span class="yaml-toolbar-hint">示例包含 name / labels / annotations 说明，可直接修改后提交</span>
+        <button type="button" class="btn btn-sm btn-outline" *ngIf="editObj" (click)="resetToOriginal()">
+          <clr-icon shape="undo"></clr-icon>恢复原对象
+        </button>
+        <span class="yaml-toolbar-hint" *ngIf="!editObj">示例包含 name / labels / annotations 说明，可直接修改后提交</span>
+        <span class="yaml-toolbar-hint" *ngIf="editObj">完整资源对象（含 uid / resourceVersion 等系统字段），可直接修改后提交</span>
       </div>
       <wayne-ace-editor-box></wayne-ace-editor-box>
     </div>

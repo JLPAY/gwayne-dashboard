@@ -71,6 +71,30 @@ $ns-danger: #e0483f;
 }
 
 /* ---------------- 表单模式 ---------------- */
+/* 分区标题：metadata（基本信息）在前，与 create-service-form 保持一致 */
+.section-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-left: 0.4rem;
+  border-left: 2px solid $ns-primary;
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1rem;
+  color: $ns-text;
+
+  &:not(:first-child) {
+    margin-top: 0.7rem;
+  }
+
+  .section-sub {
+    margin-left: 0.35rem;
+    font-size: 0.55rem;
+    font-weight: 400;
+    color: $ns-text-weak;
+  }
+}
+
 .form-row {
   display: flex;
   align-items: flex-start;

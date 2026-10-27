@@ -52,9 +52,20 @@ export class KubeNamespaceComponent extends KubernetesUnNamespacedResource imple
     super.ngOnInit();
   }
 
-  /** 创建走「表单 / YAML」双模式弹窗；编辑仍使用基类的 ace-editor */
+  /** 创建走「表单 / YAML」双模式弹窗；编辑也走双模式弹窗（表单编辑标签/注解，YAML 编辑完整对象） */
   createResource() {
     this.createNamespaceForm.open();
+  }
+
+  /** 编辑：先取完整对象再打开双模式弹窗，保存走基类 onSaveResourceEvent（PUT） */
+  onEditResourceEvent(obj: any) {
+    this.kubernetesClient.get(this.cluster, this.kubeResource, obj.metadata.name, obj.metadata.namespace)
+      .subscribe(
+        response => {
+          this.createNamespaceForm.openEdit(response.data);
+        },
+        error => this.messageHandlerService.handleError(error)
+      );
   }
 
   ngOnDestroy(): void {
