@@ -5,6 +5,7 @@ import { KubeNamespaceComponent } from './kube-namespace.component';
 import { KubernetesClient } from '../../../shared/client/v1/kubernetes/kubernetes';
 import { DeletionDialogModule } from '../../../shared/deletion-dialog/deletion-dialog.module';
 import { ListNamespaceComponent } from './list-namespace/list-namespace.component';
+import { CreateNamespaceFormComponent } from './create-namespace-form/create-namespace-form.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { ListNamespaceComponent } from './list-namespace/list-namespace.componen
   exports: [],
   declarations: [
     KubeNamespaceComponent,
-    ListNamespaceComponent
+    ListNamespaceComponent,
+    CreateNamespaceFormComponent
   ]
 })
 

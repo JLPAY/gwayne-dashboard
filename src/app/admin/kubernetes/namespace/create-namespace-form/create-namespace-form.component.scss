@@ -1,0 +1,233 @@
+/**
+ * 创建 namespace（K8s 原生资源）弹窗
+ *
+ * 双模式：表单 / YAML，可互相切换；
+ * YAML 模式预填 example，并提供「填入示例」按钮。
+ */
+
+$ns-border: #dfe3e8;
+$ns-text: #1b1b1b;
+$ns-text-weak: #73797f;
+$ns-primary: #4a87ee;
+$ns-danger: #e0483f;
+
+:host {
+  display: block;
+}
+
+/* ---------------- 模式切换 ---------------- */
+.mode-switch {
+  display: inline-flex;
+  margin-bottom: 0.55rem;
+  border: 1px solid $ns-primary;
+  border-radius: 0.15rem;
+  overflow: hidden;
+}
+
+.mode-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.75rem;
+  border: none;
+  background: #fff;
+  color: $ns-primary;
+  font-size: 0.65rem;
+  line-height: 1.1rem;
+  cursor: pointer;
+
+  clr-icon {
+    margin-right: 0.25rem;
+    width: 0.6rem;
+    height: 0.6rem;
+  }
+
+  &.active {
+    background: $ns-primary;
+    color: #fff;
+  }
+
+  & + .mode-btn {
+    border-left: 1px solid $ns-primary;
+  }
+}
+
+.mode-tip {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.6rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 0.15rem;
+  background: #eef3fd;
+  color: $ns-primary;
+  font-size: 0.6rem;
+  line-height: 0.9rem;
+
+  clr-icon {
+    flex: none;
+    margin-right: 0.3rem;
+    width: 0.65rem;
+    height: 0.65rem;
+  }
+}
+
+/* ---------------- 表单模式 ---------------- */
+.form-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.6rem;
+}
+
+.form-label {
+  flex: 0 0 6rem;
+  width: 6rem;
+  padding-top: 0.28rem;
+  font-size: 0.65rem;
+  color: $ns-text;
+
+  &.required::before {
+    content: '*';
+    margin-right: 0.15rem;
+    color: $ns-danger;
+  }
+}
+
+.form-control-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  .clr-input {
+    width: 100%;
+    max-width: none;
+    height: 1.3rem;
+    font-size: 0.65rem;
+  }
+}
+
+.field-hint {
+  margin-top: 0.15rem;
+  font-size: 0.58rem;
+  color: $ns-text-weak;
+}
+
+.field-error {
+  margin-top: 0.15rem;
+  font-size: 0.58rem;
+  color: $ns-danger;
+}
+
+/* ---------------- 键值对（标签 / 注解） ---------------- */
+.kv-block {
+  margin-bottom: 0.6rem;
+  padding: 0.55rem 0.75rem 0.65rem;
+  border: 1px solid $ns-border;
+  border-radius: 0.15rem;
+  background: #fff;
+}
+
+.kv-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.kv-title {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: $ns-text;
+}
+
+.kv-count {
+  margin-left: 0.3rem;
+  padding: 0 0.35rem;
+  border-radius: 0.55rem;
+  background: #eef3fd;
+  color: $ns-primary;
+  font-size: 0.55rem;
+  font-weight: 400;
+}
+
+.kv-add {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.05rem 0.45rem;
+  border: 1px solid $ns-primary;
+  border-radius: 0.12rem;
+  background: #fff;
+  color: $ns-primary;
+  font-size: 0.58rem;
+  cursor: pointer;
+
+  clr-icon {
+    margin-right: 0.15rem;
+    width: 0.55rem;
+    height: 0.55rem;
+  }
+
+  &:hover {
+    background: #eef3fd;
+  }
+}
+
+.kv-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.3rem;
+
+  .clr-input {
+    height: 1.2rem;
+    font-size: 0.62rem;
+
+    &:first-of-type {
+      flex: 0 0 40%;
+      margin-right: 0.4rem;
+    }
+
+    &:last-of-type {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+}
+
+.kv-del {
+  flex: none;
+  margin-left: 0.4rem;
+  padding: 0.1rem;
+  border: none;
+  background: transparent;
+  color: $ns-text-weak;
+  cursor: pointer;
+
+  clr-icon {
+    width: 0.65rem;
+    height: 0.65rem;
+  }
+
+  &:hover {
+    color: $ns-danger;
+  }
+}
+
+.kv-empty {
+  font-size: 0.58rem;
+  color: $ns-text-weak;
+}
+
+/* ---------------- YAML 模式 ---------------- */
+.yaml-toolbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.yaml-toolbar .btn {
+  font-size: 0.62rem;
+  height: 1.3rem;
+}
+
+.yaml-toolbar-hint {
+  margin-left: 0.5rem;
+  font-size: 0.58rem;
+  color: $ns-text-weak;
+}

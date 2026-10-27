@@ -9,6 +9,7 @@ import { KubeResourceNamespace } from '../../../shared/shared.const';
 import { DeletionDialogComponent } from '../../../shared/deletion-dialog/deletion-dialog.component';
 import { KubernetesUnNamespacedResource } from '../../../shared/base/kubernetes-namespaced/kubernetes-unnamespaced-resource';
 import { ListNamespaceComponent } from './list-namespace/list-namespace.component';
+import { CreateNamespaceFormComponent } from './create-namespace-form/create-namespace-form.component';
 
 const showState = {
   'name': {hidden: false},
@@ -32,6 +33,9 @@ export class KubeNamespaceComponent extends KubernetesUnNamespacedResource imple
   @ViewChild(DeletionDialogComponent)
   deletionDialogComponent: DeletionDialogComponent;
 
+  @ViewChild(CreateNamespaceFormComponent)
+  createNamespaceForm: CreateNamespaceFormComponent;
+
   constructor(public kubernetesClient: KubernetesClient,
               public route: ActivatedRoute,
               public router: Router,
@@ -46,6 +50,11 @@ export class KubeNamespaceComponent extends KubernetesUnNamespacedResource imple
 
   ngOnInit() {
     super.ngOnInit();
+  }
+
+  /** 创建走「表单 / YAML」双模式弹窗；编辑仍使用基类的 ace-editor */
+  createResource() {
+    this.createNamespaceForm.open();
   }
 
   ngOnDestroy(): void {
