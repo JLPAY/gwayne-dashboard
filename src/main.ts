@@ -4,6 +4,9 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
+// 注册 cds-icon 自定义元素与应用所需的图标集（必须在首次渲染前执行）
+import './app/shared/cds-icons';
+
 import { hmrBootstrap } from './hmr';
 
 if (environment.production) {

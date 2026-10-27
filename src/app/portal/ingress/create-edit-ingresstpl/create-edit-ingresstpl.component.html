@@ -16,12 +16,12 @@
     <wayne-collapse>
       <label class="label-level1">服务配置
         <button (click)="onAddRule($event)" style="margin-left: 10px;" class="wayne-button primary">
-          <clr-icon shape="add"></clr-icon>
+          <cds-icon shape="plus"></cds-icon>
           添加域名规则</button></label>
       <div *ngFor="let rule of kubeResource.spec.rules; let i = index">
         <label class="label-level2" style="margin-top: 10px">域名规则
           <button class="btn btn-sm btn-link" (click)="onDeleteRule(i)" href="javascript:void(0)">
-            <clr-icon shape="trash"></clr-icon>删除</button>
+            <cds-icon shape="trash"></cds-icon>删除</button>
         </label>
         <clr-input-container>
           <label>域名</label>
@@ -41,10 +41,10 @@
                 <label class="required">路由</label>
                 <input type="text" class="clr-input clr-col-md-2" [ngModelOptions]="{standalone: true}" [(ngModel)]="kubeResource.spec.rules[i].http.paths[j].path">
                 <a href="javascript:void(0)" *ngIf="kubeResource.spec.rules[i].http.paths.length > 1">
-                  <clr-icon (click)="onDeletePath(i, j)" shape="trash" title="删除路由" class="is-solid clr-icon"></clr-icon>
+                  <cds-icon (click)="onDeletePath(i, j)" shape="trash" title="删除路由" solid></cds-icon>
                 </a>
                 <a href="javascript:void(0)" *ngIf="j === kubeResource.spec.rules[i].http.paths.length - 1">
-                  <clr-icon (click)="onAddPath(i)" shape="plus-circle" title="添加路由" class="is-solid clr-icon"></clr-icon>
+                  <cds-icon (click)="onAddPath(i)" shape="plus-circle" title="添加路由" solid></cds-icon>
                 </a>
               </div>
             </div>
@@ -55,13 +55,13 @@
     <wayne-collapse>
       <label class="label-level1">TLS 配置
         <button (click)="onAddTLS($event)" style="margin-left: 10px;" class="wayne-button primary">
-          <clr-icon shape="add"></clr-icon>
+          <cds-icon shape="plus"></cds-icon>
           添加 TLS</button>
         </label>
       <div *ngFor="let tls of kubeResource.spec.tls; let i = index">
         <label class="label-level2" style="margin-top: 10px">TLS
           <button class="btn btn-sm btn-link" (click)="onDeleteTLS(i)" href="javascript:void(0)">
-            <clr-icon shape="trash"></clr-icon>删除</button>
+            <cds-icon shape="trash"></cds-icon>删除</button>
         </label>
         <div class="clr-form-control clr-row">
           <label class="clr-control-label">加密字典名称</label>
@@ -80,11 +80,11 @@
             <div class="clr-input-wrapper">
               <input class="clr-input" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="kubeResource.spec.tls[i].hosts[j]">
               <a href="javascript:void(0)">
-                <clr-icon (click)="onDeleteHost(i,j)" shape="trash" title="删除 Host" class="is-solid clr-icon">
-                </clr-icon>
+                <cds-icon (click)="onDeleteHost(i,j)" shape="trash" title="删除 Host" solid>
+                </cds-icon>
               </a>
               <a href="javascript:void(0)">
-                <clr-icon (click)="onAddHost(i)" shape="plus-circle" title="添加 Host" class="is-solid clr-icon"></clr-icon>
+                <cds-icon (click)="onAddHost(i)" shape="plus-circle" title="添加 Host" solid></cds-icon>
               </a>
             </div>
           </div>

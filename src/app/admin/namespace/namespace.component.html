@@ -6,10 +6,10 @@
     <div class="clr-row flex-items-xs-between" style="height:32px;">
       <div class="option-left">
         <button class="btn btn-link" (click)="openModal()">
-          <clr-icon shape="add"></clr-icon>
+          <cds-icon shape="plus"></cds-icon>
           创建命名空间
         </button>
-        <!-- <button class="btn btn-link" (click)="initDefault()"><clr-icon shape="add"></clr-icon>初始化默认命名空间</button> -->
+        <!-- <button class="btn btn-link" (click)="initDefault()"><cds-icon shape="plus"></cds-icon>初始化默认命名空间</button> -->
         <create-edit-namespace (create)="createNamespace($event)"></create-edit-namespace>
         <migrate-namespace></migrate-namespace>
       </div>

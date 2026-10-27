@@ -28,7 +28,7 @@
       <div class="clr-form-control clr-row">
         <label class="clr-control-label">{{'CRONJOB.RUN_CYCLE' | translate}}
           <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
-            <clr-icon shape="info-circle" size="24"></clr-icon>
+            <cds-icon shape="info-circle" size="24"></cds-icon>
             <span class="tooltip-content">{{'CRONJOB.RUN_CYCLE_MESSAGE' | translate}}</span>
           </a>
         </label>
@@ -50,7 +50,7 @@
         <label class="required">
           {{'CRONJOB.PARALLEL_STRATEGY' | translate}}
           <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
-            <clr-icon shape="info-circle" size="24"></clr-icon>
+            <cds-icon shape="info-circle" size="24"></cds-icon>
             <span class="tooltip-content">{{'CRONJOB.PARALLEL_STRATEGY_MESSAGE' | translate}}</span>
           </a>
         </label>
@@ -66,7 +66,7 @@
           <label style="padding-right: 0;">
             保留成功 Job 数
             <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
-              <clr-icon shape="info-circle" size="20"></clr-icon>
+              <cds-icon shape="info-circle" size="20"></cds-icon>
               <span class="tooltip-content">允许保留的成功的任务个数</span>
             </a>
           </label>
@@ -76,7 +76,7 @@
           <label style="padding-right: 0;">
             保留失败 Job 数
             <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
-              <clr-icon shape="info-circle" size="20"></clr-icon>
+              <cds-icon shape="info-circle" size="20"></cds-icon>
               <span class="tooltip-content">允许保留的失败的任务个数</span>
             </a>
           </label>
@@ -88,7 +88,7 @@
           <label>
             失败重试次数
             <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
-              <clr-icon shape="info-circle" size="20"></clr-icon>
+              <cds-icon shape="info-circle" size="20"></cds-icon>
               <span class="tooltip-content">失败尝试次数，若失败次数超过该值，则任务不会继续尝试工作</span>
             </a>
           </label>
@@ -98,7 +98,7 @@
           <label>
             运行成功限制
             <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
-              <clr-icon shape="info-circle" size="20"></clr-icon>
+              <cds-icon shape="info-circle" size="20"></cds-icon>
               <span class="tooltip-content">标志任务结束需要成功运行的容器组个数</span>
             </a>
           </label>
@@ -110,7 +110,7 @@
           <label>
             允许并发数
             <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
-              <clr-icon shape="info-circle" size="24"></clr-icon>
+              <cds-icon shape="info-circle" size="24"></cds-icon>
               <span class="tooltip-content">标志并行运行的容器组的个数</span>
             </a>
           </label>
@@ -120,7 +120,7 @@
           <label>
             {{'CRONJOB.MAX_EXECUTE_TIME' | translate}}
             <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
-              <clr-icon shape="info-circle" size="24"></clr-icon>
+              <cds-icon shape="info-circle" size="24"></cds-icon>
               <span class="tooltip-content">{{'CRONJOB.MAX_EXECUTE_TIME_MESSAGE' | translate}}</span>
             </a>
           </label>
@@ -130,7 +130,7 @@
     </wayne-collapse>
     <wayne-collapse *ngFor="let container of kubeResource.spec.jobTemplate.spec.template.spec.containers; let i = index">
       <label class="label-level1" [id]="i ? 'container-config' + i : 'container-config'">{{'TEMPLATE.CONTAINER_CONFIG' | translate}}
-        <clr-icon (click)="onDeleteContainer(i)" shape="trash" title="删除容器" class="is-solid"></clr-icon>
+        <cds-icon (click)="onDeleteContainer(i)" shape="trash" title="删除容器" solid></cds-icon>
       </label>
       <div class="container-box">
         <label class="label-level2" [id]="i ? 'image-config' + i : 'image-config'">{{'TEMPLATE.IMAGE_CONFIG' | translate}}</label>
@@ -196,36 +196,36 @@
       <div class="container-box">
         <label class="label-level2" [id]="i ? '启动命令' + i : '启动命令'">启动命令
           <button (click)="onAddContainerCommand(i)" style="margin-left: 10px;" class="wayne-button primary">
-            <clr-icon shape="add-text"></clr-icon>
+            <cds-icon shape="add-text"></cds-icon>
             添加命令
           </button>
         </label>
         <div *ngFor="let cmd of container.command; let k = index; trackBy:trackByFn">
           <input class="clr-input" type="text" size="60" name="command_{{i}}_{{k}}" [(ngModel)]="container.command[k]"
             placeholder="容器 Entrypoint">
-          <clr-icon style="float: right;" (click)="onDeleteContainerCommand(i,k)" shape="trash" class="is-solid"></clr-icon>
+          <cds-icon style="float: right;" (click)="onDeleteContainerCommand(i,k)" shape="trash" solid></cds-icon>
         </div>
       </div>
       <div class="container-box">
         <label class="label-level2" [id]="i ? '启动参数' + i : '启动参数'">启动参数
           <button (click)="onAddContainerArgs(i)" style="margin-left: 10px;" class="wayne-button primary">
-            <clr-icon shape="add-text"></clr-icon>
+            <cds-icon shape="add-text"></cds-icon>
             添加参数
           </button>
         </label>
         <div *ngFor="let arg of container.args; let l = index; trackBy:trackByFn">
           <input style="margin-top: 10px" type="text" size="60" name="args_{{i}}_{{l}}" [(ngModel)]="container.args[l]" class="clr-input"
             placeholder="容器 CMD">
-          <clr-icon style="margin-top: 5px;margin-left: 5px;" (click)="onDeleteContainerArg(i,l)" shape="trash" class="is-solid"></clr-icon>
+          <cds-icon style="margin-top: 5px;margin-left: 5px;" (click)="onDeleteContainerArg(i,l)" shape="trash" solid></cds-icon>
         </div>
       </div>
       <wayne-collapse disabled="true" style="margin-left: -28px;margin-bottom: -20px;">
         <label for="a" class="label-level2" [id]="i ? 'environment-var' + i : 'environment-var'">{{'TEMPLATE.ENVIRONMENT_VAR' | translate}}
           <button (click)="onAddEnvFrom(i, $event)" style="margin-left: 10px;" class="wayne-button primary">
-            <clr-icon shape="add-text"></clr-icon>
+            <cds-icon shape="add-text"></cds-icon>
             {{'TEMPLATE.ADD_GROUP' | translate}}</button>
           <button (click)="onAddEnv(i, $event)" style="margin-left: 10px;" class="wayne-button primary">
-            <clr-icon shape="add"></clr-icon>
+            <cds-icon shape="plus"></cds-icon>
             {{'TEMPLATE.ADD_ONE' | translate}}</button>
         </label>
 
@@ -234,7 +234,7 @@
             <label for="envFromType-{{i}}-{{j}}" class="clr-col-md-3 form-group-label-override required">{{'TEMPLATE.LOAD_GROUP'
               | translate}}
               <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md">
-                <clr-icon shape="info-circle" size="24"></clr-icon>
+                <cds-icon shape="info-circle" size="24"></cds-icon>
                 <span class="tooltip-content">{{'TEMPLATE.LOAD_GROUP_MESSAGE' | translate}}</span>
               </a>
             </label>
@@ -245,10 +245,10 @@
                 <option value="2" [selected]="envFrom.secretRef">{{'TEMPLATE.LOAD_SECRET' | translate}}</option>
               </select>
             </div>
-            <clr-icon style="margin-top: 10px;margin-right: 8px" (click)="onAddEnvFrom(i, $event)" shape="plus-circle" [title]="'TEMPLATE.ADD_ENVIRONMENT' | translate"
-              class="is-solid"></clr-icon>
-            <clr-icon style="margin-top: 10px" (click)="onDeleteEnvFrom(i,j)" shape="trash" [title]="'TEMPLATE.DELETE_ENVIRONMENT' | translate"
-              class="is-solid"></clr-icon>
+            <cds-icon style="margin-top: 10px;margin-right: 8px" (click)="onAddEnvFrom(i, $event)" shape="plus-circle" [title]="'TEMPLATE.ADD_ENVIRONMENT' | translate"
+              solid></cds-icon>
+            <cds-icon style="margin-top: 10px" (click)="onDeleteEnvFrom(i,j)" shape="trash" [title]="'TEMPLATE.DELETE_ENVIRONMENT' | translate"
+              solid></cds-icon>
           </div>
           <clr-input-container *ngIf="envFrom">
             <input type="text" clrInput size="40" name="envFrom.prefix_{{i}}_{{j}}" [(ngModel)]="envFrom.prefix" [placeholder]="'PLACEHOLDER.ENVIRONMENT' | translate">
@@ -268,7 +268,7 @@
             <label for="envType-{{i}}-{{j}}" class="clr-col-md-3 form-group-label-override required">{{'TEMPLATE.ADD_ONE'
               | translate}}
               <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md">
-                <clr-icon shape="info-circle" size="24"></clr-icon>
+                <cds-icon shape="info-circle" size="24"></cds-icon>
                 <span class="tooltip-content">{{'TEMPLATE.SUPPORT_ENVIRONMENT_MESSAGE' | translate}}</span>
               </a>
             </label>
@@ -280,10 +280,10 @@
                 <option value="3" selected>{{'OTHER' | translate}}</option>
               </select>
             </div>
-            <clr-icon style="margin-top: 10px;margin-right: 8px" (click)="onAddEnv(i, $event)" shape="plus-circle" [title]="'TEMPLATE.ADD_ENVIRONMENT' | translate"
-              class="is-solid"></clr-icon>
-            <clr-icon style="margin-top: 10px" (click)="onDeleteEnv(i,j)" shape="trash" [title]="'TEMPLATE.DELETE_ENVIRONMENT' | translate"
-              class="is-solid"></clr-icon>
+            <cds-icon style="margin-top: 10px;margin-right: 8px" (click)="onAddEnv(i, $event)" shape="plus-circle" [title]="'TEMPLATE.ADD_ENVIRONMENT' | translate"
+              solid></cds-icon>
+            <cds-icon style="margin-top: 10px" (click)="onDeleteEnv(i,j)" shape="trash" [title]="'TEMPLATE.DELETE_ENVIRONMENT' | translate"
+              solid></cds-icon>
           </div>
           <clr-input-container>
             <input type="text" clrInput [(ngModel)]="env.name" required name="env.name_{{i}}_{{j}}" size="40" [placeholder]="'TEMPLATE.ENVIRONMENT_NAME' | translate">

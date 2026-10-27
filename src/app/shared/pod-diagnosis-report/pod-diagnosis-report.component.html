@@ -29,7 +29,7 @@
             </span>
             <span class="report-time">{{ r.createTime | date: 'MM-dd HH:mm' }}</span>
             <span class="report-del" title="删除报告" (click)="remove(r); $event.stopPropagation()">
-              <clr-icon shape="trash"></clr-icon>
+              <cds-icon shape="trash"></cds-icon>
             </span>
           </div>
           <div class="report-item-sub">
@@ -48,7 +48,7 @@
 
         <div *ngIf="selected && selected.status === 'failed'" class="report-failed">
           <div class="alert alert-danger" role="alert">
-            <span class="alert-icon-wrapper"><clr-icon shape="exclamation-circle"></clr-icon></span>
+            <span class="alert-icon-wrapper"><cds-icon shape="exclamation-circle"></cds-icon></span>
             <span class="alert-text">{{ selected.error || '排查失败' }}</span>
           </div>
         </div>

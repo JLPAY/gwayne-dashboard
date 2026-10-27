@@ -6,15 +6,15 @@
   <div class="modal-body">
     <div class="mode-switch">
       <button type="button" class="mode-btn" [class.active]="mode === 'form'" (click)="switchMode('form')">
-        <clr-icon shape="form"></clr-icon>表单模式
+        <cds-icon shape="form"></cds-icon>表单模式
       </button>
       <button type="button" class="mode-btn" [class.active]="mode === 'yaml'" (click)="switchMode('yaml')">
-        <clr-icon shape="file"></clr-icon>YAML 模式
+        <cds-icon shape="file"></cds-icon>YAML 模式
       </button>
     </div>
 
     <div class="mode-tip">
-      <clr-icon shape="info-circle"></clr-icon>
+      <cds-icon shape="info-circle"></cds-icon>
       <span *ngIf="mode === 'form' && !editObj">先填写基本信息（名称、标签、注解，均属 metadata）即可创建；命名空间名称需符合 K8s DNS 规范（小写字母、数字、中划线，最长 63 字符）。</span>
       <span *ngIf="mode === 'form' && editObj">名称不可修改，可编辑标签与注解（metadata）；如需修改其他字段请切换到 YAML 模式。</span>
       <span *ngIf="mode === 'yaml' && !editObj">直接编辑 Namespace 资源 YAML，支持 JSON / YAML 切换；点击「填入示例」可恢复示例模板。</span>
@@ -43,14 +43,14 @@
             <span class="kv-count" *ngIf="labels.length">{{labels.length}}</span>
           </span>
           <button type="button" class="kv-add" (click)="onAddKV(labels)">
-            <clr-icon shape="plus"></clr-icon>添加
+            <cds-icon shape="plus"></cds-icon>添加
           </button>
         </div>
         <div class="kv-row" *ngFor="let item of labels; let i = index">
           <input type="text" class="clr-input" [(ngModel)]="item.key" name="labelKey{{i}}" placeholder="键，例如 app">
           <input type="text" class="clr-input" [(ngModel)]="item.value" name="labelValue{{i}}" placeholder="值，例如 demo">
           <button type="button" class="kv-del" (click)="labels.splice(i, 1)" title="删除">
-            <clr-icon shape="trash"></clr-icon>
+            <cds-icon shape="trash"></cds-icon>
           </button>
         </div>
         <div class="kv-empty" *ngIf="!labels.length">暂无标签，点击右上角「添加」按钮新增</div>
@@ -62,7 +62,7 @@
             <span class="kv-count" *ngIf="annotations.length">{{annotations.length}}</span>
           </span>
           <button type="button" class="kv-add" (click)="onAddKV(annotations)">
-            <clr-icon shape="plus"></clr-icon>添加
+            <cds-icon shape="plus"></cds-icon>添加
           </button>
         </div>
         <div class="kv-row" *ngFor="let item of annotations; let i = index">
@@ -71,7 +71,7 @@
           <input type="text" class="clr-input" [(ngModel)]="item.value" name="annoValue{{i}}"
                  placeholder="值，例如 ops-team">
           <button type="button" class="kv-del" (click)="annotations.splice(i, 1)" title="删除">
-            <clr-icon shape="trash"></clr-icon>
+            <cds-icon shape="trash"></cds-icon>
           </button>
         </div>
         <div class="kv-empty" *ngIf="!annotations.length">暂无注解，点击右上角「添加」按钮新增</div>
@@ -82,10 +82,10 @@
     <div class="yaml-pane" *ngIf="mode === 'yaml'">
       <div class="yaml-toolbar">
         <button type="button" class="btn btn-sm btn-outline" *ngIf="!editObj" (click)="fillExample()">
-          <clr-icon shape="file"></clr-icon>填入示例
+          <cds-icon shape="file"></cds-icon>填入示例
         </button>
         <button type="button" class="btn btn-sm btn-outline" *ngIf="editObj" (click)="resetToOriginal()">
-          <clr-icon shape="undo"></clr-icon>恢复原对象
+          <cds-icon shape="undo"></cds-icon>恢复原对象
         </button>
         <span class="yaml-toolbar-hint" *ngIf="!editObj">示例包含 name / labels / annotations 说明，可直接修改后提交</span>
         <span class="yaml-toolbar-hint" *ngIf="editObj">完整资源对象（含 uid / resourceVersion 等系统字段），可直接修改后提交</span>

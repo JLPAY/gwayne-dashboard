@@ -4,23 +4,23 @@
     <div class="message-header">
       <ng-container [ngSwitch]="item.alertType">
         <ng-template [ngSwitchCase]="0">
-          <clr-icon shape="times-circle" size="20" class="is-error is-solid"></clr-icon>
+          <cds-icon shape="times-circle" size="20" class="is-error is-solid"></cds-icon>
         </ng-template>
         <ng-template [ngSwitchCase]="2">
-          <clr-icon shape="info-standard" size="20" class="is-highlight is-solid"></clr-icon>
+          <cds-icon shape="info-standard" size="20" class="is-highlight is-solid"></cds-icon>
         </ng-template>
         <ng-template [ngSwitchCase]="3">
-          <clr-icon shape="success-standard" size="20" class="is-success is-solid"></clr-icon>
+          <cds-icon shape="success-standard" size="20" class="is-success is-solid"></cds-icon>
         </ng-template>
         <ng-template [ngSwitchCase]="1">
-          <clr-icon shape="warning-standard" size="20" class="is-warning is-solid"></clr-icon>
+          <cds-icon shape="warning-standard" size="20" class="is-warning is-solid"></cds-icon>
         </ng-template>
       </ng-container>
       <div class="message-title">
         {{item.title}}
       </div>
       <div class="message-close" (click)="closeEvent(i)">
-        <clr-icon size="20" shape="window-close"></clr-icon>
+        <cds-icon size="20" shape="window-close"></cds-icon>
       </div>
     </div>
     <div class="message-body">

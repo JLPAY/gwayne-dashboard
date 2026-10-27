@@ -3,7 +3,7 @@
     <div class="modal-body">
       <form #taintForm="ngForm" clrForm clrLayout="horizontal">
         <button (click)="addTaint()" style="margin-left: 10px;" class="wayne-button primary">
-          <clr-icon shape="add-text"></clr-icon>
+          <cds-icon shape="add-text"></cds-icon>
           添加Taint
         </button>
         <div *ngFor="let arg of taintList; let i = index; trackBy:trackByFn">
@@ -18,8 +18,8 @@
           <input style="margin-top: 10px" type="text" size="30" name="taint_key_{{i}}" [(ngModel)]="arg.key"
               class="clr-input" placeholder="写入label Key 值" readonly required>
           <input style="margin-top: 10px; margin-left: 15px;" type="text" size="30" name="taint_value_{{i}}" [(ngModel)]="arg.value" class="clr-input" placeholder="写入label Value 值" readonly required>
-          <clr-icon style="margin-top: 5px;margin-left: 5px;" (click)="deleteTaint(i)" shape="trash"
-              class="is-solid"></clr-icon>
+          <cds-icon style="margin-top: 5px;margin-left: 5px;" (click)="deleteTaint(i)" shape="trash"
+              solid></cds-icon>
         </div>
         <div *ngFor="let arg of addList; let i = index; trackBy:trackByFn">
           <clr-select-container>
@@ -33,8 +33,8 @@
           <input style="margin-top: 10px" type="text" size="30" name="key_{{i}}" [(ngModel)]="arg.key"
               class="clr-input" placeholder="写入label Key 值" required>
           <input style="margin-top: 10px; margin-left: 15px;" type="text" size="30" name="value_{{i}}" [(ngModel)]="arg.value" class="clr-input" placeholder="写入label Value 值" required>
-          <clr-icon style="margin-top: 5px;margin-left: 5px;" (click)="removeTaint(i)" shape="trash"
-              class="is-solid"></clr-icon>
+          <cds-icon style="margin-top: 5px;margin-left: 5px;" (click)="removeTaint(i)" shape="trash"
+              solid></cds-icon>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" (click)="onCancel()">{{'BUTTON.CANCEL' | translate}}</button>

@@ -3,11 +3,11 @@
     (create)="createdSnapshot($event)"
     [appId]="appId"></create-snapshot>
   <button (click)="openModal()" class="btn btn-link">
-    <clr-icon shape="add"></clr-icon>
+    <cds-icon shape="plus"></cds-icon>
     {{'PVC.CREATE_SNAPSHOOT' | translate}}
   </button>
   <button (click)="deleteAllSnap()" class="btn btn-link">
-    <clr-icon shape="trash"></clr-icon>
+    <cds-icon shape="trash"></cds-icon>
     {{'PVC.DELETE_ALL' | translate}}
   </button>
 </div>
@@ -35,10 +35,10 @@
     <clr-dg-cell> {{snap.size / (1024 * 1024 * 1024)}}GB</clr-dg-cell>
     <clr-dg-cell>
       <a href="javascript:void(0)" style="padding-right: 10px" [title]="'PVC.DELETE_SNAPSHOOT' | translate" (click)="deleteSnap(snap.name)">
-        <clr-icon shape="trash"></clr-icon>
+        <cds-icon shape="trash"></cds-icon>
       </a>
       <a href="javascript:void(0)" [title]="'PVC.ROLLBACK_SNAPSHOOT' | translate" (click)="rollbackSnap(snap.name)">
-        <clr-icon shape="undo"></clr-icon>
+        <cds-icon shape="undo"></cds-icon>
       </a>
     </clr-dg-cell>
   </clr-dg-row>

@@ -180,10 +180,10 @@ textarea {
   outline: none;
 }
 
-/* Clarity 13→16 后，.dropdown-toggle clr-icon[shape^=caret] 被绝对定位到按钮右缘
+/* Clarity 13→16 后，.dropdown-toggle cds-icon[shape^=caret] 被绝对定位到按钮右缘
    （而 header 下拉按钮自身 padding-right 为 1.8rem），导致 pod 日志页 / pod 终端页
    头部下拉箭头与文字之间出现大空隙且垂直偏低。恢复为紧跟文字的内联布局。 */
-.header .header-actions .dropdown .dropdown-toggle clr-icon[shape^='caret'] {
+.header .header-actions .dropdown .dropdown-toggle cds-icon[shape^='caret'] {
   position: static;
   display: inline-block;
   margin-left: 0.3rem;

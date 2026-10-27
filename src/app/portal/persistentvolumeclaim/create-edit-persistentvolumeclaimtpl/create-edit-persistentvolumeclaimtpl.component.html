@@ -45,7 +45,7 @@
       </div>
       <label class="label-level2">关联标签
         <button (click)="onAddSelector()" style="margin-left: 10px;" class="wayne-button primary">
-          <clr-icon shape="add-text"></clr-icon>
+          <cds-icon shape="add-text"></cds-icon>
           添加</button>
       </label>
       <ng-container formArrayName="selectors">
@@ -56,10 +56,10 @@
               <input type="text" class="clr-input" style="width: 300px;" formControlName="key" required [placeholder]="'PLACEHOLDER.SELECTOR_NAME' | translate">
               <input type="text" class="clr-input" formControlName="value" required [placeholder]="'PLACEHOLDER.SELECTOR_VALUE' | translate" style="margin-left: 15px;width: 300px;">
               <a href="javascript:void(0)">
-                <clr-icon (click)="onDeleteSelector(i)" shape="trash" [title]="'PVC.DELETE_LABEL' | translate" class="is-solid clr-icon"></clr-icon>
+                <cds-icon (click)="onDeleteSelector(i)" shape="trash" [title]="'PVC.DELETE_LABEL' | translate" solid></cds-icon>
               </a>
               <a href="javascript:void(0)">
-                <clr-icon (click)="onAddSelector()" shape="plus-circle" [title]="'PVC.ADD_LABEL' | translate" class="is-solid clr-icon"></clr-icon>
+                <cds-icon (click)="onAddSelector()" shape="plus-circle" [title]="'PVC.ADD_LABEL' | translate" solid></cds-icon>
               </a>
             </div>
           </div>

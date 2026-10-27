@@ -17,15 +17,15 @@
       <div class="clr-form-control clr-row">
         <label class="clr-control-label clr-col-12 clr-col-md-12">参数列表
           <button (click)="addParam()" style="margin-left: 10px;" class="wayne-button primary">
-            <clr-icon shape="add-text"></clr-icon>
+            <cds-icon shape="add-text"></cds-icon>
             添加参数
           </button>
         </label>
         <div *ngFor="let arg of paramList; let i = index; trackBy:trackByFn">
           <input style="margin-top: 10px" type="text" size="60" name="param_{{i}}" [(ngModel)]="paramList[i]"
             class="clr-input" placeholder="写入参数">
-          <clr-icon style="margin-top: 5px;margin-left: 5px;" (click)="deleteParam(i)" shape="trash"
-            class="is-solid"></clr-icon>
+          <cds-icon style="margin-top: 5px;margin-left: 5px;" (click)="deleteParam(i)" shape="trash"
+            solid></cds-icon>
         </div>
       </div>
     </form>

@@ -6,10 +6,10 @@
     <div class="clr-row flex-items-xs-between" style="height:32px;">
       <div class="option-left">
         <button class="btn btn-link" (click)="openModal()">
-          <clr-icon shape="add"></clr-icon>
+          <cds-icon shape="plus"></cds-icon>
           创建操作权限
         </button>
-        <!-- <button class="btn btn-link" (click)="initPermission()"><clr-icon shape="add"></clr-icon>初始化操作权限</button> -->
+        <!-- <button class="btn btn-link" (click)="initPermission()"><cds-icon shape="plus"></cds-icon>初始化操作权限</button> -->
         <create-edit-permission (create)="createPermission($event)"></create-edit-permission>
       </div>
     </div>

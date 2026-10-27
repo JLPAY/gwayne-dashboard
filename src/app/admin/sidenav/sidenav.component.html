@@ -6,14 +6,14 @@
       [title]="item.a.title | translate"
       [routerLink]="item.a.link"
       [class.active]="getActive(item.a.link)">
-      <clr-icon clrVerticalNavIcon [attr.shape]="item.a.icon.shape"></clr-icon>
+      <cds-icon clrVerticalNavIcon [attr.shape]="item.a.icon.shape"></cds-icon>
       {{ item.a.text | translate }}
     </a>
     <div class="nav-divider" *ngIf="item.type === sideNavType.Divider"></div>
     <clr-vertical-nav-group
       *ngIf="item.type === sideNavType.GroupLink && (item.name !== 'edge-node' || this.authService.config['system.external-ip'])"
       routerLinkActive="active">
-      <clr-icon clrVerticalNavIcon [title]="item.icon.title | translate" [class.is-solid]="item.icon.solid" [attr.shape]="item.icon.shape"></clr-icon>
+      <cds-icon clrVerticalNavIcon [title]="item.icon.title | translate" [attr.solid]="(item.icon.solid) ? '' : null" [attr.shape]="item.icon.shape"></cds-icon>
       {{item.text | translate}}
       <clr-vertical-nav-group-children *clrIfExpanded="getExpand(item.links)">
         <ng-container *ngFor="let child of item.child">
@@ -23,7 +23,7 @@
             [routerLink]="child.a.link"
             [class.active]="getActive(child.a.link, child.a.options)"
           >
-            <clr-icon *ngIf="child.a.icon" clrVerticalNavIcon [attr.shape]="child.a.icon.shape" [class.is-solid]="child.a.icon.solid"></clr-icon>
+            <cds-icon *ngIf="child.a.icon" clrVerticalNavIcon [attr.shape]="child.a.icon.shape" [attr.solid]="(child.a.icon.solid) ? '' : null"></cds-icon>
             {{child.a.text | translate}}
           </a>
           <div class="nav-divider" *ngIf="child.type === sideNavType.Divider"></div>

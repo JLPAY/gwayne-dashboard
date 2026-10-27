@@ -55,10 +55,10 @@
     </clr-dg-cell>
     <clr-dg-cell>
       {{obj.status.readyReplicas ? obj.status.readyReplicas : 0 }}/{{obj.spec.replicas}}
-      <clr-icon style="color: #FF3434" shape="exclamation-triangle" *ngIf="obj.status.readyReplicas !== obj.spec.replicas"
-                class="is-solid"></clr-icon>
-      <clr-icon style="color: green" shape="success-standard" *ngIf="obj.status.readyReplicas === obj.spec.replicas"
-                class="is-solid"></clr-icon>
+      <cds-icon style="color: #FF3434" shape="exclamation-triangle" *ngIf="obj.status.readyReplicas !== obj.spec.replicas"
+                solid></cds-icon>
+      <cds-icon style="color: green" shape="success-standard" *ngIf="obj.status.readyReplicas === obj.spec.replicas"
+                solid></cds-icon>
     </clr-dg-cell>
     <clr-dg-cell> {{ obj.metadata.creationTimestamp | relativeTime}} </clr-dg-cell>
   </clr-dg-row>
