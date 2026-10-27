@@ -7,6 +7,7 @@ import { KubernetesClient } from '../../../shared/client/v1/kubernetes/kubernete
 import { DeletionDialogModule } from '../../../shared/deletion-dialog/deletion-dialog.module';
 import { DgRowDetailComponent } from './service-dg-row-detail/service-dg-row-detail.component';
 import { MigrationComponent } from './migration/migration.component';
+import { CreateServiceFormComponent } from './create-service-form/create-service-form.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { MigrationComponent } from './migration/migration.component';
     KubeServiceComponent,
     ListServiceComponent,
     DgRowDetailComponent,
-    MigrationComponent
+    MigrationComponent,
+    CreateServiceFormComponent
   ]
 })
 

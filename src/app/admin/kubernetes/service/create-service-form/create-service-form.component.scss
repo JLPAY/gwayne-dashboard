@@ -1,0 +1,341 @@
+/**
+ * 创建 service（K8s 原生资源）弹窗
+ *
+ * 双模式：表单 / YAML，可互相切换；
+ * YAML 模式预填 example，并提供「填入示例」按钮。
+ * 样式约定与 create-namespace-form 保持一致。
+ */
+
+$svc-border: #dfe3e8;
+$svc-text: #1b1b1b;
+$svc-text-weak: #73797f;
+$svc-primary: #4a87ee;
+$svc-danger: #e0483f;
+
+:host {
+  display: block;
+}
+
+/* ---------------- 模式切换 ---------------- */
+.mode-switch {
+  display: inline-flex;
+  margin-bottom: 0.55rem;
+  border: 1px solid $svc-primary;
+  border-radius: 0.15rem;
+  overflow: hidden;
+}
+
+.mode-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.75rem;
+  border: none;
+  background: #fff;
+  color: $svc-primary;
+  font-size: 0.65rem;
+  line-height: 1.1rem;
+  cursor: pointer;
+
+  clr-icon {
+    margin-right: 0.25rem;
+    width: 0.6rem;
+    height: 0.6rem;
+  }
+
+  &.active {
+    background: $svc-primary;
+    color: #fff;
+  }
+
+  & + .mode-btn {
+    border-left: 1px solid $svc-primary;
+  }
+}
+
+.mode-tip {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.6rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 0.15rem;
+  background: #eef3fd;
+  color: $svc-primary;
+  font-size: 0.6rem;
+  line-height: 0.9rem;
+
+  clr-icon {
+    flex: none;
+    margin-right: 0.3rem;
+    width: 0.65rem;
+    height: 0.65rem;
+  }
+}
+
+/* ---------------- 表单模式 ---------------- */
+/* 分区标题：metadata（基本信息）在前，spec（服务配置）在后 */
+.section-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-left: 0.4rem;
+  border-left: 2px solid $svc-primary;
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1rem;
+  color: $svc-text;
+
+  &:not(:first-child) {
+    margin-top: 0.7rem;
+  }
+
+  .section-sub {
+    margin-left: 0.35rem;
+    font-size: 0.55rem;
+    font-weight: 400;
+    color: $svc-text-weak;
+  }
+}
+
+.form-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.6rem;
+}
+
+.form-label {
+  flex: 0 0 6rem;
+  width: 6rem;
+  padding-top: 0.28rem;
+  font-size: 0.65rem;
+  color: $svc-text;
+
+  &.required::before {
+    content: '*';
+    margin-right: 0.15rem;
+    color: $svc-danger;
+  }
+}
+
+.form-control-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  .clr-input {
+    width: 100%;
+    max-width: none;
+    height: 1.3rem;
+    font-size: 0.65rem;
+  }
+
+  .clr-select {
+    height: 1.3rem;
+    font-size: 0.65rem;
+    max-width: none;
+  }
+}
+
+.field-hint {
+  margin-top: 0.15rem;
+  font-size: 0.58rem;
+  color: $svc-text-weak;
+}
+
+.field-error {
+  margin-top: 0.15rem;
+  font-size: 0.58rem;
+  color: $svc-danger;
+}
+
+/* 类型单选 */
+.type-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.2rem;
+
+  .type-option {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.65rem;
+    color: $svc-text;
+    cursor: pointer;
+
+    input[type='radio'] {
+      margin-right: 0.25rem;
+    }
+  }
+}
+
+/* ---------------- 键值对（标签 / 注解 / selector） ---------------- */
+.kv-block {
+  margin-bottom: 0.6rem;
+  padding: 0.55rem 0.75rem 0.65rem;
+  border: 1px solid $svc-border;
+  border-radius: 0.15rem;
+  background: #fff;
+}
+
+.kv-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.kv-title {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: $svc-text;
+}
+
+.kv-count {
+  margin-left: 0.3rem;
+  padding: 0 0.35rem;
+  border-radius: 0.55rem;
+  background: #eef3fd;
+  color: $svc-primary;
+  font-size: 0.55rem;
+  font-weight: 400;
+}
+
+.kv-add {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.05rem 0.45rem;
+  border: 1px solid $svc-primary;
+  border-radius: 0.12rem;
+  background: #fff;
+  color: $svc-primary;
+  font-size: 0.58rem;
+  cursor: pointer;
+
+  clr-icon {
+    margin-right: 0.15rem;
+    width: 0.55rem;
+    height: 0.55rem;
+  }
+
+  &:hover {
+    background: #eef3fd;
+  }
+}
+
+.kv-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.3rem;
+
+  .clr-input {
+    height: 1.2rem;
+    font-size: 0.62rem;
+
+    &:first-of-type {
+      flex: 0 0 40%;
+      margin-right: 0.4rem;
+    }
+
+    &:last-of-type {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+}
+
+.kv-del {
+  flex: none;
+  margin-left: 0.4rem;
+  padding: 0.1rem;
+  border: none;
+  background: transparent;
+  color: $svc-text-weak;
+  cursor: pointer;
+
+  clr-icon {
+    width: 0.65rem;
+    height: 0.65rem;
+  }
+
+  &:hover {
+    color: $svc-danger;
+  }
+}
+
+.kv-empty {
+  font-size: 0.58rem;
+  color: $svc-text-weak;
+}
+
+/* ---------------- 端口列表 ---------------- */
+.port-head,
+.port-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.port-head {
+  margin-bottom: 0.2rem;
+  font-size: 0.55rem;
+  color: $svc-text-weak;
+
+  .req {
+    color: $svc-danger;
+  }
+
+  /* 与 port-row 的 input flex 比例保持一致 */
+  span:nth-child(1) { flex: 1 1 18%; }
+  span:nth-child(2) { flex: 1 1 16%; }
+  span:nth-child(3) { flex: 1 1 20%; }
+  span:nth-child(4) { flex: 1 1 16%; }
+  span:nth-child(5) { flex: 0 0 12%; }
+  span:nth-child(6) { flex: 0 0 1.05rem; }
+}
+
+.port-row {
+  margin-bottom: 0.3rem;
+
+  .clr-input,
+  .clr-select {
+    height: 1.2rem;
+    font-size: 0.62rem;
+    min-width: 0;
+  }
+
+  input:nth-child(1) { flex: 1 1 18%; }
+  input:nth-child(2) { flex: 1 1 16%; }
+  input:nth-child(3) { flex: 1 1 20%; }
+  input:nth-child(4) { flex: 1 1 16%; }
+
+  .clr-select {
+    flex: 0 0 12%;
+  }
+
+  .hidden-col {
+    display: none;
+  }
+
+  .invalid {
+    border-color: $svc-danger;
+  }
+}
+
+.port-row .kv-del {
+  margin-left: 0;
+}
+
+/* ---------------- YAML 模式 ---------------- */
+.yaml-toolbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.yaml-toolbar .btn {
+  font-size: 0.62rem;
+  height: 1.3rem;
+}
+
+.yaml-toolbar-hint {
+  margin-left: 0.5rem;
+  font-size: 0.58rem;
+  color: $svc-text-weak;
+}

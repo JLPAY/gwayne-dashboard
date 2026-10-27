@@ -48,6 +48,7 @@
 </div>
 <kube-migration></kube-migration>
 <deletion-dialog (outputObj)="confirmDeleteEvent($event)"></deletion-dialog>
+<create-service-form (create)="onCreateResourceEvent($event)" (save)="onSaveResourceEvent($event)"></create-service-form>
 <wayne-ace-editor (createOutputObj)="onCreateResourceEvent($event)" (outputObj)="onSaveResourceEvent($event)"></wayne-ace-editor>
 <wayne-float-window value="{{ cluster }}">
   <wayne-float-window-item *ngFor="let cluster of clusters" [value]="cluster"
