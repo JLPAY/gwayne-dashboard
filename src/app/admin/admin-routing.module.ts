@@ -75,6 +75,7 @@ import { KubeEndpointComponent } from './kubernetes/endpoint/kube-endpoint.compo
 import { KubeConfigmapComponent } from './kubernetes/configmap/kube-configmap.component';
 import { KubeSecretComponent } from './kubernetes/secret/kube-secret.component';
 import { KubeIngressComponent } from './kubernetes/ingress/kube-ingress.component';
+import { KubeNetworkPolicyComponent } from './kubernetes/networkpolicy/kube-networkpolicy.component';
 import { KubeStatefulsetComponent } from './kubernetes/statefulset/kube-statefulset.component';
 import { KubeDaemonsetComponent } from './kubernetes/daemonset/kube-daemonset.component';
 import { KubeCronjobComponent } from './kubernetes/cronjob/kube-cronjob.component';
@@ -188,6 +189,8 @@ const routes: Routes = [
       {path: 'kubernetes/secret/:cluster', component: KubeSecretComponent},
       {path: 'kubernetes/ingress', component: KubeIngressComponent},
       {path: 'kubernetes/ingress/:cluster', component: KubeIngressComponent},
+      {path: 'kubernetes/networkpolicy', component: KubeNetworkPolicyComponent},
+      {path: 'kubernetes/networkpolicy/:cluster', component: KubeNetworkPolicyComponent},
       {path: 'kubernetes/statefulset', component: KubeStatefulsetComponent},
       {path: 'kubernetes/statefulset/:cluster', component: KubeStatefulsetComponent},
       {path: 'kubernetes/daemonset', component: KubeDaemonsetComponent},

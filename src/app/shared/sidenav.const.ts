@@ -33,6 +33,7 @@ const adminSideNav: any[] = [
       { a: { link: 'kubernetes/service', text: 'Service', options: { exact: false }, icon: { shape: 'network-globe', solid: false } } },
       { a: { link: 'kubernetes/endpoint', text: 'Endpoint', options: { exact: false }, icon: { shape: 'tree-view', solid: false } } },
       { a: { link: 'kubernetes/ingress', text: 'Ingress', options: { exact: false }, icon: { shape: 'network-switch', solid: false } } },
+      { a: { link: 'kubernetes/networkpolicy', text: 'NetworkPolicy', options: { exact: false }, icon: { shape: 'lock', solid: false } } },
       { type: SideNavType.Divider },
       { a: { link: 'kubernetes/configmap', text: 'ConfigMap', options: { exact: false }, icon: { shape: 'file-settings', solid: false } } },
       { a: { link: 'kubernetes/secret', text: 'Secret', options: { exact: false }, icon: { shape: 'certificate', solid: false } } },

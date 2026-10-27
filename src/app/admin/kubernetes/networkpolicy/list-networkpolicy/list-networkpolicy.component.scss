@@ -1,0 +1,37 @@
+/* Pod 选择器芯片展示：每个条目独占一行 */
+.pod-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+}
+
+.selector-chip {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid #c3cdd5;
+  border-radius: 0.65rem;
+  background: #f0f4f7;
+  color: #1b2b33;
+  font-size: 0.58rem;
+  line-height: 1rem;
+  word-break: break-all;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #4a87ee;
+    background: #eef3fd;
+    color: #2f6bd8;
+  }
+}
+
+.selector-all {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  border-radius: 0.65rem;
+  background: #f5f6f8;
+  color: #9ba4ab;
+  font-size: 0.58rem;
+  line-height: 1rem;
+}

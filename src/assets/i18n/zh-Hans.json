@@ -705,6 +705,16 @@
           "AGE": "启动时间"
         }
       },
+      "NETWORKPOLICY": {
+        "CREATE": "创建 NetworkPolicy",
+        "LIST": {
+          "NAME": "名称",
+          "NAMESPACE": "命名空间",
+          "LABEL": "标签",
+          "POD_SELECTOR": "Pod 选择器",
+          "AGE": "启动时间"
+        }
+      },
       "DEPLOYMENT": {
         "CREATE": "创建 Deployment",
         "SCALE": {

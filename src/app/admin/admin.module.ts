@@ -54,6 +54,7 @@ import { KubeEndpointModule } from './kubernetes/endpoint/kube-endpoint.module';
 import { KubeConfigmapModule } from './kubernetes/configmap/kube-configmap.module';
 import { KubeSecretModule } from './kubernetes/secret/kube-secret.module';
 import { KubeIngressModule } from './kubernetes/ingress/kube-ingress.module';
+import { KubeNetworkPolicyModule } from './kubernetes/networkpolicy/kube-networkpolicy.module';
 import { KubeStatefulsetModule } from './kubernetes/statefulset/kube-statefulset.module';
 import { KubeDaemonsetModule } from './kubernetes/daemonset/kube-daemonset.module';
 import { KubeCronjobModule } from './kubernetes/cronjob/kube-cronjob.module';
@@ -120,6 +121,7 @@ import { LLMModelModule } from './llm-model/llm-model.module';
     KubeConfigmapModule,
     KubeSecretModule,
     KubeIngressModule,
+    KubeNetworkPolicyModule,
     KubeStatefulsetModule,
     KubeDaemonsetModule,
     KubeCronjobModule,
