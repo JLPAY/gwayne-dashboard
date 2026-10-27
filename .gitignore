@@ -48,3 +48,6 @@ contract/
 # 运行时冒烟的截图产物与 WorkBuddy 会话数据（本地产物，不入库）
 .tmp-smoke/
 .workbuddy/
+
+# 本地打包产物
+dist.zip

@@ -61,6 +61,14 @@ $ns-input-height: 1.2rem;
   color: $ns-text;
 }
 
+/* 标题后的英文来源标注，如「元数据 metadata」 */
+.ns-block-sub {
+  margin-left: 0.35rem;
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: $ns-text-weak;
+}
+
 .ns-badge {
   margin-left: 0.4rem;
   padding: 0 0.4rem;

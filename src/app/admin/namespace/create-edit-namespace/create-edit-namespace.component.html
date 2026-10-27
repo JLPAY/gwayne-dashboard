@@ -36,9 +36,18 @@
                      [ngModelOptions]="{standalone: true}">
               <label for="toggle_1">保存时同步创建</label>
             </clr-toggle-wrapper>
-            <span class="ns-hint">在下文勾选的机房中创建对应的 K8S 命名空间，已存在则跳过</span>
+            <span class="ns-hint">在下方勾选的机房中创建对应的 K8S 命名空间，已存在则跳过</span>
           </div>
         </div>
+      </section>
+
+      <!-- 元数据（JSON 模式）：metadata 先于平台配置（spec）展示 -->
+      <section class="ns-block" [style.display]="showACE ? 'block' : 'none'">
+        <div class="ns-block-head">
+          <span class="ns-block-title">元数据<span class="ns-block-sub">metadata</span></span>
+        </div>
+        <p class="ns-block-desc">直接编辑完整元数据（名称、标签、注解等），可配置机房资源限制、环境变量、注解等全部字段</p>
+        <wayne-ace-editor-box></wayne-ace-editor-box>
       </section>
 
       <!-- 可用机房 -->
@@ -200,14 +209,6 @@
         </ng-template>
       </section>
 
-      <!-- 元数据（JSON 模式） -->
-      <section class="ns-block" [style.display]="showACE ? 'block' : 'none'">
-        <div class="ns-block-head">
-          <span class="ns-block-title">元数据</span>
-        </div>
-        <p class="ns-block-desc">直接编辑完整元数据，可配置机房资源限制、环境变量、注解等全部字段</p>
-        <wayne-ace-editor-box></wayne-ace-editor-box>
-      </section>
     </form>
   </div>
 
