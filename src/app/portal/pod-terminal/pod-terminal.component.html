@@ -56,7 +56,23 @@
     
     <!-- 终端容器 -->
     <div class="terminal-parent" [ngClass]="{'terminal-ready': !isLoading}">
-      <div #terminal></div>
+      <div #terminal class="terminal-container"></div>
+
+      <!-- 终端内搜索（Ctrl+F 唤起） -->
+      <div class="terminal-search" *ngIf="searchVisible">
+        <input #searchInput
+               type="text"
+               class="terminal-search-input"
+               placeholder="搜索终端输出"
+               [value]="searchTerm"
+               (input)="onSearchInput($event)"
+               (keydown.enter)="findNext()"
+               (keydown.shift.enter)="findPrevious()"
+               (keydown.escape)="closeSearch()" />
+        <button type="button" class="terminal-search-btn" title="上一个" (click)="findPrevious()">↑</button>
+        <button type="button" class="terminal-search-btn" title="下一个" (click)="findNext()">↓</button>
+        <button type="button" class="terminal-search-btn" title="关闭" (click)="closeSearch()">×</button>
+      </div>
     </div>
   </div>
 </clr-main-container>

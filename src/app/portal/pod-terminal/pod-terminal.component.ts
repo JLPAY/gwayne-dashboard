@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Terminal } from 'xterm';
-import * as webLinks from 'xterm/lib/addons/webLinks/webLinks';
-import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
+import { Terminal } from '@xterm/xterm';
+import { FitAddon } from '@xterm/addon-fit';
+import { WebLinksAddon } from '@xterm/addon-web-links';
+import { WebglAddon } from '@xterm/addon-webgl';
+import { SearchAddon } from '@xterm/addon-search';
 import { MessageHandlerService } from '../../shared/message-handler/message-handler.service';
 import { PodClient } from '../../shared/client/v1/kubernetes/pod';
 import * as SockJS from 'sockjs-client';
@@ -30,9 +32,25 @@ export class PodTerminalComponent implements OnInit, OnDestroy {
   pods: KubePod[];
   @ViewChild('terminal')
   terminal: ElementRef;
+  @ViewChild('searchInput')
+  searchInput: ElementRef<HTMLInputElement>;
   xterm: Terminal;
   socket: SockJS;
   private timer: any = null;
+
+  // xterm 6 附加组件：fit 计算行列 / 链接识别 / WebGL 渲染 / 终端内搜索
+  private fitAddon: FitAddon;
+  private searchAddon: SearchAddon;
+  private webglAddon: WebglAddon;
+  // 容器尺寸变化监听（v6 不再暴露 _core 渲染度量，行列一律交给 FitAddon 计算）
+  private resizeObserver: ResizeObserver = null;
+  private resizeDebounce: any = null;
+  // 容器内 shell 是否已就绪（收到 wayne-init 回显），就绪后才向后端同步行列
+  private serverReady = false;
+
+  // 终端内搜索框状态
+  searchVisible = false;
+  searchTerm = '';
   
   // 新增状态管理
   isLoading = true;
@@ -188,60 +206,126 @@ export class PodTerminalComponent implements OnInit, OnDestroy {
     this.xterm = new Terminal({
       cursorBlink: true,
       fontSize: 14,
-      fontFamily: 'Consolas, "Courier New", monospace'
+      fontFamily: 'Consolas, "Courier New", monospace',
+      scrollback: 5000
     });
-    
-    this.xterm.on('resize', (size) => {
-      // 优化轮询机制：减少频率，增加超时
-      this.timer = setInterval(() => {
-        if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-          this.socket.send(JSON.stringify({'Op': 'stdin', 'Data': 'echo wayne-init\n'}));
+
+    // 附加组件注册：fit 负责按容器尺寸算行列（取代原先访问 _core 私有字段的做法）
+    this.fitAddon = new FitAddon();
+    this.searchAddon = new SearchAddon();
+    this.xterm.loadAddon(this.fitAddon);
+    this.xterm.loadAddon(this.searchAddon);
+    this.xterm.loadAddon(new WebLinksAddon());
+
+    // Ctrl+F 打开终端内搜索，同时屏蔽浏览器自带查找
+    this.xterm.attachCustomKeyEventHandler((event: KeyboardEvent) => {
+      if (event.ctrlKey && !event.shiftKey && !event.altKey && event.key.toLowerCase() === 'f') {
+        if (event.type === 'keydown') {
+          this.toggleSearch(true);
         }
-      }, 500); // 从1秒改为500毫秒
-      
-      // 设置超时机制，避免无限等待
-      setTimeout(() => {
-        if (this.timer) {
-          clearInterval(this.timer);
-          this.timer = null;
-          console.warn('Terminal initialization timeout');
-          this.loadingMessage = '终端初始化超时，请重试';
-        }
-      }, 8000); // 8秒超时
+        event.preventDefault();
+        return false;
+      }
+      return true;
     });
-    
-    this.xterm.on('key', (key?: string, ev?: KeyboardEvent) => {
-      // 键盘事件处理
+
+    this.xterm.onResize(() => {
+      // shell 就绪后，每次行列变化都同步给后端，避免拉大窗口后命令换行错乱
+      if (this.serverReady) {
+        this.sendResize();
+      }
     });
-    
-    this.xterm.on('data', (data: any) => {
+
+    this.xterm.onData((data: string) => {
       if (this.socket && this.socket.readyState === WebSocket.OPEN) {
         this.socket.send(JSON.stringify({'Op': 'stdin', 'Data': data}));
       }
     });
-    
+
     this.xterm.open(this.terminal.nativeElement);
-    this.connect();
+    // open 之后布局尺寸才可测量，fit 放到下一帧执行
+    requestAnimationFrame(() => {
+      this.fit();
+      this.tryLoadWebgl();
+      this.observeResize();
+    });
   }
 
-  connect() {
-    // 如果已经有终端会话，直接使用
-    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+  // fit 按容器尺寸重算行列；容器不可见时 FitAddon 会算不出尺寸，直接跳过
+  private fit() {
+    if (!this.fitAddon || !this.xterm || !this.terminal) {
       return;
     }
-    
-    // 否则重新创建
-    this.podClient.createTerminal(this.appId, this.cluster, this.namespace, this.selectedPod.metadata.name, this.selectedContainer)
-      .subscribe(
-        response => {
-          this.handleTerminalResponse(response.data);
-        },
-        error => {
-          this.isLoading = false;
-          this.connectionStatus = 'error';
-          this.messageHandlerService.handleError(error);
-        }
-      );
+    try {
+      this.fitAddon.fit();
+    } catch (e) {
+      console.warn('terminal fit failed', e);
+    }
+  }
+
+  // observeResize 监听容器尺寸变化，防抖后重新 fit
+  private observeResize() {
+    if (typeof ResizeObserver === 'undefined' || !this.terminal) {
+      return;
+    }
+    const host = this.terminal.nativeElement.parentElement as HTMLElement;
+    if (!host) {
+      return;
+    }
+    this.resizeObserver = new ResizeObserver(() => {
+      if (this.resizeDebounce) {
+        clearTimeout(this.resizeDebounce);
+      }
+      this.resizeDebounce = setTimeout(() => {
+        this.fit();
+        this.resizeDebounce = null;
+      }, 120);
+    });
+    this.resizeObserver.observe(host);
+  }
+
+  // startReadyProbe 轮询 echo wayne-init，收到回显即说明容器内 shell 已就绪
+  private startReadyProbe() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    this.timer = setInterval(() => {
+      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+        this.socket.send(JSON.stringify({'Op': 'stdin', 'Data': 'echo wayne-init\n'}));
+      }
+    }, 500);
+
+    // 超时兜底，避免无限等待
+    setTimeout(() => {
+      if (this.timer) {
+        clearInterval(this.timer);
+        this.timer = null;
+        console.warn('Terminal initialization timeout');
+        this.loadingMessage = '终端初始化超时，请重试';
+      }
+    }, 8000);
+  }
+
+  // sendResize 把当前行列同步给后端（ws 协议不变：Op=resize）
+  private sendResize() {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify({'Op': 'resize', 'Cols': this.xterm.cols, 'Rows': this.xterm.rows}));
+    }
+  }
+
+  // tryLoadWebgl WebGL 渲染器（v6 已移除 canvas 渲染器），失败时静默回退 DOM 渲染
+  private tryLoadWebgl() {
+    try {
+      this.webglAddon = new WebglAddon();
+      this.webglAddon.onContextLoss(() => {
+        this.webglAddon.dispose();
+        this.webglAddon = null;
+      });
+      this.xterm.loadAddon(this.webglAddon);
+    } catch (e) {
+      console.warn('WebGL 渲染器不可用，回退 DOM 渲染', e);
+      this.webglAddon = null;
+    }
   }
 
   // 新增方法处理终端响应
@@ -270,14 +354,14 @@ export class PodTerminalComponent implements OnInit, OnDestroy {
   // 连接建立成功后的挂载操作
   onConnectionOpen(data: any): void {
     this.socket.send(JSON.stringify({'Op': 'bind', 'data': JSON.stringify(data)}));
-    winptyCompat.winptyCompatInit(this.xterm);
-    webLinks.webLinksInit(this.xterm);
-    this.onTerminalResize();
+    // 绑定完成后开始探测容器内 shell 是否就绪
+    this.serverReady = false;
+    this.startReadyProbe();
     this.xterm.focus();
-    
+
     this.isLoading = false;
     this.connectionStatus = 'connected';
-    
+
     // 记录连接完成时间并输出性能报告
     this.performanceMetrics.connectionTime = performance.now() - this.performanceMetrics.startTime;
     this.performanceMetrics.totalTime = this.performanceMetrics.connectionTime;
@@ -294,15 +378,59 @@ export class PodTerminalComponent implements OnInit, OnDestroy {
     console.log('=====================================');
   }
 
-  // 修改窗口大小
-  onTerminalResize() {
-    const width = this.terminal.nativeElement.parentElement.clientWidth;
-    const height = this.terminal.nativeElement.parentElement.clientHeight;
-    const xterm: any = this.xterm;
-    const cols = (width - xterm._core.viewport.scrollBarWidth - 15) / xterm._core.renderer.dimensions.actualCellWidth;
-    const rows = height / xterm._core.renderer.dimensions.actualCellHeight;
-    this.xterm.resize(parseInt(cols.toString(), 10), parseInt(rows.toString(), 10));
+  // toggleSearch 显示/隐藏终端内搜索框（Ctrl+F 触发）
+  toggleSearch(visible: boolean): void {
+    this.searchVisible = visible;
+    if (visible) {
+      setTimeout(() => {
+        if (this.searchInput) {
+          this.searchInput.nativeElement.focus();
+          this.searchInput.nativeElement.select();
+        }
+      }, 0);
+    } else {
+      if (this.searchAddon) {
+        this.searchAddon.clearDecorations();
+      }
+      this.searchTerm = '';
+      if (this.xterm) {
+        this.xterm.focus();
+      }
+    }
+  }
 
+  closeSearch(): void {
+    this.toggleSearch(false);
+  }
+
+  // onSearchInput 输入框变化（模板不直接取 $event.target，避免严格模板类型检查报错）
+  onSearchInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.onSearchTermChange(input ? input.value : '');
+  }
+
+  // onSearchTermChange 输入变化时从当前位置向后查找
+  onSearchTermChange(value: string): void {
+    this.searchTerm = value;
+    if (!value) {
+      if (this.searchAddon) {
+        this.searchAddon.clearDecorations();
+      }
+      return;
+    }
+    this.findNext();
+  }
+
+  findNext(): void {
+    if (this.searchAddon && this.searchTerm) {
+      this.searchAddon.findNext(this.searchTerm, {incremental: true});
+    }
+  }
+
+  findPrevious(): void {
+    if (this.searchAddon && this.searchTerm) {
+      this.searchAddon.findPrevious(this.searchTerm, {incremental: true});
+    }
   }
 
   // 获取服务端传来的信息
@@ -316,10 +444,10 @@ export class PodTerminalComponent implements OnInit, OnDestroy {
               console.log('server ready.');
               clearInterval(this.timer);
               this.timer = null;
-              
-              // 立即发送resize命令，减少延迟
-              this.socket.send(JSON.stringify({'Op': 'resize', 'Cols': this.xterm.cols, 'Rows': this.xterm.rows}));
-              // 只发送一次resize命令
+              this.serverReady = true;
+
+              // shell 就绪后立即同步一次行列，减少首屏错位
+              this.sendResize();
             } else {
               this.xterm.write(msg['Data']);
             }
@@ -344,15 +472,26 @@ export class PodTerminalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.xterm) {
-      this.xterm.dispose();
+    // 先停监听与定时器，再释放终端，避免销毁过程中回调再次访问已释放实例
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
     }
-    if (this.socket) {
-      this.socket.close();
+    if (this.resizeDebounce) {
+      clearTimeout(this.resizeDebounce);
+      this.resizeDebounce = null;
     }
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = null;
+    }
+    if (this.socket) {
+      this.socket.close();
+      this.socket = null;
+    }
+    if (this.xterm) {
+      this.xterm.dispose();
+      this.xterm = null;
     }
   }
 
