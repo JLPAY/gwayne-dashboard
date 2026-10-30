@@ -1,0 +1,37 @@
+<div class="clr-row" style="padding-left: 15px; padding-right: 15px; margin-top: 6px;">
+  <div class="clr-col-lg-12 clr-col-md-12 clr-col-sm-12 clr-col-xs-12">
+    <h3 class="header-title" style="margin-bottom: 6px;">JWT 签名密钥</h3>
+    <div class="card" style="padding: 12px 18px; margin-bottom: 12px;">
+      <div *ngIf="keyInfo; else loading" class="clr-row" style="align-items: center;">
+        <div class="clr-col-12 clr-col-md-4">
+          <span class="label">密钥模式：</span>
+          <span class="label-light">{{ modeLabel(keyInfo.mode) }}</span>
+        </div>
+        <div class="clr-col-12 clr-col-md-4">
+          <span class="label">当前 kid：</span>
+          <code class="kid-code" [title]="keyInfo.currentKid">{{ keyInfo.currentKid }}</code>
+        </div>
+        <div class="clr-col-12 clr-col-md-4" style="text-align: right;">
+          <button class="btn btn-danger-outline" [disabled]="rotating || keyInfo.mode !== 'db'"
+                  (click)="rotate()">
+            <cds-icon shape="refresh"></cds-icon>
+            {{ rotating ? '轮换中...' : '轮换密钥' }}
+          </button>
+        </div>
+        <div class="clr-col-12" *ngIf="keyInfo.previousKid" style="margin-top: 4px;">
+          <span class="label">宽限中的旧 kid：</span>
+          <code class="kid-code" [title]="keyInfo.previousKid">{{ keyInfo.previousKid }}</code>
+          <span class="label-light">（验签截止：{{ keyInfo.previousExpireAt }}，到期后自动清理）</span>
+        </div>
+        <div class="clr-col-12" *ngIf="keyInfo.mode !== 'db'" style="margin-top: 4px;">
+          <span class="label-light" style="color: #c95000;">
+            当前为 file 密钥模式，不支持在线轮换；请在配置中将 RsaKeyStore 设为 db 并重启服务。
+          </span>
+        </div>
+      </div>
+      <ng-template #loading>
+        <span class="spinner spinner-sm">加载中...</span>
+      </ng-template>
+    </div>
+  </div>
+</div>

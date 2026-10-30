@@ -19,6 +19,16 @@ export class ConfigService {
       .get('/api/v1/configs/system');
   }
 
+  getRsaKey(): Observable<any> {
+    return this.http
+      .get('/api/v1/configs/rsa-key');
+  }
+
+  rotateRsaKey(): Observable<any> {
+    return this.http
+      .post('/api/v1/configs/rsa-key/rotate', {}, this.options);
+  }
+
   list(pageState: PageState): Observable<any> {
     const params = buildListParams(pageState, {
       exactFilterKeys: ['id'],

@@ -189,7 +189,8 @@ export const enum ConfirmationTargets {
   HPA,
   ENDPOINT,
   LLM_MODEL,
-  TERMINAL_COMMAND_RULE
+  TERMINAL_COMMAND_RULE,
+  RSA_KEY
 }
 
 export const enum ActionType {
