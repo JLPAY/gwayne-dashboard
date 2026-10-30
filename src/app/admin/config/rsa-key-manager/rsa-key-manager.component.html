@@ -12,7 +12,7 @@
           <code class="kid-code" [title]="keyInfo.currentKid">{{ keyInfo.currentKid }}</code>
         </div>
         <div class="clr-col-12 clr-col-md-4" style="text-align: right;">
-          <button class="btn btn-danger-outline" [disabled]="rotating || keyInfo.mode !== 'db'"
+          <button class="btn btn-danger-outline" [disabled]="rotating"
                   (click)="rotate()">
             <cds-icon shape="refresh"></cds-icon>
             {{ rotating ? '轮换中...' : '轮换密钥' }}
@@ -25,7 +25,7 @@
         </div>
         <div class="clr-col-12" *ngIf="keyInfo.mode !== 'db'" style="margin-top: 4px;">
           <span class="label-light" style="color: #c95000;">
-            当前为 file 密钥模式，不支持在线轮换；请在配置中将 RsaKeyStore 设为 db 并重启服务。
+            当前为 file 密钥模式：轮换仅对当前实例生效，多副本部署建议将 RsaKeyStore 设为 db（多副本共享、自动同步）。
           </span>
         </div>
       </div>

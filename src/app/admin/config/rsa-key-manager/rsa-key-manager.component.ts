@@ -40,10 +40,16 @@ export class RsaKeyManagerComponent implements OnInit {
   }
 
   rotate(): void {
+    const isDb = this.keyInfo && this.keyInfo.mode === 'db';
+    const detail = isDb
+      ? '轮换后所有新令牌立即使用新密钥签发；旧密钥进入宽限窗口，存量令牌在窗口内仍可正常验签，在线用户不会掉线；' +
+        '同时所有使用旧密钥（含泄露密钥）伪造的令牌立即失效。其他副本将在数秒内自动同步，无需重启。确认轮换？'
+      : '轮换后所有新令牌立即使用新密钥签发；旧密钥进入宽限窗口并持久化到本地（服务重启后窗口内依然可验签），' +
+        '在线用户不会掉线；同时所有使用旧密钥（含泄露密钥）伪造的令牌立即失效。' +
+        '注意：file 模式下轮换仅对当前实例生效，多副本部署请使用 RsaKeyStore=db。确认轮换？';
     const message = new ConfirmationMessage(
       '轮换 JWT 签名密钥确认',
-      '轮换后所有新令牌立即使用新密钥签发；旧密钥进入宽限窗口，存量令牌在窗口内仍可正常验签，在线用户不会掉线；' +
-      '同时所有使用旧密钥（含泄露密钥）伪造的令牌立即失效。其他副本将在数秒内自动同步，无需重启。确认轮换？',
+      detail,
       null,
       ConfirmationTargets.RSA_KEY,
       ConfirmationButtons.CONFIRM_CANCEL
@@ -57,7 +63,9 @@ export class RsaKeyManagerComponent implements OnInit {
       (response: any) => {
         this.rotating = false;
         this.keyInfo = response.data;
-        this.messageHandlerService.showSuccess('签名密钥轮换成功，其他副本将在数秒内自动同步');
+        const isDb = response.data && response.data.mode === 'db';
+        this.messageHandlerService.showSuccess(
+          isDb ? '签名密钥轮换成功，其他副本将在数秒内自动同步' : '签名密钥轮换成功，旧密钥已进入宽限窗口');
       },
       error => {
         this.rotating = false;
