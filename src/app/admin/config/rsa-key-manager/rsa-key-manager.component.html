@@ -25,7 +25,8 @@
         </div>
         <div class="clr-col-12" *ngIf="keyInfo.mode !== 'db'" style="margin-top: 4px;">
           <span class="label-light" style="color: #c95000;">
-            当前为 file 密钥模式：轮换仅对当前实例生效，多副本部署建议将 RsaKeyStore 设为 db（多副本共享、自动同步）。
+            当前为 file 密钥模式：轮换会先更新本实例密钥文件，再同步写入数据库，其他实例检测到更新后自动跟进；
+            如需完全数据库化管理可切换 RsaKeyStore=db。
           </span>
         </div>
       </div>
