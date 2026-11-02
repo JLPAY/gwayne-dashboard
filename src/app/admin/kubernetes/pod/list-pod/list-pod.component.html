@@ -19,7 +19,7 @@
       {{'ADMIN.KUBERNETES.POD.LIST.IMAGES' | translate}}
     </ng-container>
   </clr-dg-column>
-  <clr-dg-column>
+  <clr-dg-column [clrDgSortBy]="'status'">
     <ng-container *clrDgHideableColumn="showState['status']">
       {{'ADMIN.KUBERNETES.POD.LIST.STATUS' | translate}}
     </ng-container>
