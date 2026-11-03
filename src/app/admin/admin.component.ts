@@ -205,6 +205,9 @@ export class AdminComponent implements OnInit {
     '/admin/kubernetes/node': {
       i18nKey: 'MENU.NODE',
     },
+    '/admin/kubernetes/node-inspect': {
+      i18nKey: 'MENU.NODE_INSPECT',
+    },
     '/admin/kubernetes/persistentvolume': {
       i18nKey: 'MENU.PV',
     },

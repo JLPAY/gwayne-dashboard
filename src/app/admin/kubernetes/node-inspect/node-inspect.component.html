@@ -1,0 +1,100 @@
+<div class="clr-row">
+  <div class="clr-col-lg-12 clr-col-md-12 clr-col-sm-12 clr-col-xs-12">
+    <div class="toolbar">
+      <label class="cluster-select">
+        集群：
+        <select [(ngModel)]="cluster" (ngModelChange)="cluster = $event">
+          <option *ngFor="let c of clusters" [value]="c">{{ c }}</option>
+        </select>
+      </label>
+
+      <label class="threshold-input">
+        告警阈值(%)：
+        <input type="number" min="1" max="99" [(ngModel)]="warning" [disabled]="!isAdmin" />
+      </label>
+      <label class="threshold-input">
+        严重阈值(%)：
+        <input type="number" min="2" max="100" [(ngModel)]="critical" [disabled]="!isAdmin" />
+      </label>
+
+      <button class="wayne-button normal" (click)="doInspect()" [disabled]="loading">
+        {{ loading ? '巡检中…' : '开始巡检' }}
+      </button>
+      <button class="wayne-button" (click)="doInspectAll()" [disabled]="loading">
+        巡检全部集群
+      </button>
+      <button class="wayne-button" *ngIf="isAdmin" (click)="saveConfig()">
+        保存阈值配置
+      </button>
+    </div>
+
+    <div *ngIf="inspected && results.length === 0 && !loading" class="empty-tip">
+      暂无数据，请先选择集群并点击「开始巡检」。
+    </div>
+
+    <div *ngFor="let r of results" class="cluster-result">
+      <h3 class="cluster-title">
+        {{ r.cluster }}
+        <span class="summary">
+          共 {{ r.total }} 个节点
+          <span class="badge warning">告警 {{ r.warning }}</span>
+          <span class="badge critical">严重 {{ r.critical }}</span>
+        </span>
+      </h3>
+
+      <div *ngIf="r.error" class="alert alert-danger">
+        集群巡检失败：{{ r.error }}
+      </div>
+
+      <clr-datagrid *ngIf="!r.error" [clrDgLoading]="loading">
+        <clr-dg-column>节点名称</clr-dg-column>
+        <clr-dg-column>Ready</clr-dg-column>
+        <clr-dg-column>内存使用率</clr-dg-column>
+        <clr-dg-column>磁盘使用率</clr-dg-column>
+        <clr-dg-column>状态</clr-dg-column>
+        <clr-dg-column>说明</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let item of r.items">
+          <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span [class]="item.ready ? 'status-ready' : 'status-notready'">
+              {{ item.ready ? 'Ready' : 'NotReady' }}
+            </span>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <div class="usage-bar">
+              <div class="usage-fill"
+                   [style.width.%]="item.memoryUsedPercent"
+                   [ngClass]="item.memoryUsedPercent >= critical ? 'fill-critical' : (item.memoryUsedPercent >= warning ? 'fill-warning' : 'fill-ok')">
+              </div>
+              <span class="usage-text">{{ item.memoryUsedPercent }}% ({{ bytesToGB(item.memoryUsedBytes) }}/{{ bytesToGB(item.memoryCapacityBytes) }} GB)</span>
+            </div>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <div class="usage-bar">
+              <div class="usage-fill"
+                   [style.width.%]="item.diskUsedPercent"
+                   [ngClass]="item.diskUsedPercent >= critical ? 'fill-critical' : (item.diskUsedPercent >= warning ? 'fill-warning' : 'fill-ok')">
+              </div>
+              <span class="usage-text">{{ item.diskUsedPercent }}% ({{ bytesToGB(item.diskUsedBytes) }}/{{ bytesToGB(item.diskCapacityBytes) }} GB)</span>
+            </div>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <span class="badge"
+                  [ngClass]="item.status === 'critical' ? 'critical' : (item.status === 'warning' ? 'warning' : 'ok')">
+              {{ statusText(item.status) }}
+            </span>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <span *ngIf="item.error" class="err-text">拉取失败：{{ item.error }}</span>
+            <span *ngIf="!item.error && item.messages">{{ item.messages?.join('；') }}</span>
+          </clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+          <clr-dg-pagination [clrDgPageSize]="10"></clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </div>
+  </div>
+</div>

@@ -76,6 +76,7 @@
     "NAMESPACE": "Namespace",
     "NAME_SPACE_LIST": "Namespace List",
     "NODE": "Node",
+    "NODE_INSPECT": "Node Inspect",
     "NOTIFICATION": "Notification",
     "NOTIFICATION_AUDIT": "Notification Audit",
     "OVERVIEW": "Overview",
