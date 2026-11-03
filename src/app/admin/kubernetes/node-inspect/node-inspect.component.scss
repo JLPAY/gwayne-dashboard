@@ -167,18 +167,29 @@
 
 // 行展开后的巡检项明细
 .check-detail {
-  padding: 8px 12px 12px;
+  padding: 12px 16px 16px 24px;
+  box-sizing: border-box;
 
   .checks {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     border-collapse: collapse;
+    table-layout: fixed;
     font-size: 13px;
 
     th, td {
-      padding: 4px 8px;
+      padding: 5px 12px;
       border-bottom: 1px solid #eee;
       text-align: left;
+      box-sizing: border-box;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
+
+    th:nth-child(1) { width: 38%; }
+    th:nth-child(2) { width: 22%; }
+    th:nth-child(3) { width: 40%; }
 
     th {
       font-weight: 600;
@@ -205,6 +216,11 @@
 
   .datagrid-column {
     min-width: 96px;
+  }
+
+  // 行展开明细区：解除裁切，避免左侧文字被截
+  .datagrid-row-detail {
+    overflow: visible;
   }
 }
 
