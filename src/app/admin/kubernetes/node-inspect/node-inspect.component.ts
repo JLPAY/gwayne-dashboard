@@ -86,7 +86,6 @@ export class NodeInspectComponent implements OnInit {
     pressure: '压力状态',
     fd: '文件描述符',
     pod: 'Pod 数量',
-    cert_kubelet: 'kubelet 证书',
     cert_apiserver: 'API Server 证书'
   };
 

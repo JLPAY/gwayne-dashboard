@@ -53,7 +53,6 @@ export class NodeInspectHistoryComponent implements OnInit {
     pressure: '压力状态',
     fd: '文件描述符',
     pod: 'Pod 数量',
-    cert_kubelet: 'kubelet 证书',
     cert_apiserver: 'API Server 证书'
   };
 
@@ -100,7 +99,7 @@ export class NodeInspectHistoryComponent implements OnInit {
       resp => {
         this.runRows = resp.data || [];
         // 列 = 该运行中出现过的巡检项（保持固定顺序）
-        const order = ['ready', 'memory', 'disk', 'cpu', 'load', 'pressure', 'fd', 'pod', 'cert_kubelet', 'cert_apiserver'];
+        const order = ['ready', 'memory', 'disk', 'cpu', 'load', 'pressure', 'fd', 'pod', 'cert_apiserver'];
         const seen: { [key: string]: boolean } = {};
         this.runRows.forEach(r => seen[r.checkType] = true);
         this.runColumns = order.filter(t => seen[t]);
