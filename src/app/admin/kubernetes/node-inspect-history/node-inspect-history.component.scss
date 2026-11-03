@@ -68,3 +68,19 @@
     color: #666;
   }
 }
+
+// 明细表格：列多时允许横向滚动，避免列头/单元格文字挤压
+:host ::ng-deep .inspect-dg {
+  .datagrid {
+    overflow-x: auto;
+  }
+
+  .datagrid-column,
+  .datagrid-cell {
+    white-space: nowrap;
+  }
+
+  .datagrid-column {
+    min-width: 96px;
+  }
+}

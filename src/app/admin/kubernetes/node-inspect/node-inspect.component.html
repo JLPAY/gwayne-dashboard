@@ -81,7 +81,7 @@
         </span>
       </div>
 
-      <clr-datagrid *ngIf="!r.error" [clrDgLoading]="loading">
+      <clr-datagrid class="inspect-dg" *ngIf="!r.error" [clrDgLoading]="loading">
         <clr-dg-column>节点名称</clr-dg-column>
         <clr-dg-column *ngFor="let col of columns">{{ labelOf(col) }}</clr-dg-column>
         <clr-dg-column>状态</clr-dg-column>
