@@ -14,9 +14,71 @@
   .cluster-select select {
     min-width: 140px;
   }
+}
 
-  .threshold-input input {
-    width: 72px;
+// 巡检项配置面板
+.config-panel {
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  background: #fafbfc;
+
+  .config-title {
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 600;
+
+    .readonly-tip {
+      font-size: 12px;
+      font-weight: normal;
+      color: #999;
+    }
+  }
+
+  .config-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+  }
+
+  .item-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 0;
+  }
+
+  .item-enable {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 130px;
+  }
+
+  .item-th {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #555;
+
+    input {
+      width: 64px;
+    }
+
+    input.short {
+      width: 56px;
+    }
+  }
+
+  .schedule-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #e4e7ed;
   }
 }
 
@@ -35,44 +97,42 @@
   }
 }
 
+// 集群级巡检项（API Server 证书等）
+.cluster-checks {
+  margin: 8px 0 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  .cc-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #fff;
+
+    &.ok { background: #3fa35b; }
+    &.warning { background: #e0a800; }
+    &.critical { background: #c92100; }
+
+    .cc-detail {
+      cursor: help;
+      font-weight: 600;
+    }
+  }
+}
+
 .empty-tip {
   padding: 24px;
   color: #666;
 }
 
-.usage-bar {
-  position: relative;
-  width: 220px;
-  height: 18px;
-  background: #eee;
-  border-radius: 3px;
-  overflow: hidden;
-
-  .usage-fill {
-    height: 100%;
-    transition: width 0.3s;
-  }
-
-  .fill-ok {
-    background: #3fa35b;
-  }
-  .fill-warning {
-    background: #e0a800;
-  }
-  .fill-critical {
-    background: #c92100;
-  }
-
-  .usage-text {
-    position: absolute;
-    left: 6px;
-    top: 0;
-    line-height: 18px;
-    font-size: 12px;
-    color: #333;
-    white-space: nowrap;
-  }
-}
+// 单元格状态色
+.cell-ok { color: #3fa35b; }
+.cell-warning { color: #c78b00; font-weight: 600; }
+.cell-critical { color: #c92100; font-weight: 600; }
 
 .badge {
   display: inline-block;
@@ -98,17 +158,11 @@
   font-size: 12px;
 }
 
-.part-count {
-  margin-left: 4px;
-  color: #888;
-  font-size: 11px;
-}
-
-// 行展开后的分区明细
-.disk-detail {
+// 行展开后的巡检项明细
+.check-detail {
   padding: 8px 12px 12px;
 
-  .partitions {
+  .checks {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
@@ -124,19 +178,9 @@
       color: #555;
     }
 
-    .mp { font-family: monospace; }
-    .dev { font-family: monospace; color: #666; }
-    .col-bar { width: 180px; }
-  }
-}
-
-// 分区小进度条
-.usage-bar.small {
-  width: 160px;
-  height: 14px;
-
-  .usage-text {
-    line-height: 14px;
-    font-size: 11px;
+    .detail-text {
+      color: #666;
+      font-size: 12px;
+    }
   }
 }

@@ -1,0 +1,111 @@
+<div class="clr-row">
+  <div class="clr-col-lg-12 clr-col-md-12 clr-col-sm-12 clr-col-xs-12">
+    <div class="toolbar">
+      <label class="cluster-select">
+        集群：
+        <select [(ngModel)]="cluster" (ngModelChange)="cluster = $event; loadRuns()">
+          <option *ngFor="let c of clusters" [value]="c">{{ c }}</option>
+        </select>
+      </label>
+      <button class="wayne-button normal" (click)="loadRuns()" [disabled]="loading">刷新</button>
+    </div>
+
+    <!-- 历次运行汇总 -->
+    <h4 class="section-title">历次巡检运行</h4>
+    <div *ngIf="runs.length === 0 && !loading" class="empty-tip">
+      暂无历史记录（需开启定时巡检或等待首次定时任务执行）。
+    </div>
+    <clr-datagrid *ngIf="runs.length" [clrDgLoading]="loading">
+      <clr-dg-column>运行时间</clr-dg-column>
+      <clr-dg-column>集群</clr-dg-column>
+      <clr-dg-column>记录数</clr-dg-column>
+      <clr-dg-column>告警</clr-dg-column>
+      <clr-dg-column>严重</clr-dg-column>
+      <clr-dg-column>操作</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let run of runs">
+        <clr-dg-cell>{{ fmtTime(run.runAt) }}</clr-dg-cell>
+        <clr-dg-cell>{{ run.cluster }}</clr-dg-cell>
+        <clr-dg-cell>{{ run.total }}</clr-dg-cell>
+        <clr-dg-cell>
+          <span [ngClass]="run.warning > 0 ? 'cell-warning' : ''">{{ run.warning }}</span>
+        </clr-dg-cell>
+        <clr-dg-cell>
+          <span [ngClass]="run.critical > 0 ? 'cell-critical' : ''">{{ run.critical }}</span>
+        </clr-dg-cell>
+        <clr-dg-cell>
+          <button class="wayne-button" (click)="viewRun(run)">查看明细</button>
+        </clr-dg-cell>
+      </clr-dg-row>
+      <clr-dg-footer>
+        <clr-dg-pagination [clrDgPageSize]="10"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+
+    <!-- 运行明细 -->
+    <ng-container *ngIf="selectedRun">
+      <h4 class="section-title">
+        {{ fmtTime(selectedRun.runAt) }} · {{ selectedRun.cluster }} 巡检明细
+      </h4>
+      <clr-datagrid [clrDgLoading]="loading">
+        <clr-dg-column>节点</clr-dg-column>
+        <clr-dg-column *ngFor="let col of runColumns">{{ labelOf(col) }}</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let node of runNodes()">
+          <clr-dg-cell>{{ node }}</clr-dg-cell>
+          <clr-dg-cell *ngFor="let col of runColumns">
+            <span [ngClass]="'cell-' + (runCell(node, col)?.status || 'ok')"
+                  [title]="runCell(node, col)?.detail">
+              {{ runCell(node, col)?.value || '-' }}
+            </span>
+          </clr-dg-cell>
+        </clr-dg-row>
+        <clr-dg-footer>
+          <clr-dg-pagination [clrDgPageSize]="10"></clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </ng-container>
+
+    <!-- 趋势 -->
+    <h4 class="section-title">趋势</h4>
+    <div class="trend-filter">
+      <label>
+        节点：
+        <select [(ngModel)]="trendNode">
+          <option *ngFor="let n of runNodes()" [value]="n">{{ n }}</option>
+        </select>
+      </label>
+      <label>
+        巡检项：
+        <select [(ngModel)]="trendType">
+          <option value="memory">内存使用率</option>
+          <option value="disk">磁盘使用率</option>
+          <option value="cpu">CPU 使用率</option>
+          <option value="load">系统负载</option>
+          <option value="fd">文件描述符</option>
+          <option value="pod">Pod 数量</option>
+          <option value="cert_kubelet">kubelet 证书剩余天数</option>
+        </select>
+      </label>
+      <button class="wayne-button normal" (click)="loadTrend()" [disabled]="loading">查看趋势</button>
+    </div>
+
+    <div class="trend-chart" *ngIf="trendRows.length">
+      <svg viewBox="0 0 640 180" preserveAspectRatio="xMidYMid meet">
+        <line x1="24" y1="156" x2="616" y2="156" stroke="#ddd" stroke-width="1"/>
+        <line x1="24" y1="24" x2="24" y2="156" stroke="#ddd" stroke-width="1"/>
+        <polyline [attr.points]="trendPoints()"
+                  fill="none" stroke="#1a6fb5" stroke-width="2"/>
+        <text x="28" y="18" font-size="10" fill="#888">max {{ trendMax() }}</text>
+      </svg>
+      <div class="trend-meta">
+        共 {{ trendRows.length }} 个采样点 ·
+        最新：{{ fmtTime(trendRows[trendRows.length - 1].runAt) }}
+        {{ labelOf(trendType) }} = {{ trendRows[trendRows.length - 1].percent }}%
+      </div>
+    </div>
+    <div *ngIf="trendNode && trendType && trendRows.length === 0" class="empty-tip">
+      所选节点/巡检项暂无历史数据。
+    </div>
+  </div>
+</div>

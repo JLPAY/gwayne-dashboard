@@ -34,6 +34,7 @@ import { NavModule } from './nav/nav.module';
 import { NotificationModule } from './notification/notification.module';
 import { NodesModule } from './kubernetes/node/nodes.module';
 import { NodeInspectModule } from './kubernetes/node-inspect/node-inspect.module';
+import { NodeInspectHistoryModule } from './kubernetes/node-inspect-history/node-inspect-history.module';
 import { LibraryAdminModule } from '../../../lib/admin/library-admin.module';
 import { IngressModule } from './ingress/ingress.module';
 import { IngressTplModule } from './ingresstpl/ingresstpl.module';
@@ -110,6 +111,7 @@ import { LLMModelModule } from './llm-model/llm-model.module';
     NotificationModule,
     NodesModule,
     NodeInspectModule,
+    NodeInspectHistoryModule,
     KubeNamespaceModule,
     LibraryAdminModule,
     IngressModule,

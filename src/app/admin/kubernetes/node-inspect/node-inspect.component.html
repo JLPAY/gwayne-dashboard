@@ -8,15 +8,6 @@
         </select>
       </label>
 
-      <label class="threshold-input">
-        告警阈值(%)：
-        <input type="number" min="1" max="99" [(ngModel)]="warning" [disabled]="!isAdmin" />
-      </label>
-      <label class="threshold-input">
-        严重阈值(%)：
-        <input type="number" min="2" max="100" [(ngModel)]="critical" [disabled]="!isAdmin" />
-      </label>
-
       <button class="wayne-button normal" (click)="doInspect()" [disabled]="loading">
         {{ loading ? '巡检中…' : '开始巡检' }}
       </button>
@@ -24,8 +15,43 @@
         巡检全部集群
       </button>
       <button class="wayne-button" *ngIf="isAdmin" (click)="saveConfig()">
-        保存阈值配置
+        保存巡检配置
       </button>
+    </div>
+
+    <!-- 巡检项配置 -->
+    <div class="config-panel">
+      <h4 class="config-title">巡检项配置 <span *ngIf="!isAdmin" class="readonly-tip">（只读，仅管理员可修改）</span></h4>
+      <div class="config-items">
+        <div class="item-row" *ngFor="let it of items">
+          <label class="item-enable">
+            <input type="checkbox" [(ngModel)]="it.enabled" [disabled]="!isAdmin" />
+            {{ labelOf(it.type) }}
+          </label>
+          <ng-container *ngIf="!isBooleanItem(it.type)">
+            <label class="item-th">
+              {{ isInvertItem(it.type) ? '告警(天数≤)' : '告警(%)≥' }}
+              <input type="number" [(ngModel)]="it.warning" [disabled]="!isAdmin" />
+            </label>
+            <label class="item-th">
+              {{ isInvertItem(it.type) ? '严重(天数≤)' : '严重(%)≥' }}
+              <input type="number" [(ngModel)]="it.critical" [disabled]="!isAdmin" />
+            </label>
+          </ng-container>
+        </div>
+      </div>
+      <div class="schedule-row">
+        <label class="item-enable">
+          <input type="checkbox" [(ngModel)]="scheduleEnabled" [disabled]="!isAdmin" />
+          定时巡检
+        </label>
+        <label class="item-th">
+          每 <input class="short" type="number" [(ngModel)]="scheduleInterval" [disabled]="!isAdmin" /> 分钟
+        </label>
+        <label class="item-th">
+          历史保留 <input class="short" type="number" [(ngModel)]="retentionDays" [disabled]="!isAdmin" /> 天
+        </label>
+      </div>
     </div>
 
     <div *ngIf="inspected && results.length === 0 && !loading" class="empty-tip">
@@ -46,41 +72,26 @@
         集群巡检失败：{{ r.error }}
       </div>
 
+      <!-- 集群级巡检项（API Server 证书等） -->
+      <div class="cluster-checks" *ngIf="r.clusterChecks && r.clusterChecks.length">
+        <span class="cc-item" *ngFor="let cc of r.clusterChecks"
+              [ngClass]="cc.status === 'critical' ? 'critical' : (cc.status === 'warning' ? 'warning' : 'ok')">
+          {{ labelOf(cc.type) }}：{{ cc.value }}
+          <span class="cc-detail" *ngIf="cc.detail" [title]="cc.detail">ⓘ</span>
+        </span>
+      </div>
+
       <clr-datagrid *ngIf="!r.error" [clrDgLoading]="loading">
         <clr-dg-column>节点名称</clr-dg-column>
-        <clr-dg-column>Ready</clr-dg-column>
-        <clr-dg-column>内存使用率</clr-dg-column>
-        <clr-dg-column>磁盘使用率</clr-dg-column>
+        <clr-dg-column *ngFor="let col of columns">{{ labelOf(col) }}</clr-dg-column>
         <clr-dg-column>状态</clr-dg-column>
-        <clr-dg-column>说明</clr-dg-column>
 
         <clr-dg-row *clrDgItems="let item of r.items">
           <clr-dg-cell>{{ item.name }}</clr-dg-cell>
-          <clr-dg-cell>
-            <span [class]="item.ready ? 'status-ready' : 'status-notready'">
-              {{ item.ready ? 'Ready' : 'NotReady' }}
+          <clr-dg-cell *ngFor="let col of columns">
+            <span [ngClass]="cellClass(item, col)" [title]="findCheck(item, col)?.detail">
+              {{ findCheck(item, col)?.value || '-' }}
             </span>
-          </clr-dg-cell>
-          <clr-dg-cell>
-            <div class="usage-bar">
-              <div class="usage-fill"
-                   [style.width.%]="item.memoryUsedPercent"
-                   [ngClass]="usageClass(item.memoryUsedPercent)">
-              </div>
-              <span class="usage-text">{{ item.memoryUsedPercent }}% ({{ bytesToGB(item.memoryUsedBytes) }}/{{ bytesToGB(item.memoryCapacityBytes) }} GB)</span>
-            </div>
-          </clr-dg-cell>
-          <clr-dg-cell>
-            <div class="usage-bar">
-              <div class="usage-fill"
-                   [style.width.%]="item.diskUsedPercent"
-                   [ngClass]="usageClass(item.diskUsedPercent)">
-              </div>
-              <span class="usage-text">
-                {{ item.diskUsedPercent }}% ({{ bytesToGB(item.diskUsedBytes) }}/{{ bytesToGB(item.diskCapacityBytes) }} GB)
-                <span *ngIf="item.disks && item.disks.length > 1" class="part-count">· {{ item.disks.length }} 个分区</span>
-              </span>
-            </div>
           </clr-dg-cell>
           <clr-dg-cell>
             <span class="badge"
@@ -88,39 +99,24 @@
               {{ statusText(item.status) }}
             </span>
           </clr-dg-cell>
-          <clr-dg-cell>
-            <span *ngIf="item.error" class="err-text">拉取失败：{{ item.error }}</span>
-            <span *ngIf="!item.error && item.messages">{{ item.messages?.join('；') }}</span>
-          </clr-dg-cell>
 
           <clr-dg-row-detail *clrIfExpanded>
-            <div class="disk-detail" *ngIf="item.disks && item.disks.length">
-              <table class="partitions">
+            <div class="check-detail">
+              <table class="checks">
                 <thead>
                   <tr>
-                    <th>挂载点</th>
-                    <th>文件系统</th>
-                    <th>设备</th>
-                    <th class="col-bar">使用率</th>
-                    <th>容量</th>
-                    <th>已用</th>
-                    <th>可用</th>
+                    <th>巡检项</th>
+                    <th>结果</th>
+                    <th>说明</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let d of item.disks">
-                    <td class="mp">{{ d.mountpoint }}</td>
-                    <td>{{ d.fstype }}</td>
-                    <td class="dev">{{ d.device }}</td>
-                    <td class="col-bar">
-                      <div class="usage-bar small">
-                        <div class="usage-fill" [style.width.%]="d.usedPercent" [ngClass]="usageClass(d.usedPercent)"></div>
-                        <span class="usage-text">{{ d.usedPercent }}%</span>
-                      </div>
+                  <tr *ngFor="let c of item.checks">
+                    <td>{{ labelOf(c.type) }}</td>
+                    <td>
+                      <span [ngClass]="'cell-' + c.status">{{ c.value }}</span>
                     </td>
-                    <td>{{ bytesToGB(d.capacityBytes) }} GB</td>
-                    <td>{{ bytesToGB(d.usedBytes) }} GB</td>
-                    <td>{{ bytesToGB(d.availBytes) }} GB</td>
+                    <td class="detail-text">{{ c.detail || '-' }}</td>
                   </tr>
                 </tbody>
               </table>

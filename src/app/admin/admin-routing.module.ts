@@ -59,6 +59,7 @@ import { KubernetesDashboardComponent } from './kubernetes/dashboard/dashboard.c
 import { NotificationComponent } from './notification/notification.component';
 import { NodesComponent } from './kubernetes/node/nodes.component';
 import { NodeInspectComponent } from './kubernetes/node-inspect/node-inspect.component';
+import { NodeInspectHistoryComponent } from './kubernetes/node-inspect-history/node-inspect-history.component';
 import { ADMINROUTES } from '../../../lib/admin/library-routing-admin';
 import { IngressComponent } from './ingress/ingress.component';
 import { TrashIngressComponent } from './ingress/trash-ingress/trash-ingress.component';
@@ -164,6 +165,7 @@ const routes: Routes = [
       {path: 'kubernetes/node/:cluster', component: NodesComponent},
       {path: 'kubernetes/node-inspect', component: NodeInspectComponent},
       {path: 'kubernetes/node-inspect/:cluster', component: NodeInspectComponent},
+      {path: 'kubernetes/node-inspect-history', component: NodeInspectHistoryComponent},
       {path: 'kubernetes/persistentvolume', component: PersistentVolumeComponent},
       {path: 'kubernetes/persistentvolume/:cluster', component: PersistentVolumeComponent},
       {path: 'kubernetes/persistentvolume/:cluster/edit/:name', component: CreateEditPersistentVolumeComponent},

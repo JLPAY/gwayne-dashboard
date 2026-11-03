@@ -55,6 +55,7 @@ const adminSideNav: any[] = [
     // 单独的一级「巡检」分组，与 Kubernetes 平级，便于后续扩展更多巡检类型
     type: SideNavType.GroupLink, icon: { title: 'MENU.INSPECTION', shape: 'health', solid: true }, text: 'MENU.INSPECTION', child: [
       { a: { link: 'kubernetes/node-inspect', text: 'MENU.NODE_INSPECT', options: {exact: false}, icon: { shape: 'health', solid: false } } },
+      { a: { link: 'kubernetes/node-inspect-history', text: 'MENU.NODE_INSPECT_HISTORY', options: {exact: false}, icon: { shape: 'history', solid: false } } },
     ]
   },
   { type: SideNavType.Divider },

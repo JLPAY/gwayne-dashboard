@@ -5,27 +5,19 @@ import { NodeClient } from '../../../shared/client/v1/kubernetes/node';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { AuthService } from '../../../shared/auth/auth.service';
 
-export interface DiskItem {
-  mountpoint: string;
-  device: string;
-  fstype: string;
-  capacityBytes: number;
-  usedBytes: number;
-  availBytes: number;
-  usedPercent: number;
+export interface CheckResult {
+  type: string;
+  name: string;
+  status: string;
+  percent?: number;
+  value: string;
+  detail?: string;
 }
 
 export interface InspectItem {
   name: string;
   ready: boolean;
-  memoryCapacityBytes: number;
-  memoryUsedBytes: number;
-  memoryUsedPercent: number;
-  diskCapacityBytes: number;
-  diskUsedBytes: number;
-  diskUsedPercent: number;
-  diskAvailableBytes: number;
-  disks?: DiskItem[];
+  checks: CheckResult[];
   status: string;
   messages?: string[];
   error?: string;
@@ -37,7 +29,28 @@ export interface InspectResult {
   warning: number;
   critical: number;
   items: InspectItem[];
+  clusterChecks?: CheckResult[];
   error?: string;
+}
+
+// 后端 ItemMeta（Go 导出字段无 json tag，键为首字母大写）
+export interface ItemMeta {
+  Type: string;
+  Name: string;
+  Unit: string;
+  DefaultWarning: number;
+  DefaultCritical: number;
+  EnabledByDefault: boolean;
+  Source: string;
+  ClusterScoped: boolean;
+  Invert: boolean;
+}
+
+export interface ItemConfig {
+  type: string;
+  enabled: boolean;
+  warning: number;
+  critical: number;
 }
 
 @Component({
@@ -52,9 +65,30 @@ export class NodeInspectComponent implements OnInit {
   loading = false;
   inspected = false;
 
-  warning = 80;
-  critical = 90;
   isAdmin = false;
+
+  // 可配置巡检项
+  registry: ItemMeta[] = [];
+  items: ItemConfig[] = [];
+  scheduleEnabled = false;
+  scheduleInterval = 60;
+  retentionDays = 90;
+
+  // 结果表动态列（启用的节点级巡检项）
+  columns: string[] = [];
+
+  itemLabels: { [key: string]: string } = {
+    ready: '节点就绪',
+    memory: '内存使用率',
+    disk: '磁盘使用率',
+    cpu: 'CPU 使用率',
+    load: '系统负载',
+    pressure: '压力状态',
+    fd: '文件描述符',
+    pod: 'Pod 数量',
+    cert_kubelet: 'kubelet 证书',
+    cert_apiserver: 'API Server 证书'
+  };
 
   constructor(private nodeClient: NodeClient,
               private clusterService: ClusterService,
@@ -76,19 +110,53 @@ export class NodeInspectComponent implements OnInit {
       error => this.messageHandlerService.handleError(error)
     );
 
-    // 拉取已持久化的阈值配置
+    this.loadConfig();
+    this.isAdmin = !!(this.authService.currentUser && this.authService.currentUser.admin);
+  }
+
+  loadConfig() {
     this.nodeClient.getNodeInspectConfig().subscribe(
       resp => {
-        if (resp.data) {
-          this.warning = resp.data.warning;
-          this.critical = resp.data.critical;
+        if (resp.registry) {
+          this.registry = resp.registry;
         }
+        if (resp.items) {
+          this.items = resp.items;
+        }
+        if (resp.data) {
+          this.scheduleEnabled = !!resp.data.scheduleEnabled;
+          this.scheduleInterval = resp.data.scheduleInterval || 60;
+          this.retentionDays = resp.data.retentionDays || 90;
+        }
+        this.rebuildColumns();
       },
       error => this.messageHandlerService.handleError(error)
     );
+  }
 
-    // 当前用户是否管理员（用于控制阈值编辑）
-    this.isAdmin = !!(this.authService.currentUser && this.authService.currentUser.admin);
+  rebuildColumns() {
+    // 列 = 启用且非集群级的巡检项（按注册表顺序）
+    const enabledMap: { [key: string]: boolean } = {};
+    this.items.forEach(it => enabledMap[it.type] = it.enabled);
+    this.columns = this.registry
+      .filter(m => !m.ClusterScoped && enabledMap[m.Type])
+      .map(m => m.Type);
+  }
+
+  // 巡检项是否为布尔型（无阈值）
+  isBooleanItem(type: string): boolean {
+    const meta = this.registry.find(m => m.Type === type);
+    return !!meta && meta.Unit === '';
+  }
+
+  // 巡检项是否证书型（阈值语义反转：critical < warning）
+  isInvertItem(type: string): boolean {
+    const meta = this.registry.find(m => m.Type === type);
+    return !!meta && meta.Invert;
+  }
+
+  labelOf(type: string): string {
+    return this.itemLabels[type] || type;
   }
 
   // 开始巡检（单集群）
@@ -99,7 +167,7 @@ export class NodeInspectComponent implements OnInit {
     }
     this.loading = true;
     this.inspected = true;
-    this.nodeClient.inspect(this.cluster, this.warning, this.critical).subscribe(
+    this.nodeClient.inspect(this.cluster).subscribe(
       resp => {
         this.results = resp.data || [];
         this.loading = false;
@@ -115,7 +183,7 @@ export class NodeInspectComponent implements OnInit {
   doInspectAll() {
     this.loading = true;
     this.inspected = true;
-    this.nodeClient.inspect('', this.warning, this.critical).subscribe(
+    this.nodeClient.inspect('').subscribe(
       resp => {
         this.results = resp.data || [];
         this.loading = false;
@@ -127,23 +195,42 @@ export class NodeInspectComponent implements OnInit {
     );
   }
 
-  // 保存阈值配置（管理员）
+  // 保存巡检配置（管理员）
   saveConfig() {
-    if (this.warning <= 0 || this.warning >= 100 || this.critical <= this.warning || this.critical > 100) {
-      this.messageHandlerService.showWarning('阈值非法：需满足 0 < 告警 < 严重 <= 100');
+    for (const it of this.items) {
+      if (this.isBooleanItem(it.type)) {
+        continue;
+      }
+      if (this.isInvertItem(it.type)) {
+        if (it.critical <= 0 || it.critical >= it.warning) {
+          this.messageHandlerService.showWarning(`${this.labelOf(it.type)} 为证书剩余天数，需满足 严重(天数) < 告警(天数)`);
+          return;
+        }
+      } else if (it.warning <= 0 || it.warning >= it.critical || it.critical > 100) {
+        this.messageHandlerService.showWarning(`${this.labelOf(it.type)} 阈值非法：需满足 0 < 告警 < 严重 <= 100`);
+        return;
+      }
+    }
+    if (this.scheduleInterval <= 0 || this.retentionDays <= 0) {
+      this.messageHandlerService.showWarning('调度间隔与历史保留天数必须大于 0');
       return;
     }
-    this.nodeClient.updateNodeInspectConfig(this.warning, this.critical).subscribe(
-      resp => {
-        this.warning = resp.data.warning;
-        this.critical = resp.data.critical;
-        this.messageHandlerService.showSuccess('节点巡检阈值已保存');
-      },
+    this.nodeClient.updateNodeInspectConfig({
+      items: this.items,
+      scheduleEnabled: this.scheduleEnabled,
+      scheduleInterval: this.scheduleInterval,
+      retentionDays: this.retentionDays
+    }).subscribe(
+      resp => this.messageHandlerService.showSuccess('节点巡检配置已保存'),
       error => this.messageHandlerService.handleError(error)
     );
   }
 
-  // 当前选中集群的结果（单集群巡检时取第一个）
+  // 取某节点的某个巡检项结果
+  findCheck(item: InspectItem, type: string): CheckResult {
+    return (item.checks || []).find(c => c.type === type);
+  }
+
   statusText(status: string): string {
     switch (status) {
       case 'critical': return '严重';
@@ -152,21 +239,11 @@ export class NodeInspectComponent implements OnInit {
     }
   }
 
-  // 根据使用率返回进度条色标（依赖当前告警/严重阈值）
-  usageClass(pct: number): string {
-    if (pct >= this.critical) {
-      return 'fill-critical';
+  cellClass(item: InspectItem, type: string): string {
+    const c = this.findCheck(item, type);
+    if (!c) {
+      return '';
     }
-    if (pct >= this.warning) {
-      return 'fill-warning';
-    }
-    return 'fill-ok';
-  }
-
-  bytesToGB(bytes: number): string {
-    if (!bytes) {
-      return '0';
-    }
-    return (bytes / 1024 / 1024 / 1024).toFixed(1);
+    return 'cell-' + c.status;
   }
 }
