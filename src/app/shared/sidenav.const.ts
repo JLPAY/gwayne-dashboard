@@ -18,7 +18,6 @@ const adminSideNav: any[] = [
   {
     type: SideNavType.GroupLink, icon: { shape: 'world', title: 'Kubernetes', solid: true }, text: 'Kubernetes', child: [
       { a: { link: 'kubernetes/node', text: 'Node', options: {exact: false}, icon: { shape: 'devices', solid: false } } },
-      { a: { link: 'kubernetes/node-inspect', text: 'Node Inspect', options: {exact: false}, icon: { shape: 'health', solid: false } } },
       { a: { link: 'kubernetes/namespace', text: 'Namespace', options: {exact: false}, icon: { shape: 'vmw-app', solid: true } } },
       { a: { link: 'kubernetes/customresourcedefinition', text: 'CRD', options: {exact: false}, icon: { shape: 'plugin', solid: true } } },
       { type: SideNavType.Divider },
@@ -49,6 +48,13 @@ const adminSideNav: any[] = [
       { a: { link: 'kubernetes/rolebinding', text: 'RoleBinding', options: {exact: false}, icon: { shape: 'administrator', solid: false } } },
       { a: { link: 'kubernetes/clusterrolebinding', text: 'ClusterRoleBinding', options: {exact: false}, icon: { shape: 'administrator', solid: true } } },
       { a: { link: 'kubernetes/serviceaccount', text: 'ServiceAccount', options: { exact: false }, icon: { shape: 'user', solid: false } } },
+    ]
+  },
+  { type: SideNavType.Divider },
+  {
+    // 单独的一级「巡检」分组，与 Kubernetes 平级，便于后续扩展更多巡检类型
+    type: SideNavType.GroupLink, icon: { title: 'MENU.INSPECTION', shape: 'health', solid: true }, text: 'MENU.INSPECTION', child: [
+      { a: { link: 'kubernetes/node-inspect', text: 'MENU.NODE_INSPECT', options: {exact: false}, icon: { shape: 'health', solid: false } } },
     ]
   },
   { type: SideNavType.Divider },

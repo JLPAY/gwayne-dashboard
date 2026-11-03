@@ -97,3 +97,46 @@
   color: #c92100;
   font-size: 12px;
 }
+
+.part-count {
+  margin-left: 4px;
+  color: #888;
+  font-size: 11px;
+}
+
+// 行展开后的分区明细
+.disk-detail {
+  padding: 8px 12px 12px;
+
+  .partitions {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+
+    th, td {
+      padding: 4px 8px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    th {
+      font-weight: 600;
+      color: #555;
+    }
+
+    .mp { font-family: monospace; }
+    .dev { font-family: monospace; color: #666; }
+    .col-bar { width: 180px; }
+  }
+}
+
+// 分区小进度条
+.usage-bar.small {
+  width: 160px;
+  height: 14px;
+
+  .usage-text {
+    line-height: 14px;
+    font-size: 11px;
+  }
+}

@@ -264,6 +264,7 @@
     "NAME_SPACE_LIST": "命名空间列表",
     "NODE": "主机",
     "NODE_INSPECT": "节点巡检",
+    "INSPECTION": "巡检",
     "NOTIFICATION": "通知",
     "NOTIFICATION_AUDIT": "通知审计",
     "OVERVIEW": "概览",

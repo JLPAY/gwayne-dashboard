@@ -65,7 +65,7 @@
             <div class="usage-bar">
               <div class="usage-fill"
                    [style.width.%]="item.memoryUsedPercent"
-                   [ngClass]="item.memoryUsedPercent >= critical ? 'fill-critical' : (item.memoryUsedPercent >= warning ? 'fill-warning' : 'fill-ok')">
+                   [ngClass]="usageClass(item.memoryUsedPercent)">
               </div>
               <span class="usage-text">{{ item.memoryUsedPercent }}% ({{ bytesToGB(item.memoryUsedBytes) }}/{{ bytesToGB(item.memoryCapacityBytes) }} GB)</span>
             </div>
@@ -74,9 +74,12 @@
             <div class="usage-bar">
               <div class="usage-fill"
                    [style.width.%]="item.diskUsedPercent"
-                   [ngClass]="item.diskUsedPercent >= critical ? 'fill-critical' : (item.diskUsedPercent >= warning ? 'fill-warning' : 'fill-ok')">
+                   [ngClass]="usageClass(item.diskUsedPercent)">
               </div>
-              <span class="usage-text">{{ item.diskUsedPercent }}% ({{ bytesToGB(item.diskUsedBytes) }}/{{ bytesToGB(item.diskCapacityBytes) }} GB)</span>
+              <span class="usage-text">
+                {{ item.diskUsedPercent }}% ({{ bytesToGB(item.diskUsedBytes) }}/{{ bytesToGB(item.diskCapacityBytes) }} GB)
+                <span *ngIf="item.disks && item.disks.length > 1" class="part-count">· {{ item.disks.length }} 个分区</span>
+              </span>
             </div>
           </clr-dg-cell>
           <clr-dg-cell>
@@ -89,6 +92,40 @@
             <span *ngIf="item.error" class="err-text">拉取失败：{{ item.error }}</span>
             <span *ngIf="!item.error && item.messages">{{ item.messages?.join('；') }}</span>
           </clr-dg-cell>
+
+          <clr-dg-row-detail *clrIfExpanded>
+            <div class="disk-detail" *ngIf="item.disks && item.disks.length">
+              <table class="partitions">
+                <thead>
+                  <tr>
+                    <th>挂载点</th>
+                    <th>文件系统</th>
+                    <th>设备</th>
+                    <th class="col-bar">使用率</th>
+                    <th>容量</th>
+                    <th>已用</th>
+                    <th>可用</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let d of item.disks">
+                    <td class="mp">{{ d.mountpoint }}</td>
+                    <td>{{ d.fstype }}</td>
+                    <td class="dev">{{ d.device }}</td>
+                    <td class="col-bar">
+                      <div class="usage-bar small">
+                        <div class="usage-fill" [style.width.%]="d.usedPercent" [ngClass]="usageClass(d.usedPercent)"></div>
+                        <span class="usage-text">{{ d.usedPercent }}%</span>
+                      </div>
+                    </td>
+                    <td>{{ bytesToGB(d.capacityBytes) }} GB</td>
+                    <td>{{ bytesToGB(d.usedBytes) }} GB</td>
+                    <td>{{ bytesToGB(d.availBytes) }} GB</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </clr-dg-row-detail>
         </clr-dg-row>
 
         <clr-dg-footer>

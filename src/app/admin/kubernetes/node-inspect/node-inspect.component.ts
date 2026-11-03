@@ -5,6 +5,16 @@ import { NodeClient } from '../../../shared/client/v1/kubernetes/node';
 import { MessageHandlerService } from '../../../shared/message-handler/message-handler.service';
 import { AuthService } from '../../../shared/auth/auth.service';
 
+export interface DiskItem {
+  mountpoint: string;
+  device: string;
+  fstype: string;
+  capacityBytes: number;
+  usedBytes: number;
+  availBytes: number;
+  usedPercent: number;
+}
+
 export interface InspectItem {
   name: string;
   ready: boolean;
@@ -15,6 +25,7 @@ export interface InspectItem {
   diskUsedBytes: number;
   diskUsedPercent: number;
   diskAvailableBytes: number;
+  disks?: DiskItem[];
   status: string;
   messages?: string[];
   error?: string;
@@ -139,6 +150,17 @@ export class NodeInspectComponent implements OnInit {
       case 'warning': return '告警';
       default: return '正常';
     }
+  }
+
+  // 根据使用率返回进度条色标（依赖当前告警/严重阈值）
+  usageClass(pct: number): string {
+    if (pct >= this.critical) {
+      return 'fill-critical';
+    }
+    if (pct >= this.warning) {
+      return 'fill-warning';
+    }
+    return 'fill-ok';
   }
 
   bytesToGB(bytes: number): string {
