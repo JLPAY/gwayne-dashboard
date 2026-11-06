@@ -8,21 +8,39 @@
         </select>
       </label>
 
-      <button class="wayne-button normal" (click)="doInspect()" [disabled]="loading">
-        {{ loading ? '巡检中…' : '开始巡检' }}
-      </button>
-      <button class="wayne-button" (click)="doInspectAll()" [disabled]="loading">
-        巡检全部集群
-      </button>
-      <button class="wayne-button" *ngIf="isAdmin" (click)="saveConfig()">
-        保存巡检配置
-      </button>
+      <span class="btn-group">
+        <button class="wayne-button normal" (click)="doInspect()" [disabled]="loading">
+          {{ loading ? '巡检中…' : '开始巡检' }}
+        </button>
+        <button class="wayne-button normal" (click)="doInspectAll()" [disabled]="loading">
+          巡检全部集群
+        </button>
+      </span>
+
+      <span class="spacer"></span>
+
+      <span class="btn-group" *ngIf="inspected && results.length > 0">
+        <button class="wayne-button" (click)="exportMarkdown()" [disabled]="loading">
+          导出 Markdown
+        </button>
+        <button class="wayne-button" (click)="exportPdf()" [disabled]="loading">
+          导出 PDF
+        </button>
+      </span>
     </div>
 
-    <!-- 巡检项配置 -->
-    <div class="config-panel">
-      <h4 class="config-title">巡检项配置 <span *ngIf="!isAdmin" class="readonly-tip">（只读，仅管理员可修改）</span></h4>
-      <div class="config-items">
+    <!-- 巡检配置（默认收起） -->
+    <div class="config-panel" [class.collapsed]="!showConfig">
+      <div class="config-header" (click)="toggleConfig()">
+        <span class="chevron" [class.open]="showConfig"></span>
+        <h4 class="config-title">
+          巡检配置
+          <span *ngIf="!isAdmin" class="readonly-tip">（只读，仅管理员可修改）</span>
+        </h4>
+        <span class="config-brief">{{ configBrief() }}</span>
+      </div>
+      <div class="config-body" *ngIf="showConfig">
+        <div class="config-items">
         <div class="item-row" *ngFor="let it of items">
           <label class="item-enable">
             <input type="checkbox" [(ngModel)]="it.enabled" [disabled]="!isAdmin" />
@@ -46,11 +64,62 @@
           定时巡检
         </label>
         <label class="item-th">
-          每 <input class="short" type="number" [(ngModel)]="scheduleInterval" [disabled]="!isAdmin" /> 分钟
-        </label>
-        <label class="item-th">
           历史保留 <input class="short" type="number" [(ngModel)]="retentionDays" [disabled]="!isAdmin" /> 天
         </label>
+        <label class="webhook-url">
+          Crontab：
+          <input class="url" type="text" [(ngModel)]="scheduleCron" [disabled]="!isAdmin"
+                 placeholder="如 0 */6 * * *（每6小时）、30 8 * * *（每天8:30）" />
+        </label>
+        <label class="webhook-url">
+          Prometheus：
+          <input class="url" type="text" [(ngModel)]="prometheusUrl" [disabled]="!isAdmin"
+                 placeholder="数据源地址，如 https://prometheus.example.com/select/0:0/prometheus" />
+        </label>
+        <label class="webhook-url">
+          Token：
+          <input class="url" type="password" [(ngModel)]="prometheusToken" [disabled]="!isAdmin"
+                 placeholder="可选 Bearer Token，留空匿名" />
+        </label>
+      </div>
+      <div class="schedule-row cluster-scope">
+        <span class="scope-label">巡检集群：</span>
+        <label class="item-enable">
+          <input type="checkbox" [checked]="scheduleClusters.length === 0"
+                 (change)="toggleAllClusters($event)" [disabled]="!isAdmin" />
+          全部集群
+        </label>
+        <label class="item-enable" *ngFor="let c of clusters">
+          <input type="checkbox" [checked]="scheduleClusters.indexOf(c) > -1"
+                 (change)="toggleCluster(c, $event)" [disabled]="!isAdmin" />
+          {{ c }}
+        </label>
+        <span class="hint" *ngIf="scheduleClusters.length === 0">（未勾选 = 巡检全部集群）</span>
+      </div>
+      <div class="schedule-row">
+        <label class="item-enable">
+          <input type="checkbox" [(ngModel)]="webhookEnabled" [disabled]="!isAdmin" />
+          企微机器人推送
+        </label>
+        <label class="webhook-url">
+          Webhook：
+          <input class="url" type="text" [(ngModel)]="webhookUrl" [disabled]="!isAdmin"
+                 placeholder="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxx" />
+        </label>
+        <label class="item-enable">
+          <input type="checkbox" [(ngModel)]="webhookOnlyWarning" [disabled]="!isAdmin" />
+          仅异常时推送
+        </label>
+        <button class="wayne-button" (click)="testWebhook()" [disabled]="!isAdmin">
+          发送测试
+        </button>
+      </div>
+      <div class="config-actions" *ngIf="isAdmin">
+        <button class="wayne-button normal" (click)="saveConfig()">
+          保存巡检配置
+        </button>
+        <span class="save-tip">保存后生效：巡检项阈值 / 定时巡检 / 集群范围 / 企微机器人推送 / Prometheus 数据源</span>
+      </div>
       </div>
     </div>
 
@@ -83,21 +152,25 @@
 
       <clr-datagrid class="inspect-dg" *ngIf="!r.error" [clrDgLoading]="loading">
         <clr-dg-column>节点名称</clr-dg-column>
-        <clr-dg-column *ngFor="let col of columns">{{ labelOf(col) }}</clr-dg-column>
-        <clr-dg-column>状态</clr-dg-column>
+        <clr-dg-column *ngFor="let col of columns" class="center">{{ labelOf(col) }}</clr-dg-column>
+        <clr-dg-column class="center">状态</clr-dg-column>
 
         <clr-dg-row *clrDgItems="let item of r.items">
           <clr-dg-cell>{{ item.name }}</clr-dg-cell>
           <clr-dg-cell *ngFor="let col of columns">
-            <span [ngClass]="cellClass(item, col)" [title]="findCheck(item, col)?.detail">
-              {{ findCheck(item, col)?.value || '-' }}
-            </span>
+            <div class="cell-center">
+              <span [ngClass]="cellClass(item, col)" [title]="findCheck(item, col)?.detail">
+                {{ findCheck(item, col)?.value || '-' }}
+              </span>
+            </div>
           </clr-dg-cell>
           <clr-dg-cell>
-            <span class="badge"
-                  [ngClass]="item.status === 'critical' ? 'critical' : (item.status === 'warning' ? 'warning' : 'ok')">
-              {{ statusText(item.status) }}
-            </span>
+            <div class="cell-center">
+              <span class="badge"
+                    [ngClass]="item.status === 'critical' ? 'critical' : (item.status === 'warning' ? 'warning' : 'ok')">
+                {{ statusText(item.status) }}
+              </span>
+            </div>
           </clr-dg-cell>
 
           <clr-dg-row-detail *clrIfExpanded>

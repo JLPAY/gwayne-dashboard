@@ -8,6 +8,9 @@
         </select>
       </label>
       <button class="wayne-button normal" (click)="loadRuns()" [disabled]="loading">刷新</button>
+      <button class="wayne-button" (click)="exportRuns()" [disabled]="!runs.length">
+        导出汇总
+      </button>
     </div>
 
     <!-- 历次运行汇总 -->
@@ -46,18 +49,23 @@
     <ng-container *ngIf="selectedRun">
       <h4 class="section-title">
         {{ fmtTime(selectedRun.runAt) }} · {{ selectedRun.cluster }} 巡检明细
+        <button class="wayne-button" (click)="exportRunDetail()" [disabled]="!runRows.length">
+          导出明细
+        </button>
       </h4>
       <clr-datagrid class="inspect-dg" [clrDgLoading]="loading">
         <clr-dg-column>节点</clr-dg-column>
-        <clr-dg-column *ngFor="let col of runColumns">{{ labelOf(col) }}</clr-dg-column>
+        <clr-dg-column *ngFor="let col of runColumns" class="center">{{ labelOf(col) }}</clr-dg-column>
 
         <clr-dg-row *clrDgItems="let node of runNodes()">
           <clr-dg-cell>{{ node }}</clr-dg-cell>
           <clr-dg-cell *ngFor="let col of runColumns">
-            <span [ngClass]="'cell-' + (runCell(node, col)?.status || 'ok')"
-                  [title]="runCell(node, col)?.detail">
-              {{ runCell(node, col)?.value || '-' }}
-            </span>
+            <div class="cell-center">
+              <span [ngClass]="'cell-' + (runCell(node, col)?.status || 'ok')"
+                    [title]="runCell(node, col)?.detail">
+                {{ runCell(node, col)?.value || '-' }}
+              </span>
+            </div>
           </clr-dg-cell>
         </clr-dg-row>
         <clr-dg-footer>

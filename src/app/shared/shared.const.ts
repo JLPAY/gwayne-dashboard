@@ -190,7 +190,8 @@ export const enum ConfirmationTargets {
   ENDPOINT,
   LLM_MODEL,
   TERMINAL_COMMAND_RULE,
-  RSA_KEY
+  RSA_KEY,
+  INSPECT_PUSH
 }
 
 export const enum ActionType {

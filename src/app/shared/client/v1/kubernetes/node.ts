@@ -53,8 +53,19 @@ export class NodeClient {
   }
 
   // 更新节点巡检配置（仅管理员）：items / scheduleEnabled / scheduleInterval / retentionDays
+  // / webhookEnabled / webhookUrl / webhookOnlyWarning
   updateNodeInspectConfig(payload: any): Observable<any> {
     return this.http.put(`/api/v1/configs/node-inspect`, payload);
+  }
+
+  // 向企业微信机器人发送测试消息（仅管理员）；webhookUrl 为空时用已保存配置
+  testInspectWebhook(webhookUrl?: string): Observable<any> {
+    return this.http.post(`/api/v1/configs/node-inspect/webhook-test`, {webhookUrl: webhookUrl || ''});
+  }
+
+  // 手动巡检结果推送企业微信机器人（webhook 地址取后端已保存配置）
+  pushInspectReport(results: any[]): Observable<any> {
+    return this.http.post(`/api/v1/kubernetes/nodes/inspect/notify`, {results: results || []});
   }
 
   // 巡检历史：历次运行汇总

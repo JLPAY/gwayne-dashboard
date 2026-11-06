@@ -83,4 +83,20 @@
   .datagrid-column {
     min-width: 96px;
   }
+
+  // 列头标题居中（Clarity 16：.datagrid-column-title 是 flex 容器，默认左对齐）
+  .datagrid-column.center .datagrid-column-title {
+    justify-content: center;
+    text-align: center;
+  }
+
+  // 单元格内容居中：直接作用于受控的 .cell-center
+  .cell-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex: 1 1 auto;
+    text-align: center;
+  }
 }
